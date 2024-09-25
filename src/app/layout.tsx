@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { Roboto } from "next/font/google";
+import { Header } from "@/app/ui/header/header";
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import { themeOptions } from "../../theme";
+import "swiper/css";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -23,9 +28,12 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${roboto.className} antialiased`}>
+      <ThemeProvider theme={themeOptions}>
         <AppRouterCacheProvider options={{ key: "css" }}>
+          <Header />
           {children}
         </AppRouterCacheProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
