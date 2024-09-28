@@ -5,6 +5,10 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'luanatech.pe'
+            },
+            {
+                protocol: 'http',
+                hostname: 'localhost'
             }
         ]
     }

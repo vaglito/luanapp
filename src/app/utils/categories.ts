@@ -1,5 +1,6 @@
 import { Categories } from "../types/categories";
-
+import { Product } from "../types/products";
+const api_url = process.env.API_URL; // url de la api
 /**
  * Obtiene los datos de categorías desde una API.
  * @async
@@ -37,5 +38,30 @@ export async function fetchCategory(): Promise<Categories[]> {
   } catch (error) {
     console.log(error);
     return [];
+  }
+}
+
+export async function fetchListProductCategory(
+  category_slug: string,
+  subcategory_slug: string
+): Promise<Product | null> {
+  try {
+    const response = await fetch(
+      `${api_url}/api/categorys/categoria/detalle/${category_slug}/${subcategory_slug}/`,
+      {
+        cache: "no-store",
+        method: "GET",
+      }
+    );
+
+    const products: Product = await response.json();
+
+    if (!response.ok) {
+      throw new Error(`Hubo un error al obtener los datos: ${response.status}`);
+    }
+    return products;
+  } catch (error) {
+    console.log(error);
+    return null;
   }
 }
