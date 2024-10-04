@@ -1,8 +1,20 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
-import { Button, Menu, MenuItem, Grid2 } from "@mui/material";
+import { Button, Menu, MenuItem, Box } from "@mui/material";
 import { Categories, Subcategory } from "../types/categories";
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+// import required modules
+import { Pagination, Navigation } from "swiper/modules";
 
 const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -30,11 +42,41 @@ const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
 
   return (
     <div>
-      <Grid2 container spacing={2}>
+      <Swiper
+        slidesPerView={2}
+        spaceBetween={10}
+        navigation={true}
+        pagination={{
+          clickable: true,
+        }}
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 20,
+          },
+          1280: {
+            slidesPerView: 5,
+            spaceBetween: 20,
+          },
+        }}
+        modules={[Pagination, Navigation]}
+        className="mySwiper"
+      >
         {categories.map((category) => (
-          <Grid2 size={{ xs: 6, md: 2 }} key={category.id}>
+          <SwiperSlide key={category.id}>
+            <Box sx={{ display: "flex", justifyContent: "center"}}>
+              <Image src="/gpu-mining.png" width={80} height={80} alt="icono" />
+            </Box>
             <Button
-              variant="contained"
+              variant="text"
               id="demo-positioned-button"
               aria-controls={open ? "demo-positioned-menu" : undefined}
               aria-haspopup="true"
@@ -42,13 +84,13 @@ const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
               onClick={(event) =>
                 handleClick(event, category.subcategory, category.slug)
               } // Pasa el slug de la categoría
-              sx={{ width: "100%", height: "100%" }}
+              sx={{ width: "100%", height: "100%", mb: 4 }}
             >
               {category.soplinea.nom_line}
             </Button>
-          </Grid2>
+          </SwiperSlide>
         ))}
-      </Grid2>
+      </Swiper>
 
       <Menu
         id="demo-positioned-menu"

@@ -1,0 +1,47 @@
+{
+  "count": 33,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "pk": 53,
+      "is_active": true,
+      "condition": null,
+      "sopprod": {
+        "cod_prod": "000195",
+        "nom_prod": "PROCESADOR AMD RYZEN 5 3600 ( 100-100000031BOX ) 3.6GHZ-35 MB | AM4                                                                                   ",
+        "stock_index": 3,
+        "cod_clasi": {
+          "cod_line": "09",
+          "nom_line": "PROCESADORES & ACCESORIOS"
+        },
+        "cod_cate": {
+          "cod_sub1": "014",
+          "nom_sub1": "PROCESADORES AMD"
+        },
+        "cod_subc": {
+          "cod_sub2": "003",
+          "nom_sub2": "AMD                           "
+        },
+        "cod_prod_relation_precios": [
+          {
+            "precio_decimal": 131.0,
+            "precio_local": 496.49,
+            "precio_dolar_5": 137.55,
+            "precio_local_5": 521.31,
+            "precio_oferta_d": 119.0,
+            "precio_oferta": 451.01,
+            "precio_oferta_5": 473.56,
+            "precio_oferta_d_5": 124.95
+          }
+        ]
+      },
+      "slug": "procesador-amd-ryzen-5-3600-100-100000031box-36ghz-35-mb-am4",
+      "productimage_set": [
+        {
+          "images": "http://localhost:8000/media/products/000195/1_Yq11yYj.jpg"
+        }
+      ]
+    }
+  ]
+}

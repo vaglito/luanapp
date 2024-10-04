@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { Roboto } from "next/font/google";
 import { Header } from "@/app/ui/header/header";
-import CssBaseline from '@mui/material/CssBaseline';
+import { Footer } from "./ui/footer/footer";
 import { ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from "../../theme";
 import "swiper/css";
@@ -32,6 +32,7 @@ export default function RootLayout({
         <AppRouterCacheProvider options={{ key: "css" }}>
           <Header />
           {children}
+          <Footer />
         </AppRouterCacheProvider>
         </ThemeProvider>
       </body>
