@@ -1,9 +1,9 @@
 import { Container, Box, Typography, Grid2 } from "@mui/material";
 import { BannerMain } from "./ui/banner";
 import { fetchCategory } from "./utils/categories";
-import { fetchNewProductList } from "./utils/products";
+import { fetchNewProductList, fetchFilterProductCategorySubCategory } from "./utils/products";
 import CategoriesComponent from "./ui/subcategory-menu";
-import { SliderProduct } from "./ui/product/slider-product";
+import { SliderProduct, SliderProductResult } from "./ui/product/slider-product";
 
 export const metadata = {
   title: "Corporacion Luana",
@@ -13,6 +13,7 @@ export const metadata = {
 export default async function Home() {
   const categories = await fetchCategory();
   const products = await fetchNewProductList();
+  const filterProduct = await fetchFilterProductCategorySubCategory();
 
   // filtro de categorias activas
   const activeCategories = categories.filter((category) => category.is_active);
@@ -45,7 +46,7 @@ export default async function Home() {
             Nuevos ingresos
           </Typography>
           <Box>
-            <SliderProduct products={products} />
+            <SliderProductResult products={products} />
           </Box>
         </Box>
       </Box>
@@ -69,7 +70,7 @@ export default async function Home() {
                 Laptops
               </Typography>
             </Box>
-            <SliderProduct products={products} />
+            <SliderProduct products={filterProduct} />
           </Box>
         </Box>
       </Box>

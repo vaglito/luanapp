@@ -1,7 +1,6 @@
-import { Result } from "../types/products";
+import { Result, Product } from "../types/products";
 
 const api_url = process.env.API_URL;
-
 
 /**
  * Obtiene los datos de nuevos productos desde una API.
@@ -27,9 +26,35 @@ export async function fetchNewProductList(): Promise<Result[]> {
     }
     const data: Result[] = await response.json();
     return data;
-
   } catch (error) {
     console.log(error);
     return [];
+  }
+}
+
+export async function fetchFilterProductCategorySubCategory(): Promise<Product> {
+  try {
+    const response = await fetch(
+      `${api_url}/api/products/product/filter/02/095/`,
+      {
+        cache: "no-store",
+        method: "GET",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Hubo un error al obtener los productos filtrados");
+    }
+
+    const data: Product = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return {
+      count: 0,
+      results: [],
+      next: undefined,
+      previous: undefined,
+    };
   }
 }

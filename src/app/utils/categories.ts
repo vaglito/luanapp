@@ -22,7 +22,7 @@ const api_url = process.env.API_URL; // url de la api
  */
 export async function fetchCategory(): Promise<Categories[]> {
   try {
-    const response = await fetch("https://luanatech.pe/api/categorys/", {
+    const response = await fetch(`${api_url}/api/categorys/`, {
       cache: "no-store", // Configura la solicitud para no almacenar en caché
     });
     const categories: Categories[] = await response.json();
@@ -41,6 +41,26 @@ export async function fetchCategory(): Promise<Categories[]> {
   }
 }
 
+/**
+ * Obtiene una lista de productos de una subcategoría específica dentro de una categoría.
+ *
+ * @async
+ * @function fetchListProductCategory
+ * @param {string} category_slug - El slug de la categoría.
+ * @param {string} subcategory_slug - El slug de la subcategoría.
+ * @returns {Promise<Product | null>} - Promesa que se resuelve con un objeto `Product` si la solicitud es exitosa. Si ocurre un error, devuelve `null`.
+ * @throws {Error} - Lanza un error si la respuesta de la API no es exitosa (código de estado distinto de 200).
+ *
+ * @description Esta función realiza una solicitud HTTP GET al endpoint de detalle de una subcategoría específica dentro de una categoría y devuelve los productos correspondientes. Si la solicitud falla, captura el error y lo registra en la consola, devolviendo `null`.
+ *
+ * @example
+ * const products = await fetchListProductCategory("impresoras", "laser");
+ * if (products) {
+ *   console.log(products);
+ * } else {
+ *   console.log("No se encontraron productos o hubo un error.");
+ * }
+ */
 export async function fetchListProductCategory(
   category_slug: string,
   subcategory_slug: string

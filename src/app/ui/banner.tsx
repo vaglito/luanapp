@@ -45,7 +45,7 @@ export function BannerMain(): JSX.Element {
     async function fetchBanner() {
       try {
         // Realiza la solicitud GET al endpoint de banners.
-        const response = await fetch("https://luanatech.pe/api/config/banner/");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/config/banner/`);
 
         // Convierte la respuesta en un array de objetos tipo `Banner`.
         const result: Banner[] = await response.json();
