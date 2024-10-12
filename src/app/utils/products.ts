@@ -32,10 +32,10 @@ export async function fetchNewProductList(): Promise<Result[]> {
   }
 }
 
-export async function fetchFilterProductCategorySubCategory(): Promise<Product> {
+export async function fetchFilterProductCategorySubCategory(cod_category: string, cod_subcategory: string): Promise<Product> {
   try {
     const response = await fetch(
-      `${api_url}/api/products/product/filter/02/095/`,
+      `${api_url}/api/products/product/filter/${cod_category}/${cod_subcategory}/`,
       {
         cache: "no-store",
         method: "GET",
