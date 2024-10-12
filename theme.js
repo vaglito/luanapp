@@ -13,6 +13,9 @@ export const themeOptions = createTheme({
     error: {
       main: "#ff392a",
     },
+    other: {
+      main: "#A3147F",
+    }
   },
   typography: {
     fontSize: 15,
