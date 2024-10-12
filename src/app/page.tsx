@@ -196,7 +196,7 @@ export default async function Home() {
         </Box>
         <Box sx={{ p: 2 }}>
           <Grid2 container spacing={4}>
-            <Grid2 size={{ md: 3 }}>
+            <Grid2 size={{ xs: 6, md: 3 }}>
               <Box>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <FcShipped className="text-6xl" />
@@ -204,7 +204,7 @@ export default async function Home() {
                 <Typography sx={{ textAlign: "center", fontWeight: 600 }}>Delivery</Typography>
               </Box>
             </Grid2>
-            <Grid2 size={{ md: 3 }}>
+            <Grid2 size={{ xs: 6, md: 3 }}>
               <Box>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <FcLock className="text-6xl" />
@@ -214,7 +214,7 @@ export default async function Home() {
                 </Typography>
               </Box>
             </Grid2>
-            <Grid2 size={{ md: 3 }}>
+            <Grid2 size={{ xs: 6, md: 3 }}>
               <Box>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <FcShop className="text-6xl" />
@@ -224,7 +224,7 @@ export default async function Home() {
                 </Typography>
               </Box>
             </Grid2>
-            <Grid2 size={{ md: 3 }}>
+            <Grid2 size={{ xs: 6, md: 3 }}>
               <Box>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <FcAssistant className="text-6xl" />
