@@ -25,7 +25,7 @@ export function ProductChart({ products }: { products: Result[] }) {
               borderRadius: 3,
             }}
           >
-            <Link href={`/producto/detalle/${product.slug}`}>
+            <Link href={`/productos/detalle/${product.slug}`}>
               <Box>
                 <Image
                   src={product.productimage_set[0].images}

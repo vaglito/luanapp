@@ -54,7 +54,7 @@ export function SliderProductResult({ products }: { products: Result[] }) {
               : 0;
           return (
             <SwiperSlide key={product.pk}>
-              <Link href={`/producto/detalle/${product.slug}`}>
+              <Link href={`/productos/detalle/${product.slug}`}>
                 <Box>
                   <Image
                     src={product.productimage_set[0].images}
@@ -241,7 +241,7 @@ export function SliderProduct({ products }: { products: Product }) {
               : 0;
           return (
             <SwiperSlide key={product.pk}>
-              <Link href={`/producto/detalle/${product.slug}`}>
+              <Link href={`/productos/detalle/${product.slug}`}>
                 <Box>
                   <Image
                     src={product.productimage_set[0].images}

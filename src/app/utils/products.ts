@@ -1,4 +1,5 @@
 import { Result, Product } from "../types/products";
+import { Detail } from "../types/detail";
 
 const api_url = process.env.API_URL;
 
@@ -32,7 +33,10 @@ export async function fetchNewProductList(): Promise<Result[]> {
   }
 }
 
-export async function fetchFilterProductCategorySubCategory(cod_category: string, cod_subcategory: string): Promise<Product> {
+export async function fetchFilterProductCategorySubCategory(
+  cod_category: string,
+  cod_subcategory: string
+): Promise<Product> {
   try {
     const response = await fetch(
       `${api_url}/api/products/product/filter/${cod_category}/${cod_subcategory}/`,
@@ -56,5 +60,44 @@ export async function fetchFilterProductCategorySubCategory(cod_category: string
       next: undefined,
       previous: undefined,
     };
+  }
+}
+
+/**
+ * Función asíncrona que obtiene los detalles de un producto por su slug.
+ * @async
+ * @function fetchProductDetail
+ * @param {string} product_slug - El slug del producto que se desea obtener.
+ * @returns {Promise<Detail>} - Una promesa que se resuelve con los detalles del producto.
+ * @throws {Error} - Si hay un error en la solicitud de la API.
+ *
+ * @description Esta función realiza una solicitud HTTP GET a la API para obtener los detalles de un producto específico
+ * utilizando su slug como parámetro. Si la respuesta no es exitosa (código de estado diferente de 200), lanza un error.
+ *
+ * @example
+ * const productDetail = await fetchProductDetail("laptop-lenovo-123");
+ * console.log(productDetail.nom_prod); // Muestra el nombre del producto.
+ */
+export async function fetchProductDetail(
+  product_slug: string
+): Promise<Detail> {
+  try {
+    const response = await fetch(
+      `${api_url}/api/products/detalle/${product_slug}/`,
+      {
+        cache: "no-store",
+        method: "GET",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Hubo un error");
+    }
+
+    const data: Detail = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error al obtener el detalle del producto");
   }
 }
