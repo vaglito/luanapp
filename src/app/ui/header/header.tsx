@@ -1,18 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Box,
-  Container,
-  Button,
-  TextField,
-  IconButton,
-  Badge,
-} from "@mui/material";
+import { Box, Container, Button, IconButton, Badge } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonIcon from "@mui/icons-material/Person";
-import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Navbar } from "./navbar";
+import { Search } from "../search";
 
 export function Header() {
   return (
@@ -49,22 +42,7 @@ export function Header() {
                   width: "100%",
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    width: { xs: "100%", md: "75%" },
-                  }}
-                >
-                  <TextField
-                    id="search"
-                    label="Buscar producto..."
-                    variant="outlined"
-                    sx={{ width: "100%" }} // El TextField toma todo el ancho del contenedor
-                  />
-                  <Button variant="contained" sx={{ marginLeft: 1 }}>
-                    <SearchIcon />
-                  </Button>
-                </Box>
+                <Search />
               </Box>
             </Box>
             <Box>
