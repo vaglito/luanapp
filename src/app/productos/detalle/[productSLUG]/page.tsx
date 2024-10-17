@@ -11,7 +11,7 @@ import {
 import { fetchProductDetail } from "@/app/utils/products";
 import { AddToCard } from "@/app/ui/product/detail/Addtocard";
 import { StockDisplay } from "@/app/ui/product/detail/StockDisplay";
-import { ProductSpecifications1 } from "@/app/ui/product/detail/ProductSpecifications";
+import { ProductSpecifications, ProductSpecifications1 } from "@/app/ui/product/detail/ProductSpecifications";
 import { ProductImageCarousel } from "@/app/ui/product/detail/ProductImageCarousel";
 
 interface ProductDetailProps {

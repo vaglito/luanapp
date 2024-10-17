@@ -1,4 +1,4 @@
-import { Container, Box, Typography, Button } from "@mui/material";
+import { Container, Box, Typography, Button, Grid2 } from "@mui/material";
 import { fetchProductSearch } from "../utils/products";
 import { ProductChart } from "../ui/product-chart";
 
