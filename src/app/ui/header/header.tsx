@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Box, Container, Button, IconButton, Badge } from "@mui/material";
@@ -42,7 +43,9 @@ export function Header() {
                   width: "100%",
                 }}
               >
-                <Search />
+                <Suspense fallback={<div>Loading search...</div>}>
+                  <Search />
+                </Suspense>
               </Box>
             </Box>
             <Box>
