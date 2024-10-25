@@ -11,7 +11,10 @@ import {
 import { fetchProductDetail } from "@/app/utils/products";
 import { AddToCard } from "@/app/ui/product/detail/Addtocard";
 import { StockDisplay } from "@/app/ui/product/detail/StockDisplay";
-import { ProductSpecifications, ProductSpecifications1 } from "@/app/ui/product/detail/ProductSpecifications";
+import {
+  ProductSpecifications,
+  ProductSpecifications1,
+} from "@/app/ui/product/detail/ProductSpecifications";
 import { ProductImageCarousel } from "@/app/ui/product/detail/ProductImageCarousel";
 
 interface ProductDetailProps {
@@ -34,14 +37,18 @@ export default async function ProductDetailPage({
   const { productSLUG } = params;
   const product = await fetchProductDetail(productSLUG);
 
-  const specifications = {
-    Socket: "LGA1700",
-    RAM: "5200MHZ, 5600MHZ, 600MHZ DDR5",
-    peso: "500g",
-    material: "Aluminio",
-    modelo: "ABC123",
-    garantia: "1 año",
-  };
+  const precioOriginal =
+    product.sopprod.cod_prod_relation_precios[0].precio_decimal;
+  const precioLocalOriginal =
+    product.sopprod.cod_prod_relation_precios[0].precio_local;
+  const precioOferta =
+    product.sopprod.cod_prod_relation_precios[0].precio_oferta_d;
+  const precioLocalOferta =
+    product.sopprod.cod_prod_relation_precios[0].precio_oferta;
+  const porcentajeDescuento =
+    precioOferta > 0
+      ? ((precioOriginal - precioOferta) / precioOriginal) * 100
+      : 0;
 
   return (
     <Container maxWidth="xl">
@@ -87,12 +94,14 @@ export default async function ProductDetailPage({
                     boxShadow: "inset 0 2px 4px rgba(0, 0, 0, 0.05)",
                   }}
                 >
-                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                  <Typography>Codigo: {product.sopprod.cod_prod}</Typography>
+                  <Typography>
+                    Marca: {product.sopprod.cod_subc.nom_sub2}
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 600, mt: 2 }}>
                     Descripción
                   </Typography>
-                  <Box
-                    dangerouslySetInnerHTML={{ __html: product.resumen }}
-                  />
+                  <Box dangerouslySetInnerHTML={{ __html: product.resumen }} />
                 </Box>
 
                 {/* Precio y opciones */}
@@ -109,51 +118,104 @@ export default async function ProductDetailPage({
                     Precio
                   </Typography>
 
-                  {/* Estilo del precio sin fondo */}
-                  <Box
-                    sx={{
-                      textAlign: "center",
-                      mb: 2,
-                      position: "relative",
-                      "&:before": {
-                        content: '""',
-                        position: "absolute",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        bottom: "-10px",
-                        width: "80%",
-                        height: "2px",
-                        backgroundColor: "primary.main",
-                      },
-                    }}
-                  >
-                    <Typography
-                      variant="h3"
-                      sx={{
-                        fontWeight: 800,
-                        color: "primary.main",
-                        letterSpacing: "1px",
-                      }}
-                    >
-                      S/
-                      {
-                        product.sopprod.cod_prod_relation_precios[0]
-                          .precio_local
-                      }
-                    </Typography>
-                    <Typography
-                      variant="h4"
-                      sx={{
-                        fontWeight: 500,
-                        color: "#757575",
-                      }}
-                    >
-                      o $
-                      {
-                        product.sopprod.cod_prod_relation_precios[0]
-                          .precio_decimal
-                      }
-                    </Typography>
+                  <Box sx={{ textAlign: "center", mb: 2 }}>
+                    {precioOferta > 0 ? (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          gap: 1,
+                          position: "relative",
+                          "&:before": {
+                            content: '""',
+                            position: "absolute",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            bottom: "-10px",
+                            width: "80%",
+                            height: "2px",
+                            backgroundColor: "primary.main",
+                          },
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            textDecoration: "line-through",
+                            color: "GrayText",
+                            fontSize: "18px",
+                          }}
+                        >
+                          ${precioOriginal.toFixed(2)} (S/
+                          {precioLocalOriginal.toFixed(2)})
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "success.main",
+                            fontWeight: "bold",
+                            fontSize: "18px",
+                          }}
+                        >
+                          -{porcentajeDescuento.toFixed(1)}% de descuento
+                        </Typography>
+                        <Typography
+                          variant="h3"
+                          sx={{
+                            fontWeight: 800,
+                            color: "primary.main",
+                            letterSpacing: "1px",
+                          }}
+                        >
+                          S/{precioLocalOferta.toFixed(2)}
+                        </Typography>
+                        <Typography
+                          variant="h4"
+                          sx={{
+                            fontWeight: 500,
+                            color: "#757575",
+                          }}
+                        >
+                          o ${precioOferta.toFixed(2)}
+                        </Typography>
+                      </Box>
+                    ) : (
+                      <Box
+                        sx={{
+                          position: "relative",
+                          "&:before": {
+                            content: '""',
+                            position: "absolute",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            bottom: "-10px",
+                            width: "80%",
+                            height: "2px",
+                            backgroundColor: "primary.main",
+                          },
+                        }}
+                      >
+                        <Typography
+                          variant="h3"
+                          sx={{
+                            fontWeight: 800,
+                            color: "primary.main",
+                            letterSpacing: "1px",
+                          }}
+                        >
+                          S/{precioLocalOriginal.toFixed(2)}
+                        </Typography>
+                        <Typography
+                          variant="h4"
+                          sx={{
+                            fontWeight: 500,
+                            color: "#757575",
+                          }}
+                        >
+                          o ${precioOriginal.toFixed(2)}
+                        </Typography>
+                      </Box>
+                    )}
                   </Box>
 
                   <Typography
@@ -163,7 +225,6 @@ export default async function ProductDetailPage({
                     Ahorra pagando con efectivo o transferencia
                   </Typography>
 
-                  {/* Componente AddToCard */}
                   <Box sx={{ mt: 2 }}>
                     <StockDisplay stock={product.sopprod.stock_index} />
                     <AddToCard />
@@ -173,7 +234,11 @@ export default async function ProductDetailPage({
             </Box>
           </Grid2>
         </Grid2>
-        <ProductSpecifications1 specifications={product.description} />
+        {product.specs ? (
+          <ProductSpecifications specifications={product.specs} />
+        ) : (
+          <ProductSpecifications1 specifications={product.description} />
+        )}
       </Box>
     </Container>
   );

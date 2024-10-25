@@ -1,9 +1,14 @@
+type Specifications = {
+  [key: string]: string | number; // Definición del tipo
+};
+
 export interface Detail {
   pk: number;
   is_active: boolean;
   condition: null;
   slug: string;
   sopprod: Sopprod;
+  specs?: Specifications;
   resumen: string;
   description: string;
   productimage_set: ProductimageSet[];
