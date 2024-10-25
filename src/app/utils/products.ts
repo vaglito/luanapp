@@ -79,7 +79,7 @@ export async function fetchFilterProductCategorySubCategory(
  * console.log(productDetail.nom_prod); // Muestra el nombre del producto.
  */
 export async function fetchProductDetail(
-  product_slug: string,
+  product_slug: string
 ): Promise<Detail> {
   try {
     const response = await fetch(
@@ -102,29 +102,40 @@ export async function fetchProductDetail(
   }
 }
 
-
-export async function fetchProductSearch(query?: string, page?: number): Promise<Product> {
+export async function fetchProductSearch(
+  query?: string,
+  page?: number
+): Promise<Product> {
   try {
-    // Crear la URL con la consulta y el número de página
+    // Create the URL with query and page parameters
     const url = new URL(`${api_url}/api/products/search/`);
-    url.searchParams.append('q', query || '');
+    url.searchParams.append("q", query || "");
     if (page) {
-      url.searchParams.append('page', page.toString());
+      url.searchParams.append("page", page.toString());
     }
 
     const response = await fetch(url.toString(), {
-      cache: 'no-store',
-      method: 'GET'
+      cache: "no-store",
+      method: "GET",
     });
 
+    // Handle 404 status specifically
+    if (response.status === 404) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || "Producto no encontrado.");
+    }
+
+    // Check for other types of response errors
     if (!response.ok) {
       throw new Error("No se pudieron cargar los datos");
     }
+
     const data: Product = await response.json();
     return data;
 
   } catch (error) {
-    console.log(error);
-    throw new Error("Hubo un error en la conexión de la API");
+    const errorMessage = (error as { message?: string }).message || "Hubo un error en la conexión de la API";
+    console.error("API error:", errorMessage);
+    throw new Error(errorMessage);
   }
 }
