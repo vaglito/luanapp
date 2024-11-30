@@ -31,16 +31,15 @@ export default async function Page({
   };
 }) {
   const query = searchParams?.query || "";
-  const currentPage = Number(searchParams?.page) || 1;
+  let currentPage = Number(searchParams?.page) || 1;
 
   // Use a try-catch block to handle API errors
   let searchProduct;
   try {
     searchProduct = await fetchProductSearch(query, currentPage);
   } catch (error) {
-    // Ensure `error` is an object and use a default message if `message` is unavailable
     return (
-      <Container maxWidth="xl" className="">
+      <Container maxWidth="xl">
         <Box className="h-screen" sx={{ marginY: 4 }}>
           <Box
             sx={{
@@ -57,9 +56,6 @@ export default async function Page({
                   ? `Resultados para: ${query}`
                   : "Introduce un término de búsqueda"}
               </Typography>
-              <Typography>
-                productos encontrados: {searchProduct?.count}
-              </Typography>
             </Box>
           </Box>
           <Box sx={{ display: "flex", gap: 1 }}>
@@ -68,7 +64,7 @@ export default async function Page({
               ¡Lo sentimos!
             </Typography>
           </Box>
-          <Typography variant="h5">No se encontró ningun producto.</Typography>
+          <Typography variant="h5">No se encontró ningún producto.</Typography>
         </Box>
       </Container>
     );
@@ -76,6 +72,11 @@ export default async function Page({
 
   // Calculate total pages based on the results count
   const totalPages = Math.ceil(searchProduct.count / 20);
+
+  // Adjust currentPage if it exceeds totalPages
+  if (currentPage > totalPages && totalPages > 0) {
+    currentPage = totalPages;
+  }
 
   return (
     <Container maxWidth="xl">
