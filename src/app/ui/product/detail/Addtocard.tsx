@@ -1,10 +1,17 @@
 "use client";
 import { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
-export function AddToCard() {
+interface AddToCardProps {
+  title: string;
+}
+
+export function AddToCard({ title }: AddToCardProps) {
   const [counter, setCounter] = useState(0);
+
+  // Arreglo de números para seleccionar aleatoriamente
+  const numbers = [51919443359, 51922481325, 981355117];
 
   const increment = () => {
     setCounter(counter + 1);
@@ -13,8 +20,20 @@ export function AddToCard() {
     if (counter > 0) setCounter(counter - 1); // Evitar que el contador sea negativo
   };
 
-  const addproduct = () => {
-    alert(`Agrego ${counter} unidades`);
+  const addProduct = () => {
+    // Seleccionar aleatoriamente un número del array
+    const randomNumber = numbers[Math.floor(Math.random() * numbers.length)];
+
+    // Mensaje que se enviará
+    const message = `Hola, quiero comprar ${counter} unidad(es) del producto.\n${title}`;
+
+    // Construir URL para WhatsApp
+    const whatsappUrl = `https://wa.me/${randomNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+
+    // Abrir WhatsApp
+    window.open(whatsappUrl, "_blank");
   };
 
   return (
@@ -69,7 +88,7 @@ export function AddToCard() {
         </Button>
       </Box>
       <Button
-        onClick={addproduct}
+        onClick={addProduct}
         variant="contained"
         fullWidth
         startIcon={<WhatsAppIcon />}
