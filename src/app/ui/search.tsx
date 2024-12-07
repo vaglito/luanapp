@@ -1,13 +1,20 @@
 "use client";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { Box, TextField, Button } from "@mui/material";
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Box, TextField } from "@mui/material";
 import { useDebouncedCallback } from "use-debounce";
-import SearchIcon from "@mui/icons-material/Search";
 
 export function Search() {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const { replace } = useRouter();
+
+  // Estado local para controlar el valor del campo de búsqueda
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("query") || "");
+
+  // Actualiza el estado cuando los parámetros de la URL cambian
+  useEffect(() => {
+    setSearchTerm(searchParams.get("query") || "");
+  }, [searchParams]);
 
   const handleSearch = useDebouncedCallback((term) => {
     const params = new URLSearchParams(searchParams);
@@ -19,7 +26,7 @@ export function Search() {
       params.delete("query");
     }
 
-    // Reinicia el parámetro `page` siempre que cambie el término de búsqueda
+    // Reinicia el parámetro `page` si existe
     if (params.has("page")) {
       params.delete("page");
     }
@@ -39,19 +46,14 @@ export function Search() {
         id="search"
         label="Buscar producto..."
         variant="outlined"
-        defaultValue={searchParams.get("query") || ""}
+        value={searchTerm} // Vincula el estado al campo de búsqueda
         onChange={(e) => {
-          handleSearch(e.target.value);
+          const term = e.target.value;
+          setSearchTerm(term); // Actualiza el estado local
+          handleSearch(term); // Llama a la función de búsqueda
         }}
         sx={{ width: "100%" }}
       />
-      <Button
-        type="submit"
-        variant="contained"
-        sx={{ marginLeft: 1 }}
-      >
-        <SearchIcon />
-      </Button>
     </Box>
   );
 }

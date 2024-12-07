@@ -227,7 +227,7 @@ export default async function ProductDetailPage({
 
                   <Box sx={{ mt: 2 }}>
                     <StockDisplay stock={product.sopprod.stock_index} />
-                    <AddToCard />
+                    <AddToCard title={product.sopprod.nom_prod}/>
                   </Box>
                 </Box>
               </Box>

@@ -17,9 +17,13 @@ const api_url = process.env.API_URL;
  */
 export async function fetchNewProductList(): Promise<Result[]> {
   try {
+    // await new Promise(resolve => setTimeout(resolve, 5000))
     const response = await fetch(`${api_url}/api/products/new-product/`, {
-      cache: "no-store",
       method: "GET",
+      cache: 'no-store',
+      headers: {
+        "Content-Type": "application/json",
+      }
     });
 
     if (!response.ok) {
