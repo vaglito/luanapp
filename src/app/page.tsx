@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FcShipped, FcShop, FcLock, FcAssistant } from "react-icons/fc";
@@ -14,15 +15,20 @@ import {
   SliderProductResult,
 } from "./ui/product/slider-product";
 import { fetchListProductBrand } from "./utils/brands";
+import { ProductSkeleton } from "./ui/skeleton/productCard-skeleton";
 
 export const metadata = {
   title: "Corporacion Luana",
   description: "Tienda de corporacion luana",
 };
 
+async function ProductNewContent() {
+  const products = await fetchNewProductList();
+  return <SliderProductResult products={products} />;
+}
+
 export default async function Home() {
   const categories = await fetchCategory();
-  const products = await fetchNewProductList();
   const filterProduct = await fetchFilterProductCategorySubCategory(
     "02",
     "095"
@@ -60,7 +66,9 @@ export default async function Home() {
             Nuevos ingresos
           </Typography>
           <Box>
-            <SliderProductResult products={products} />
+            <Suspense fallback={<ProductSkeleton />}>
+              <ProductNewContent />
+            </Suspense>
           </Box>
         </Box>
       </Box>
@@ -183,7 +191,7 @@ export default async function Home() {
         sx={{ bgcolor: "#f0f0f0", borderRadius: 6 }}
         className="drop-shadow-lg"
       >
-        <Box sx={{ p: 2}}>
+        <Box sx={{ p: 2 }}>
           <Typography
             variant="h4"
             sx={{ fontWeight: 600, textAlign: "center" }}
@@ -201,7 +209,9 @@ export default async function Home() {
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <FcShipped className="text-6xl" />
                 </Box>
-                <Typography sx={{ textAlign: "center", fontWeight: 600 }}>Delivery</Typography>
+                <Typography sx={{ textAlign: "center", fontWeight: 600 }}>
+                  Delivery
+                </Typography>
               </Box>
             </Grid2>
             <Grid2 size={{ xs: 6, md: 3 }}>
