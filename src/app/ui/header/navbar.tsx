@@ -32,6 +32,11 @@ const navlinks = [
   },
   {
     id: 2,
+    title: "Marcas",
+    path: "/marcas",
+  },
+  {
+    id: 3,
     title: "Contacto",
     path: "/contacto",
   },
@@ -56,7 +61,9 @@ export function Navbar(props: Props) {
         {navlinks.map((links) => (
           <ListItem key={links.id} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={links.title} />
+              <Link href={links.path}>
+                <ListItemText primary={links.title} />
+              </Link>
             </ListItemButton>
           </ListItem>
         ))}

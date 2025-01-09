@@ -54,7 +54,7 @@ export function Header() {
                   color="primary"
                   aria-label="agrega al carrito de compras"
                 >
-                  <Badge badgeContent={5} color="secondary">
+                  <Badge badgeContent={0} color="secondary">
                     <ShoppingCartIcon />
                   </Badge>
                 </IconButton>
