@@ -45,9 +45,10 @@ export default async function BrandPage() {
                       <Image
                         src={brand.image}
                         alt={`Imagen de la marca ${brand.sopsub2.nom_sub2}`}
-                        width={200}
-                        height={200}
-                        className="h-auto w-auto rounded-xl"
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        className="h-full w-full rounded-xl"
                       />
                     </Box>
                     <Typography sx={{ textAlign: "center" }}>
