@@ -4,12 +4,74 @@ import { Box, Container, Typography, Divider, Grid2 } from "@mui/material";
 import { AiFillTikTok, AiFillFacebook, AiFillInstagram } from "react-icons/ai";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
+
+const footerLinks = [
+  {
+    id: 1,
+    title: "Contacto",
+    link: "/contacto",
+  },
+  {
+    id: 2,
+    title: "Términos & Condiciones de garantia",
+    link: "/terminos-garantias",
+  },
+  {
+    id: 3,
+    title: "Metodos de pago",
+    link: "/metodos-de-pago",
+  },
+  {
+    id: 4,
+    title: "Factura Electronica",
+    link: "https://see.corporacionluana.pe/",
+  },
+  {
+    id: 5,
+    title: "Politica de privacidad",
+    link: "/politica-de-privacidad",
+  },
+  {
+    id: 6,
+    title: "Servicio Tecnico",
+    link: "/servicio-tecnico",
+  }
+]
+
+const socialLinks = [
+  {
+    id: 1,
+    title: "Facebook",
+    link: "https://www.facebook.com/Corpluana.oficial",
+    icon: <AiFillFacebook className="text-3xl" />,
+  },
+  {
+    id: 2,
+    title: "Instagram",
+    link: "https://www.instagram.com/corpluana_oficial/",
+    icon: <AiFillInstagram className="text-3xl" />,
+  },
+  {
+    id: 3,
+    title: "TikTok",
+    link: "https://www.tiktok.com/@corporacionluana",
+    icon: <AiFillTikTok className="text-3xl" />,
+  },
+]
+
 export function Footer() {
   return (
     <Box sx={{ bgcolor: "primary.main", color: "white", marginTop: 5 }}>
       <Container maxWidth="xl">
         <Box sx={{ paddingY: 4 }}>
-          <Box sx={{ display: "flex", gap: 4 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" }, // Columna en pantallas pequeñas
+              gap: 4,
+              alignItems: "center",
+            }}
+          >
             <Box>
               <Image
                 src="/logo-web-blanco.svg"
@@ -17,43 +79,48 @@ export function Footer() {
                 width={0}
                 height={0}
                 priority={true}
-                style={{ width: "350px" }}
+                style={{ width: "200px" }} // Ajusta el tamaño en pantallas pequeñas
               />
             </Box>
             <Divider
               orientation="vertical"
               flexItem
-              sx={{ bgcolor: "white" }}
+              sx={{
+                display: { xs: "none", md: "block" }, // Ocultar en pantallas pequeñas
+                bgcolor: "white",
+              }}
             />
-            <Box sx={{ display: "flex", gap: 1, flexGrow: 1}}>
-              <Link
-                href="https://www.facebook.com/Corpluana.oficial"
-                target="_blank"
-              >
-                <AiFillFacebook className="text-3xl" />
-              </Link>
-              <Link
-                href="https://www.instagram.com/corpluana_oficial/"
-                target="_blank"
-              >
-                <AiFillInstagram className="text-3xl" />
-              </Link>
-              <Link
-                href="https://www.tiktok.com/@corporacionluana"
-                target="_blank"
-              >
-                <AiFillTikTok className="text-3xl" />
-              </Link>
+            <Box
+              sx={{
+                display: "flex",
+                gap: 1,
+                flexGrow: 1,
+                justifyContent: { xs: "center", md: "flex-start" }, // Centrar en pantallas pequeñas
+              }}
+            >
+              {socialLinks.map((link) => (
+                <Link key={link.id} target="_blank" href={link.link} className="hover:text-cyan-600">
+                  {link.icon}
+                </Link>
+              ))}
             </Box>
-            <Box sx={{ display: "flex" }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "center", md: "flex-start" }, // Centrar en pantallas pequeñas
+                textAlign: { xs: "center", md: "left" }, // Texto centrado en pantallas pequeñas
+              }}
+            >
               <Typography>
                 <LocationOnIcon /> Av. Inca Garcilaso de la Vega 1251 - Tienda 118, Tienda 209
               </Typography>
             </Box>
           </Box>
+
           <Divider sx={{ bgcolor: "white", marginY: 4 }} />
+
           <Grid2 container spacing={3}>
-            <Grid2 size={{ md: 3 }}>
+            <Grid2 size={{ xs: 12, md: 3}}>
               <Box>
                 <Typography>Métodos de pago</Typography>
                 <Box>
@@ -68,7 +135,7 @@ export function Footer() {
                 </Box>
               </Box>
             </Grid2>
-            <Grid2 size={{ md: 3 }}>
+            <Grid2 size={{ xs: 12, md: 3}}>
               <Box>
                 <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   Atención al cliente
@@ -82,68 +149,27 @@ export function Footer() {
                 </Box>
               </Box>
             </Grid2>
-            <Grid2 size={{ md: 3 }}>
+            <Grid2 size={{ xs: 12, md: 3}}>
               <Box>
                 <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   Servicio al cliente
                 </Typography>
                 <Box>
-                  <Typography>
-                    <Link className="hover:text-cyan-300" href="/contacto">
-                      Contacto
+                  {footerLinks.map((link) => (
+                    <Link key={link.id} href={link.link} className="hover:text-cyan-600">
+                      <Typography>{link.title}</Typography>
                     </Link>
-                  </Typography>
-                  <Typography>
-                    <Link
-                      className="hover:text-cyan-300"
-                      href="/terminos-garantias"
-                    >
-                      Términos & Condiciones de garantia
-                    </Link>
-                  </Typography>
-                  <Typography>
-                    <Link
-                      className="hover:text-cyan-300"
-                      href="/metodos-de-pago"
-                    >
-                      Metodos de pago
-                    </Link>
-                  </Typography>
-                  <Typography>
-                    <Link
-                      className="hover:text-cyan-300"
-                      href="/see.corporacionluana.com"
-                      target="_blank"
-                    >
-                      Factura Electronica
-                    </Link>
-                  </Typography>
-                  <Typography>
-                    <Link
-                      className="hover:text-cyan-300"
-                      href="/politica-de-privacidad"
-                    >
-                      Politica de privacidad
-                    </Link>
-                  </Typography>
-                  <Typography>
-                    <Link
-                      className="hover:text-cyan-300"
-                      href="/servicio-tecnico"
-                    >
-                      Servicio Tecnico
-                    </Link>
-                  </Typography>
+                  ))}
                 </Box>
               </Box>
             </Grid2>
           </Grid2>
         </Box>
       </Container>
+
       <Box sx={{ bgcolor: "other.main", p: 2 }}>
-        <Typography sx={{ textAlign: "center" }}>
-          Copyright 2024 © CORPORACION LUANA S.A.C. Todos los derechos
-          reservados
+        <Typography variant="body2" align="center">
+          &copy; {new Date().getFullYear()} CORPORACION LUANA S.A.C. Todos los derechos reservados
         </Typography>
       </Box>
     </Box>
