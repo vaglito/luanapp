@@ -1,12 +1,9 @@
-import Image from "next/image";
-import Link from "next/link";
 import {
   Container,
   Typography,
   Grid2,
   Box,
   Divider,
-  Button,
 } from "@mui/material";
 import { fetchProductDetail } from "@/app/utils/products";
 import { AddToCard } from "@/app/ui/product/detail/Addtocard";
@@ -53,15 +50,18 @@ export default async function ProductDetailPage({
   return (
     <Container maxWidth="xl">
       <Box sx={{ marginY: 6 }}>
-        <Grid2 container spacing={1}>
-          <Grid2 size={{ md: 5 }}>
+        <Grid2 container spacing={2}>
+          {/* Carrusel de imágenes */}
+          <Grid2 size={{ xs: 12, md: 5 }}>
             <ProductImageCarousel product={product} />
           </Grid2>
-          <Grid2 size={{ md: 7 }}>
+
+          {/* Detalles del producto */}
+          <Grid2 size={{ xs: 12, md: 7 }}>
             <Box
               sx={{
-                margin: "20px auto",
-                padding: "20px",
+                margin: { xs: "10px auto", md: "20px auto" },
+                padding: { xs: 2, md: 4 },
                 borderRadius: "12px",
                 boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
                 backgroundColor: "#ffffff",
@@ -71,14 +71,14 @@ export default async function ProductDetailPage({
                 variant="h4"
                 sx={{ fontWeight: 700, mb: 1, textAlign: "center" }}
               >
-                {capitalizeText(product.sopprod.nom_prod)}
+                {product.sopprod.nom_prod}
               </Typography>
               <Divider sx={{ marginBottom: "20px" }} />
 
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "row",
+                  flexDirection: { xs: "column", md: "row" },
                   gap: 2,
                   marginY: 2,
                   justifyContent: "space-between",
@@ -227,13 +227,14 @@ export default async function ProductDetailPage({
 
                   <Box sx={{ mt: 2 }}>
                     <StockDisplay stock={product.sopprod.stock_index} />
-                    <AddToCard title={product.sopprod.nom_prod}/>
+                    <AddToCard title={product.sopprod.nom_prod} />
                   </Box>
                 </Box>
               </Box>
             </Box>
           </Grid2>
         </Grid2>
+
         {product.specs ? (
           <ProductSpecifications specifications={product.specs} />
         ) : (
