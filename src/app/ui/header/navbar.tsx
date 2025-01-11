@@ -15,12 +15,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { DrawerMobile } from "./drawer";
 
 interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window?: () => Window;
 }
 
@@ -50,26 +47,6 @@ export function Navbar(props: Props) {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
-
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        CORPORACION LUANA
-      </Typography>
-      <Divider />
-      <List>
-        {navlinks.map((links) => (
-          <ListItem key={links.id} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <Link href={links.path}>
-                <ListItemText primary={links.title} />
-              </Link>
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -114,7 +91,7 @@ export function Navbar(props: Props) {
             },
           }}
         >
-          {drawer}
+          <DrawerMobile navlinks={navlinks}/>
         </Drawer>
       </nav>
     </Box>
