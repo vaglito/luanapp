@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Box, Container, Button, IconButton, Badge } from "@mui/material";
@@ -43,9 +42,7 @@ export function Header() {
                   width: "100%",
                 }}
               >
-                <Suspense fallback={<div>Loading search...</div>}>
-                  <Search />
-                </Suspense>
+                <Search />
               </Box>
             </Box>
             <Box>
@@ -58,16 +55,12 @@ export function Header() {
                     <ShoppingCartIcon />
                   </Badge>
                 </IconButton>
-                <Link href="/iniciar-sesion">
-                  <Button variant="outlined" startIcon={<LoginIcon />}>
-                    Iniciar sesion
-                  </Button>
-                </Link>
-                <Link href="/crear-cuenta">
-                  <Button variant="contained" startIcon={<PersonIcon />}>
-                    Crear Cuenta
-                  </Button>
-                </Link>
+                <Button variant="outlined" startIcon={<LoginIcon />}>
+                  Iniciar sesion
+                </Button>
+                <Button variant="contained" startIcon={<PersonIcon />}>
+                  Crear Cuenta
+                </Button>
               </Box>
             </Box>
           </Box>
