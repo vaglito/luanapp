@@ -40,7 +40,9 @@ export async function fetchListProductBrand(
     const response = await fetch(
       url.toString(),
       {
-        cache: "no-store",
+        next:{ 
+          revalidate: 300, // 5 minutos
+        },
         method: "GET",
       }
     );
