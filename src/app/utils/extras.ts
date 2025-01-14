@@ -17,6 +17,15 @@ export interface Banner {
   url_banner?: string;
 }
 
+export interface About {
+  title: string;
+  menu: boolean;
+  slug: string;
+  created_at: string;
+  updated_at: string;
+  content: string;
+}
+
 const api_url = process.env.API_URL;
 
 /**
@@ -47,6 +56,20 @@ export async function getBannerList(): Promise<Banner[]> {
       throw new Error(`Error: ${response.status}`);
     }
     const data: Banner[] = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error en el feching de datos");
+  }
+}
+
+
+export async function getAbout(): Promise<About> {
+  try {
+    const response = await fetch(
+      `${api_url}/api/landing/page/detail/sobre-nosotros/`
+    );
+    const data: About = await response.json();
     return data;
   } catch (error) {
     console.error(error);
