@@ -29,8 +29,8 @@ const navlinks = [
   },
   {
     id: 3,
-    title: "Contacto",
-    path: "/contacto",
+    title: "Nuestra Empresa",
+    path: "/sobre-nosotros",
   },
   {
     id: 4,
