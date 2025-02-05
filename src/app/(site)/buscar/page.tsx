@@ -1,8 +1,7 @@
 import { Suspense } from "react";
 import { Container, Box, Typography, Button } from "@mui/material";
-import { fetchProductSearch } from "../utils/products";
-import { ProductChart } from "../ui/product-chart";
-import { SliderProductResult } from "../ui/product/slider-product";
+import { fetchProductSearch } from "@/app/utils/products";
+import { ProductChart } from "@/app/ui/product-chart";
 import ErrorIcon from "@mui/icons-material/Error";
 
 export const generateMetadata = ({

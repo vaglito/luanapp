@@ -1,5 +1,5 @@
 import { Container, Box, Typography, Grid2 } from "@mui/material";
-import { getListBrands } from "../utils/brands";
+import { getListBrands } from "@/app/utils/brands";
 import Image from "next/image";
 import Link from "next/link";
 

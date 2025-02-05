@@ -1,6 +1,6 @@
 import { Container, Box, Grid2, Typography } from "@mui/material";
-import { Store118Card, Store209Card } from "../ui/extras/store-card";
-import { getAbout } from "../utils/extras";
+import { Store118Card, Store209Card } from "@/app/ui/extras/store-card";
+import { getAbout } from "@/app/utils/extras";
 
 export default async function Page() {
   const about = await getAbout();
