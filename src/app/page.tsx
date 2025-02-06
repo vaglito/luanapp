@@ -1,21 +1,14 @@
-import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FcShipped, FcShop, FcLock, FcAssistant } from "react-icons/fc";
 import { Container, Box, Typography, Grid2 } from "@mui/material";
 import { BannerMain } from "./ui/banner";
 import { fetchCategory } from "./utils/categories";
-import {
-  fetchNewProductList,
-  fetchFilterProductCategorySubCategory,
-} from "./utils/products";
+import { fetchFilterProductCategorySubCategory } from "./utils/products";
 import CategoriesComponent from "./ui/subcategory-menu";
-import {
-  SliderProduct,
-  SliderProductResult,
-} from "./ui/product/slider-product";
+import { SliderProduct } from "./ui/product/slider-product";
 import { fetchListProductBrand } from "./utils/brands";
-import { ProductSkeleton } from "./ui/skeleton/productCard-skeleton";
+import { ProductNew } from "./ui/product/new-products";
 
 export const metadata = {
   title: "Corporacion Luana",
@@ -52,21 +45,7 @@ export default async function Home() {
         </Box>
       </Box>
       {/* Nuevos productos */}
-      <Box component="section">
-        <Box>
-          <Typography
-            variant="h4"
-            sx={{ textAlign: "center", fontWeight: "bold" }}
-          >
-            Nuevos ingresos
-          </Typography>
-          <Box>
-            <Suspense fallback={<ProductSkeleton />}>
-              <ProductNewContent />
-            </Suspense>
-          </Box>
-        </Box>
-      </Box>
+      <ProductNew />
       {/* Imagenes ADS */}
       <Box component="section" sx={{ marginY: 4 }}>
         <Grid2 container spacing={1}>
