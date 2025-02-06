@@ -22,11 +22,6 @@ export const metadata = {
   description: "Tienda de corporacion luana",
 };
 
-async function ProductNewContent() {
-  const products = await fetchNewProductList();
-  return <SliderProductResult products={products} />;
-}
-
 export default async function Home() {
   const categories = await fetchCategory();
   const filterProduct = await fetchFilterProductCategorySubCategory(
