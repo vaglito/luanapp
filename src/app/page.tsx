@@ -3,12 +3,13 @@ import Link from "next/link";
 import { FcShipped, FcShop, FcLock, FcAssistant } from "react-icons/fc";
 import { Container, Box, Typography, Grid2 } from "@mui/material";
 import { BannerMain } from "./ui/banner";
-import { fetchCategory } from "./utils/categories";
 import { fetchFilterProductCategorySubCategory } from "./utils/products";
-import CategoriesComponent from "./ui/subcategory-menu";
 import { SliderProduct } from "./ui/product/slider-product";
 import { fetchListProductBrand } from "./utils/brands";
+
+// Components
 import { ProductNew } from "./ui/product/new-products";
+import { CategorySlider } from "./ui/category/categorySlider";
 
 export const metadata = {
   title: "Corporacion Luana",
@@ -16,34 +17,20 @@ export const metadata = {
 };
 
 export default async function Home() {
-  const categories = await fetchCategory();
   const filterProduct = await fetchFilterProductCategorySubCategory(
     "02",
     "095"
   );
   const filterBrandProduct = await fetchListProductBrand("ugreen");
 
-  // filtro de categorias activas
-  const activeCategories = categories.filter((category) => category.is_active);
-
   return (
     <Container maxWidth="xl">
       <Box>
         <BannerMain />
       </Box>
-      <Box component="section">
-        <Box>
-          <Typography
-            variant="h4"
-            sx={{ textAlign: "center", fontWeight: "bold" }}
-          >
-            Nuestras categorías
-          </Typography>
-          <Box>
-            <CategoriesComponent categories={activeCategories} />
-          </Box>
-        </Box>
-      </Box>
+      {/* Categorias */}
+      <CategorySlider />
+
       {/* Nuevos productos */}
       <ProductNew />
       {/* Imagenes ADS */}

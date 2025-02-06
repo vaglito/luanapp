@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { Button, Menu, MenuItem, Box } from "@mui/material";
-import { Categories, Subcategory } from "../types/categories";
+import { Categories, Subcategory } from "../../types/categories";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -72,8 +72,8 @@ const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
       >
         {categories.map((category) => (
           <SwiperSlide key={category.id}>
-            <Box sx={{ display: "flex", justifyContent: "center"}}>
-              <Image src="/gpu-mining.png" width={80} height={80} alt="icono" />
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              {/* <Image src="/gpu-mining.png" width={80} height={80} alt="icono" /> */}
             </Box>
             <Button
               variant="text"
@@ -108,13 +108,14 @@ const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
         }}
       >
         {selectedSubcategories.map((subcategory) => (
-          <MenuItem key={subcategory.sopsub1.cod_sub1} onClick={handleClose}>
-            <Link
-              href={`/productos/${selectedCategorySlug}/${subcategory.slug}`}
-            >
+          <Link
+            href={`/productos/${selectedCategorySlug}/${subcategory.slug}`}
+            key={subcategory.sopsub1.cod_sub1}
+          >
+            <MenuItem onClick={handleClose}>
               {subcategory.sopsub1.nom_sub1}
-            </Link>
-          </MenuItem>
+            </MenuItem>
+          </Link>
         ))}
       </Menu>
     </div>
