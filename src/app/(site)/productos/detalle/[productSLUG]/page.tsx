@@ -1,10 +1,4 @@
-import {
-  Container,
-  Typography,
-  Grid2,
-  Box,
-  Divider,
-} from "@mui/material";
+import { Container, Typography, Grid2, Box, Divider } from "@mui/material";
 import { fetchProductDetail } from "@/app/utils/products";
 import { AddToCard } from "@/app/ui/product/detail/Addtocard";
 import { StockDisplay } from "@/app/ui/product/detail/StockDisplay";
@@ -27,6 +21,8 @@ function capitalizeText(text: string) {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
+
+export const revalidate = 0;
 
 export default async function ProductDetailPage({
   params,

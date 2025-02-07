@@ -23,9 +23,6 @@ const api_url = process.env.API_URL; // url de la api
 export async function fetchCategory(): Promise<Categories[]> {
   try {
     const response = await fetch(`${api_url}/api/categorys/`, {
-      next:{ 
-        revalidate: 300, // 5 minutos
-      },
     });
     const categories: Categories[] = await response.json();
 
@@ -71,9 +68,6 @@ export async function fetchListProductCategory(
     const response = await fetch(
       `${api_url}/api/categorys/categoria/detalle/${category_slug}/${subcategory_slug}/`,
       {
-        next:{ 
-          revalidate: 300, // 5 minutos
-        },
         method: "GET",
       }
     );

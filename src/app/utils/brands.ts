@@ -7,9 +7,6 @@ export async function getListBrands(): Promise<Brands[]> {
   try {
     const response = await fetch(`${api_url}/api/trademarks/`, {
       method: "GET",
-      next: {
-        revalidate: 500,
-      },
       headers: {
         "Content-Type": "application/json",
       },
@@ -40,9 +37,6 @@ export async function fetchListProductBrand(
     const response = await fetch(
       url.toString(),
       {
-        next:{ 
-          revalidate: 300, // 5 minutos
-        },
         method: "GET",
       }
     );

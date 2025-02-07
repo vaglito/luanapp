@@ -7,6 +7,7 @@ import { Box, Typography } from "@mui/material";
 import { SliderProductResult } from "./slider-product";
 import { ProductSkeleton } from "../skeleton/productCard-skeleton";
 
+
 export async function ProductNewContent() {
   const products = await fetchNewProductList();
   return <SliderProductResult products={products} />;
@@ -28,7 +29,7 @@ export function ProductNew() {
       </Box>
       <Box>
         <Suspense fallback={<ProductSkeleton />}>
-        <ProductNewContent />
+          <ProductNewContent />
         </Suspense>
       </Box>
     </Box>

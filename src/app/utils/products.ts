@@ -20,9 +20,6 @@ export async function fetchNewProductList(): Promise<Result[]> {
     // await new Promise(resolve => setTimeout(resolve, 5000))
     const response = await fetch(`${api_url}/api/products/new-product/`, {
       method: "GET",
-      next:{ 
-        revalidate: 300, // 5 minutos
-      },
       headers: {
         "Content-Type": "application/json",
       }
@@ -47,9 +44,6 @@ export async function fetchFilterProductCategorySubCategory(
     const response = await fetch(
       `${api_url}/api/products/product/filter/${cod_category}/${cod_subcategory}/`,
       {
-        next:{ 
-          revalidate: 300, // 5 minutos
-        },
         method: "GET",
       }
     );
@@ -93,9 +87,6 @@ export async function fetchProductDetail(
     const response = await fetch(
       `${api_url}/api/products/detalle/${product_slug}/`,
       {
-        next:{ 
-          revalidate: 300, // 5 minutos
-        },
         method: "GET",
       }
     );
@@ -125,9 +116,6 @@ export async function fetchProductSearch(
     }
 
     const response = await fetch(url.toString(), {
-      next:{ 
-        revalidate: 300, // 5 minutos
-      },
       method: "GET",
     });
 
