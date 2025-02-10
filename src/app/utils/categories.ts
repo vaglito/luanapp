@@ -62,11 +62,18 @@ export async function fetchCategory(): Promise<Categories[]> {
  */
 export async function fetchListProductCategory(
   category_slug: string,
-  subcategory_slug: string
+  subcategory_slug: string,
+  page?: number,
 ): Promise<Product | null> {
   try {
+    const url = new URL(`${api_url}/api/categorys/categoria/detalle/${category_slug}/${subcategory_slug}`);
+
+    if (page) {
+      url.searchParams.append("page", page.toString())
+    }
+
     const response = await fetch(
-      `${api_url}/api/categorys/categoria/detalle/${category_slug}/${subcategory_slug}/`,
+      url.toString(),
       {
         method: "GET",
       }
