@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { Button, Menu, MenuItem, Box } from "@mui/material";
+import { Typography, Menu, MenuItem, Box } from "@mui/material";
 import { Categories, Subcategory } from "../../types/categories";
 
 // Import Swiper React components
@@ -25,7 +25,7 @@ const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
   const [selectedCategorySlug, setSelectedCategorySlug] = useState<string>("");
 
   const handleClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
+    event: React.MouseEvent<HTMLImageElement>,
     subcategories: Subcategory[],
     categorySlug: string
   ) => {
@@ -46,9 +46,6 @@ const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
         slidesPerView={2}
         spaceBetween={10}
         navigation={true}
-        pagination={{
-          clickable: true,
-        }}
         breakpoints={{
           640: {
             slidesPerView: 2,
@@ -67,31 +64,56 @@ const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
             spaceBetween: 20,
           },
         }}
-        modules={[Pagination, Navigation]}
+        modules={[Navigation]}
         className="mySwiper"
       >
         {categories.map((category) => (
-          <SwiperSlide key={category.id}>
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              {/* <Image src="/gpu-mining.png" width={80} height={80} alt="icono" /> */}
-            </Box>
-            <Button
-              variant="text"
-              id="demo-positioned-button"
-              aria-controls={open ? "demo-positioned-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={(event) =>
-                handleClick(event, category.subcategory, category.slug)
-              } // Pasa el slug de la categoría
-              sx={{ width: "100%", height: "100%", mb: 4 }}
+          <SwiperSlide key={category.id} className="py-6">
+            <Box
+              sx={{
+                bgcolor: "#e1e1e1",
+                borderRadius: "50%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 2,
+                width: { xs: 190, sm: 190, md: 250 }, // Tamaño ajustable según el viewport
+                height: { xs: 190, sm: 190, md: 250 },
+                overflow: "hidden", // Evita que la imagen sobresalga del borde redondo
+              }}
             >
-              {category.soplinea.nom_line}
-            </Button>
+              {category.image ? (
+                <Image
+                  src={category.image}
+                  alt={`Imagen de ${category.soplinea.nom_line ?? "categoría"}`}
+                  sizes="100vw"
+                  width={250}
+                  height={250}
+                  className="transition duration-150 ease-in-out hover:scale-110"
+                  style={{
+                    width: "100%", // Ajustar a contenedor
+                    height: "100%", // Ajustar a contenedor
+                    objectFit: "cover", // Evitar distorsión
+                    borderRadius: "50%", // Hacer la imagen redonda
+                    cursor: "pointer",
+                  }}
+                  id={`category-${category.id}`}
+                  aria-controls={open ? "demo-positioned-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={(event: React.MouseEvent<HTMLImageElement>) =>
+                    handleClick(event, category.subcategory, category.slug)
+                  }
+                />
+              ) : (
+                <Typography variant="body2" color="text.secondary">
+                  No existe imagen
+                </Typography>
+              )}
+            </Box>
           </SwiperSlide>
         ))}
       </Swiper>
-
       <Menu
         id="demo-positioned-menu"
         aria-labelledby="demo-positioned-button"

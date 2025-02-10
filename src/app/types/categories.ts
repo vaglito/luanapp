@@ -2,6 +2,7 @@ export interface Categories {
   id: number;
   is_active: boolean;
   slug: string;
+  image?: string;
   soplinea: SopLinea;
   subcategory: Subcategory[];
 }
