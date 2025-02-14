@@ -17,21 +17,14 @@ export function Search() {
   }, [searchParams]);
 
   const handleSearch = useDebouncedCallback((term) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams();
 
-    // Actualiza el término de búsqueda
+    // Si hay un término de búsqueda, agrégalo
     if (term) {
       params.set("query", term);
-    } else {
-      params.delete("query");
     }
 
-    // Reinicia el parámetro `page` si existe
-    if (params.has("page")) {
-      params.delete("page");
-    }
-
-    // Reemplaza la URL con los nuevos parámetros
+    // 🔥 Elimina `marca` y `subcategoria` cuando cambia la búsqueda
     replace(`/buscar?${params.toString()}`);
   }, 300);
 

@@ -18,7 +18,7 @@ export function ProductChart({ products }: { products: Result[] }) {
 
         return (
           <Grid2
-            size={{ xs: 6, md: 4, lg: 3, xl: 3 }}
+            size={{ xs: 6, sm: 6, md: 4, lg: 4, xl: 3 }}
             key={product.pk}
             sx={{
               display: "flex",

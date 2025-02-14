@@ -5,6 +5,14 @@ export interface Product {
   results: Result[];
 }
 
+export interface ResponseFilterType {
+  count: number;
+  next?: number;
+  previous?: number;
+  results: Result[];
+  subcategories: CodCate[];
+}
+
 export interface Result {
   pk: number;
   is_active: boolean;
@@ -31,6 +39,9 @@ export interface Sopprod {
 export interface CodCate {
   cod_sub1: string;
   nom_sub1: string;
+  subcategory: {
+    slug: string;
+  };
 }
 
 export interface CodClasi {
@@ -52,4 +63,7 @@ export interface CodProdRelationPrecio {
 export interface CodSubc {
   cod_sub2: string;
   nom_sub2: string;
+  trademark: {
+    slug: string;
+  };
 }

@@ -1,4 +1,4 @@
-import { Result, Product } from "../types/products";
+import { Result, Product, ResponseFilterType } from "../types/products";
 import { Detail } from "../types/detail";
 
 const api_url = process.env.API_URL;
@@ -22,7 +22,7 @@ export async function fetchNewProductList(): Promise<Result[]> {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-      }
+      },
     });
 
     if (!response.ok) {
@@ -105,37 +105,31 @@ export async function fetchProductDetail(
 
 export async function fetchProductSearch(
   query?: string,
-  page?: number
-): Promise<Product> {
+  marca?: string,
+  subcategoria?: string,
+  page?: number,
+): Promise<ResponseFilterType> {
   try {
-    // Create the URL with query and page parameters
     const url = new URL(`${api_url}/api/products/search/`);
-    url.searchParams.append("q", query || "");
-    if (page) {
-      url.searchParams.append("page", page.toString());
-    }
 
-    const response = await fetch(url.toString(), {
-      method: "GET",
-    });
+    // Agregar solo parámetros con valor
+    if (query) url.searchParams.append("q", query);
+    if (page) url.searchParams.append("page", page.toString());
+    if (marca) url.searchParams.append("marca", marca);
+    if (subcategoria) url.searchParams.append("subcategoria", subcategoria);
 
-    // Handle 404 status specifically
-    if (response.status === 404) {
-      const errorData = await response.json();
-      throw new Error(errorData.detail || "Producto no encontrado.");
-    }
+    console.log("Fetching:", url.toString());
 
-    // Check for other types of response errors
+    const response = await fetch(url.toString(), { method: "GET" });
+
     if (!response.ok) {
-      throw new Error("No se pudieron cargar los datos");
+      const errorData = await response.json();
+      throw new Error(errorData.detail || response.statusText);
     }
 
-    const data: Product = await response.json();
-    return data;
-
+    return await response.json();
   } catch (error) {
-    const errorMessage = (error as { message?: string }).message || "Hubo un error en la conexión de la API";
-    console.error("API error:", errorMessage);
-    throw new Error(errorMessage);
+    console.error("API error:", error);
+    throw new Error((error as Error).message || "Hubo un error en la conexión de la API");
   }
 }
