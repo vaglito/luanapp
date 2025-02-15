@@ -1,3 +1,5 @@
+import { Brands } from "./brands";
+
 export interface Product {
   count: number;
   next?: number;
@@ -10,7 +12,19 @@ export interface ResponseFilterType {
   next?: number;
   previous?: number;
   results: Result[];
-  subcategories: CodCate[];
+  subcategories: {
+    sopsub1: {
+      cod_sub1: string;
+      nom_sub1: string;
+      subcategory: {
+        slug: string;
+      };
+      is_active: boolean;
+      image?: string;
+      slug: string;
+    };
+  }[];
+  brands: Brands[];
 }
 
 export interface Result {

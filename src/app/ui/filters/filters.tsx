@@ -1,28 +1,18 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { Result } from "@/app/types/products";
+import { ResponseFilterType } from "@/app/types/products";
 
-export function Filters({ product }: { product: Result[] }) {
+export function Filters({ product }: { product: ResponseFilterType }) {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
 
   const categories = Array.from(
-    new Map(
-      product.map((p) => [
-        p.sopprod.cod_cate.subcategory?.slug || p.sopprod.cod_cate.nom_sub1,
-        p.sopprod.cod_cate.nom_sub1,
-      ])
-    )
+    new Map(product.subcategories.map((item) => [item.sopsub1.nom_sub1, item.sopsub1.subcategory.slug]))
   );
 
   const brands = Array.from(
-    new Map(
-      product.map((p) => [
-        p.sopprod.cod_subc.nom_sub2,
-        p.sopprod.cod_subc.trademark?.slug || p.sopprod.cod_subc.cod_sub2,
-      ])
-    )
+    new Map(product.brands.map((item) => [item.sopsub2.nom_sub2, item.slug]))
   );
 
   const handleFilterChange = (filter: string, value: string) => {
@@ -75,7 +65,7 @@ export function Filters({ product }: { product: Result[] }) {
           onChange={(e) => handleFilterChange("subcategoria", e.target.value)}
         >
           <MenuItem value="">Todas</MenuItem>
-          {categories.map(([slug, name]) => (
+          {categories.map(([name, slug]) => (
             <MenuItem key={slug} value={slug}>
               {name}
             </MenuItem>

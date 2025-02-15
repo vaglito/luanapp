@@ -113,7 +113,7 @@ export default async function Page({
         {searchProduct && searchProduct.results.length > 0 ? (
           <Grid2 container spacing={3}>
             <Grid2 size={{ xs: 12, sm: 12, md: 3, lg: 3, xl: 3 }}>
-              <Filters product={searchProduct.results} />
+              <Filters product={searchProduct} />
             </Grid2>
             <Grid2 size={{ xs: 12, sm: 12, md: 9, lg: 9, xl: 9 }}>
               <SearchProduct searchProduct={searchProduct} />
