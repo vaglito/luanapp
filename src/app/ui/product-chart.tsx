@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Box, Typography, Grid2, Button } from "@mui/material";
+import { Box, Typography, Grid2 } from "@mui/material";
 import { Result } from "../types/products";
 
 export function ProductChart({ products }: { products: Result[] }) {
