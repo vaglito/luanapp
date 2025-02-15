@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import { Container, Box, Typography, Button, Grid2 } from "@mui/material";
 import { fetchProductSearch } from "@/app/utils/products";
-import { ProductChart } from "@/app/ui/product-chart";
 import ErrorIcon from "@mui/icons-material/Error";
 import Link from "next/link";
 import { Filters } from "@/app/ui/filters/filters";
+import { FiltersDesktop } from "@/app/ui/filters/filters-desktop";
 import { SearchProduct } from "@/app/ui/product/search-product/search-products";
 
 export const generateMetadata = ({
@@ -109,25 +109,30 @@ export default async function Page({
       </Box>
 
       <Box sx={{ marginY: 4 }}>
-      <Suspense fallback={<Typography variant="h5">Cargando...</Typography>}>
-        {searchProduct && searchProduct.results.length > 0 ? (
-          <Grid2 container spacing={3}>
-            <Grid2 size={{ xs: 12, sm: 12, md: 3, lg: 3, xl: 3 }}>
-              <Filters product={searchProduct} />
+        <Suspense fallback={<Typography variant="h5">Cargando...</Typography>}>
+          {searchProduct && searchProduct.results.length > 0 ? (
+            <Grid2 container spacing={3}>
+              <Grid2 size={{ xs: 12, sm: 12, md: 3, lg: 3, xl: 3 }}>
+                <Box sx={{ display: { xs: "none", md: "flex" }, flexDirection: "column"}}>
+                  <FiltersDesktop product={searchProduct} />
+                </Box>
+                <Box sx={{ display: { md: "none" } }}>
+                  <Filters product={searchProduct} />
+                </Box>
+              </Grid2>
+              <Grid2 size={{ xs: 12, sm: 12, md: 9, lg: 9, xl: 9 }}>
+                <SearchProduct searchProduct={searchProduct} />
+              </Grid2>
             </Grid2>
-            <Grid2 size={{ xs: 12, sm: 12, md: 9, lg: 9, xl: 9 }}>
-              <SearchProduct searchProduct={searchProduct} />
-            </Grid2>
-          </Grid2>
-        ) : (
-          <Typography variant="body1">
-            {query
-              ? "No se encontraron productos para tu búsqueda."
-              : "Introduce un término para buscar productos."}
-          </Typography>
-        )}
-      </Suspense>
-    </Box>
+          ) : (
+            <Typography variant="body1">
+              {query
+                ? "No se encontraron productos para tu búsqueda."
+                : "Introduce un término para buscar productos."}
+            </Typography>
+          )}
+        </Suspense>
+      </Box>
       {/* Paginación con URLSearchParams */}
       <Box display="flex" justifyContent="center" mt={3}>
         {Array.from({ length: totalPages }, (_, index) => {
