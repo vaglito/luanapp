@@ -14,7 +14,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 // import required modules
-import { Pagination, Navigation } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 
 const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -44,15 +44,15 @@ const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
     <div>
       <Swiper
         slidesPerView={2}
-        spaceBetween={10}
+        spaceBetween={1}
         navigation={true}
         breakpoints={{
           640: {
-            slidesPerView: 2,
-            spaceBetween: 20,
+            slidesPerView: 3,
+            spaceBetween: 1,
           },
           768: {
-            slidesPerView: 3,
+            slidesPerView: 4,
             spaceBetween: 20,
           },
           1024: {
@@ -60,8 +60,8 @@ const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
             spaceBetween: 20,
           },
           1280: {
-            slidesPerView: 5,
-            spaceBetween: 20,
+            slidesPerView: 6,
+            spaceBetween: 30,
           },
         }}
         modules={[Navigation]}
@@ -77,9 +77,10 @@ const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
                 justifyContent: "center",
                 alignItems: "center",
                 padding: 2,
-                width: { xs: 190, sm: 190, md: 250 }, // Tamaño ajustable según el viewport
-                height: { xs: 190, sm: 190, md: 250 },
+                width: { xs: 110, sm: 120, md: 190 }, // Tamaño ajustable según el viewport
+                height: { xs: 110, sm: 120, md: 190 },
                 overflow: "hidden", // Evita que la imagen sobresalga del borde redondo
+                mx: "auto", // Centra el contenedor
               }}
             >
               {category.image ? (
@@ -97,6 +98,7 @@ const CategoriesComponent = ({ categories }: { categories: Categories[] }) => {
                     borderRadius: "50%", // Hacer la imagen redonda
                     cursor: "pointer",
                   }}
+                  aria-label={`Ver subcategorias de ${category.soplinea.nom_line ?? "categoria"}`}
                   id={`category-${category.id}`}
                   aria-controls={open ? "demo-positioned-menu" : undefined}
                   aria-haspopup="true"
