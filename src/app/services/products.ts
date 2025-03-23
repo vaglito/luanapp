@@ -90,14 +90,7 @@ export const getProductDetail = async (slug: string): Promise<Product> => {
 
     } catch (error) {
         console.error('Error fetching product detail: ', error);
-        return {
-            pk: 0,
-            is_active: false,
-            slug: '',
-            keywords: '',
-            sopprod: [],
-            productimage_set: []
-        }
+        throw new Error('Error fetching product detail');
     }
 }
 
