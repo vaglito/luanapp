@@ -50,9 +50,9 @@ export interface Sopprod {
     pk: string;
     stock_index: number;
     nom_prod: string;
-    cod_clasi: Category[];
-    cod_cate: SubCategory[];
-    cod_subc: Brands[];
+    cod_clasi: Category;
+    cod_cate: SubCategory;
+    cod_subc: Brands;
     cod_prod_relation_precios: Price[];
 }
 
@@ -65,7 +65,7 @@ export interface Product {
     is_active: boolean;
     slug: string;
     keywords: string;
-    sopprod: Sopprod[];
+    sopprod: Sopprod;
     productimage_set: ProductImage[];
 }
 
