@@ -48,7 +48,7 @@ export const themeOptions = createTheme({
       fontSize: 18,
     },
     body1: {
-      fontSize: 18,
+      fontSize: 15,
     },
     button: {
       fontSize: 15,
