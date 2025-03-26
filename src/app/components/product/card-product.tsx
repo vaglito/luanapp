@@ -17,6 +17,7 @@ export const CardProduct = ({ product }: {product: Product}) => {
         height: "auto",
         borderRadius: 3,
         overflow: "hidden",
+        marginY: 5,
         "&:hover": {
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
         },
