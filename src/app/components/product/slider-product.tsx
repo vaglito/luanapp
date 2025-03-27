@@ -7,9 +7,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // import required modules
 import { Pagination } from "swiper/modules";
 import { Product } from "@/app/types/v2/products-type";
-import { CardProduct } from "./card-product";
 
-export const SliderProduct = ({ products }: { products: Product[] }) => {
+interface SliderProductProps {
+    products: Product[];
+    Component: React.ElementType;
+}
+
+export const SliderProduct = ({products, Component} : SliderProductProps) => {
     return (
         <Swiper
             modules={[Pagination]}
@@ -36,7 +40,7 @@ export const SliderProduct = ({ products }: { products: Product[] }) => {
         >
             {products.map((product) => (
                 <SwiperSlide key={product.pk}>
-                    <CardProduct product={product} />
+                    <Component product={product} />
                 </SwiperSlide>
             ))}
         </Swiper>
