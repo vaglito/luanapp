@@ -158,3 +158,79 @@ export const getProductList = async ({
       };
     }
   };
+
+
+
+/**
+ * Fetches a list of products based on the provided search parameters.
+ *
+ * @param {Object} params - The search parameters.
+ * @param {string} params.query - The search query string.
+ * @param {string} [params.brandSlug] - Optional slug for filtering by brand.
+ * @param {string} [params.categorySlug] - Optional slug for filtering by category.
+ * @param {string} [params.subcategorySlug] - Optional slug for filtering by subcategory.
+ * @param {number} [params.page=1] - The page number for pagination (default is 1).
+ * @returns {Promise<ResponseProducts>} A promise that resolves to the product search results.
+ *
+ * @throws {Error} Throws an error if the response status is not OK (e.g., 404 or 500).
+ *
+ * @example
+ * const products = await getProductSearch({
+ *   query: "laptop",
+ *   brandSlug: "brand-x",
+ *   categorySlug: "electronics",
+ *   page: 2,
+ * });
+ * console.log(products);
+ */
+export const getProductSearch = async ({
+  query,
+  brandSlug,
+  categorySlug,
+  subcategorySlug,
+  page = 1,
+}: {
+  query: string;
+  brandSlug?: string;
+  categorySlug?: string;
+  subcategorySlug?: string;
+  page?: number;
+}): Promise<ResponseProducts> => {
+  try {
+    const queryParams = new URLSearchParams();
+    if (query) queryParams.append("q", query);
+    if (brandSlug) queryParams.append("brands", brandSlug);
+    if (categorySlug) queryParams.append("category", categorySlug);
+    if (subcategorySlug) queryParams.append("subcategory", subcategorySlug);
+    queryParams.append("page", page.toString());
+
+    const response = await fetch(`${apiUrl}/api/v2.0/products/search/?${queryParams.toString()}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      switch (response.status) {
+        case 404:
+          throw new Error("The requested resource could not be found. Not Found 404");
+        case 500:
+          throw new Error("Internal Server Error 500.");
+        default:
+          throw new Error(`Unexpected error: ${response.status}`);
+      }
+    }
+
+    const data: ResponseProducts = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching product search: ", error);
+    return {
+      count: 0,
+      next: null,
+      previous: null,
+      results: [],
+    };
+  }
+}
