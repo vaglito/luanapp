@@ -198,8 +198,8 @@ export const getProductSearch = async ({
 }): Promise<ResponseProducts> => {
   try {
     const queryParams = new URLSearchParams();
-    if (query) queryParams.append("q", query);
-    if (brandSlug) queryParams.append("brands", brandSlug);
+    if (query) queryParams.append("search", query);
+    if (brandSlug) queryParams.append("brand", brandSlug);
     if (categorySlug) queryParams.append("category", categorySlug);
     if (subcategorySlug) queryParams.append("subcategory", subcategorySlug);
     queryParams.append("page", page.toString());
@@ -210,6 +210,7 @@ export const getProductSearch = async ({
         "Content-Type": "application/json",
       },
     });
+    console.log(`${apiUrl}/api/v2.0/products/search/?${queryParams.toString()}`);
 
     if (!response.ok) {
       switch (response.status) {
