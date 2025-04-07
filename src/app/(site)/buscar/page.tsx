@@ -4,6 +4,7 @@ import { Box, Container, Typography, Grid2, Button } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import Link from "next/link";
 import { GridProduct } from "@/app/components/product/grid-product";
+import { PaginationButtons } from "@/app/components/PaginationButtons";
 
 interface searchParamsProps {
   searchParams?: {
@@ -93,15 +94,30 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", alignItems: "center", marginY: 2, justifyContent: "space-between" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          marginY: 2,
+          justifyContent: "space-between",
+        }}
+      >
         <Typography variant="h4" gutterBottom>
           Resultados para: {query}
         </Typography>
         <Typography>{searchProduct.count} productos encontrados</Typography>
       </Box>
       <Box>
-        <GridProduct products={searchProduct.results}/>
+        <GridProduct products={searchProduct.results} />
       </Box>
+      {/* Paginación con URLSearchParams */}
+      <PaginationButtons
+        totalPages={totalPages}
+        currentPage={currentPage}
+        query={query}
+        marca={marca}
+        subcategoria={subcategoria}
+      />
     </Box>
   );
 }
