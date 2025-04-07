@@ -14,7 +14,7 @@ export const CategoryFilter = ({ query }: { query: string }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const currentCategory = searchParams.get("subcategory");
+  const currentCategory = searchParams.get("subcategoria");
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -47,9 +47,6 @@ export const CategoryFilter = ({ query }: { query: string }) => {
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
-        Categorías
-      </Typography>
 
       <Button
         variant={!currentCategory ? "contained" : "outlined"}
@@ -63,7 +60,7 @@ export const CategoryFilter = ({ query }: { query: string }) => {
 
       {categories.map((category: any) => (
         <Box key={category.id} sx={{ mb: 2 }}>
-          <Typography variant="subtitle1" gutterBottom color="text.secondary">
+          <Typography variant="body1" gutterBottom color="text.primary" sx={{ fontWeight: 600 }}>
             {category.soplinea.nom_line}
           </Typography>
           <Stack spacing={1}>
