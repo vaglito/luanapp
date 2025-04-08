@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { getProductSearch } from "@/app/services/products";
 import { ResponseProducts } from "@/app/types/v2/products-type";
 import { Box, Container, Typography, Divider, Button } from "@mui/material";
@@ -116,14 +117,17 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
       <Box>
         <GridProduct products={searchProduct.results} />
       </Box>
-      {/* Paginación con URLSearchParams */}
-      <PaginationButtons
-        totalPages={totalPages}
-        currentPage={currentPage}
-        query={query}
-        marca={marca}
-        subcategoria={subcategoria}
-      />
+
+      {/* ⬇️ Paginación dentro de Suspense ⬇️ */}
+      <Suspense fallback={<div>Cargando paginación...</div>}>
+        <PaginationButtons
+          totalPages={totalPages}
+          currentPage={currentPage}
+          query={query}
+          marca={marca}
+          subcategoria={subcategoria}
+        />
+      </Suspense>
     </Box>
   );
 }
