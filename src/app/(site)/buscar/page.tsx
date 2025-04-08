@@ -1,6 +1,6 @@
 import { getProductSearch } from "@/app/services/products";
 import { ResponseProducts } from "@/app/types/v2/products-type";
-import { Box, Container, Typography, Grid2, Button } from "@mui/material";
+import { Box, Container, Typography, Divider, Button } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import Link from "next/link";
 import { GridProduct } from "@/app/components/product/grid-product";
@@ -98,8 +98,13 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
         sx={{
           display: "flex",
           alignItems: "center",
-          marginY: 2,
           justifyContent: "space-between",
+          padding: 2,
+          backgroundColor: "primary.main",
+          marginBottom: 2,
+          color: "white",
+          borderRadius: 1,
+          boxShadow: 1,
         }}
       >
         <Typography variant="h4" gutterBottom>
@@ -107,6 +112,7 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
         </Typography>
         <Typography>{searchProduct.count} productos encontrados</Typography>
       </Box>
+      <Divider />
       <Box>
         <GridProduct products={searchProduct.results} />
       </Box>
