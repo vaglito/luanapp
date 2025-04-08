@@ -9,7 +9,7 @@ export const SectionLaptop = ({ products }: { products: Product[] }) => {
   const router = useRouter();
 
   const handleFilter = (subcategory: string) => {
-    router.push(`/buscar?subcategoria=${subcategory}`);
+    router.push(`/buscar?query=laptop&subcategoria=${subcategory}`);
   };
 
   return (
