@@ -17,7 +17,9 @@ export const metadata = {
 
 export default async function Home() {
   const newProduct = await getNewProductList();
-  const productsLaptop = await getProductList({ subcategorySlug: "laptop" });
+  const productsLaptop = await getProductList({
+    subcategorySlug: ["laptop-cvideo-dedicada", "laptop-c-video-integrada"],
+  });
   const categories = await getCategoryList();
   const banners = await getBannerList();
 
