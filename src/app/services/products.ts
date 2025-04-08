@@ -111,53 +111,66 @@ export const getProductDetail = async (slug: string): Promise<Product> => {
  *   .catch(error => console.error(error));
  */
 export const getProductList = async ({
-    brandSlug,
-    categorySlug,
-    subcategorySlug,
-    page = 1,
-  }: {
-    brandSlug?: string;
-    categorySlug?: string;
-    subcategorySlug?: string;
-    page?: number;
-  }): Promise<ResponseProducts> => {
-    try {
-      const queryParams = new URLSearchParams();
-      if (brandSlug) queryParams.append("brands", brandSlug);
-      if (categorySlug) queryParams.append("category", categorySlug);
-      if (subcategorySlug) queryParams.append("subcategory", subcategorySlug);
-      queryParams.append("page", page.toString());
-  
-      const response = await fetch(`${apiUrl}/api/v2.0/products/list/?${queryParams.toString()}`, {
+  brandSlug,
+  categorySlug,
+  subcategorySlug,
+  page = 1,
+}: {
+  brandSlug?: string;
+  categorySlug?: string;
+  subcategorySlug?: string | string[]; // 👈 permitir array también
+  page?: number;
+}): Promise<ResponseProducts> => {
+  try {
+    const queryParams = new URLSearchParams();
+
+    if (brandSlug) queryParams.append("brands", brandSlug);
+    if (categorySlug) queryParams.append("category", categorySlug);
+
+    // ✅ soportar múltiples subcategorías
+    if (subcategorySlug) {
+      if (Array.isArray(subcategorySlug)) {
+        subcategorySlug.forEach((slug) => queryParams.append("subcategory", slug));
+      } else {
+        queryParams.append("subcategory", subcategorySlug);
+      }
+    }
+
+    queryParams.append("page", page.toString());
+
+    const response = await fetch(
+      `${apiUrl}/api/v2.0/products/list/?${queryParams.toString()}`,
+      {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-      });
-  
-      if (!response.ok) {
-        switch (response.status) {
-          case 404:
-            throw new Error("The requested resource could not be found. Not Found 404");
-          case 500:
-            throw new Error("Internal Server Error 500.");
-          default:
-            throw new Error(`Unexpected error: ${response.status}`);
-        }
       }
-  
-      const data: ResponseProducts = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching product list: ", error);
-      return {
-        count: 0,
-        next: null,
-        previous: null,
-        results: [],
-      };
+    );
+
+    if (!response.ok) {
+      switch (response.status) {
+        case 404:
+          throw new Error("The requested resource could not be found. Not Found 404");
+        case 500:
+          throw new Error("Internal Server Error 500.");
+        default:
+          throw new Error(`Unexpected error: ${response.status}`);
+      }
     }
-  };
+
+    const data: ResponseProducts = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching product list: ", error);
+    return {
+      count: 0,
+      next: null,
+      previous: null,
+      results: [],
+    };
+  }
+};
 
 
 
