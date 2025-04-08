@@ -8,14 +8,11 @@ export default function SearchLayout({
 }) {
   return (
     <Container maxWidth="xl">
-      <Box sx={{ padding: "2rem 0" }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Buscar
-        </Typography>
-      </Box>
-      <Grid2 container spacing={3}>
+      <Grid2 container spacing={3} sx={{ marginY: 4 }}>
         <Grid2 size={{ xs: 12, sm: 12, md: 3, lg: 3, xl: 3 }}>
-          <Filter />
+          <Box sx={{ padding: 2, borderRadius: 2, backgroundColor: "#e7e7e7" }}>
+            <Filter />
+          </Box>
         </Grid2>
         <Grid2 size={{ xs: 12, sm: 12, md: 9, lg: 9, xl: 9 }}>{children}</Grid2>
       </Grid2>
