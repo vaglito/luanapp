@@ -1,9 +1,17 @@
+"use client"
+import {  useRouter } from "next/navigation";
 import { Box, Typography, Container, Button } from "@mui/material";
 import { CardLaptop } from "../product/CardLaptop/card-laptop";
 import { Product } from "@/app/types/v2/products-type";
 import { SliderProduct } from "../product/slider-product";
 
 export const SectionLaptop = ({ products }: { products: Product[] }) => {
+  const router = useRouter();
+
+  const handleFilter = (subcategory: string) => {
+    router.push(`/buscar?subcategoria=${subcategory}`);
+  };
+
   return (
     <Box
       sx={{
@@ -52,20 +60,31 @@ export const SectionLaptop = ({ products }: { products: Product[] }) => {
             gap: "1.0rem",
           }}
         >
-          <Button variant="outlined" color="secondary">
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => handleFilter("laptop-c-video-integrada")}
+          >
             Laptop con video Integradas
           </Button>
-          <Button variant="outlined" color="secondary">
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => handleFilter("laptop-cvideo-dedicada")}
+          >
             Laptop con video dedicadas
           </Button>
           <Typography
+            onClick={() => router.push("/buscar?query=laptop")}
             sx={{
-                fontSize: "1.0rem",
-                color: "#fff",
-                textAlign: "center",
-                cursor: "pointer",
+              fontSize: "1.0rem",
+              color: "#fff",
+              textAlign: "center",
+              cursor: "pointer",
             }}
-          >Ver mas</Typography>
+          >
+            Ver más
+          </Typography>
         </Box>
         <Box>
           <SliderProduct products={products} Component={CardLaptop} />
