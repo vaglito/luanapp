@@ -7,8 +7,6 @@ import {
   Typography,
   Divider,
   Button,
-  useTheme,
-  useMediaQuery,
 } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import Link from "next/link";
