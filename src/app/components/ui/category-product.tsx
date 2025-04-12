@@ -18,7 +18,7 @@ export const SectionLaptop = ({ products }: { products: Product[] }) => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "1.0rem",
+        paddingY: "1.0rem",
         margin: "1.0rem 0",
         background: "linear-gradient(to top right, #5914A3, #A3147F)",
         borderRadius: "0.5rem",
