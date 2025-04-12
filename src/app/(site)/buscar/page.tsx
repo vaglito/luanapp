@@ -1,7 +1,15 @@
 import { Suspense } from "react";
 import { getProductSearch } from "@/app/services/products";
 import { ResponseProducts } from "@/app/types/v2/products-type";
-import { Box, Container, Typography, Divider, Button } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Divider,
+  Button,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import Link from "next/link";
 import { GridProduct } from "@/app/components/product/grid-product";
@@ -35,26 +43,26 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
   } catch (error) {
     return (
       <Container maxWidth="xl">
-        <Box className="h-screen" sx={{ marginY: 4 }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "100%",
-            }}
-          >
-            <ErrorIcon color="error" sx={{ fontSize: 50 }} />
-            <Typography variant="h5" component="h2" gutterBottom>
-              Ocurrió un error al buscar productos.
-            </Typography>
-            <Link href="/">
-              <Button variant="contained" color="primary">
-                Volver a la página principal
-              </Button>
-            </Link>
-          </Box>
+        <Box
+          sx={{
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            padding: 2,
+          }}
+        >
+          <ErrorIcon color="error" sx={{ fontSize: 50 }} />
+          <Typography variant="h5" gutterBottom>
+            Ocurrió un error al buscar productos.
+          </Typography>
+          <Link href="/">
+            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+              Volver a la página principal
+            </Button>
+          </Link>
         </Box>
       </Container>
     );
@@ -63,26 +71,26 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
   if (!searchProduct) {
     return (
       <Container maxWidth="xl">
-        <Box className="h-screen" sx={{ marginY: 4 }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "100%",
-            }}
-          >
-            <ErrorIcon color="error" sx={{ fontSize: 50 }} />
-            <Typography variant="h5" component="h2" gutterBottom>
-              No se encontraron resultados para {query}.
-            </Typography>
-            <Link href="/">
-              <Button variant="contained" color="primary">
-                Volver a la página principal
-              </Button>
-            </Link>
-          </Box>
+        <Box
+          sx={{
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            padding: 2,
+          }}
+        >
+          <ErrorIcon color="error" sx={{ fontSize: 50 }} />
+          <Typography variant="h5" gutterBottom>
+            No se encontraron resultados para "{query}".
+          </Typography>
+          <Link href="/">
+            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+              Volver a la página principal
+            </Button>
+          </Link>
         </Box>
       </Container>
     );
@@ -94,40 +102,53 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
   }
 
   return (
-    <Box>
+    <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 } }}>
+      {/* Encabezado responsivo */}
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: { xs: "flex-start", md: "center" },
           justifyContent: "space-between",
-          padding: 2,
-          backgroundColor: "primary.main",
-          marginBottom: 2,
+          gap: 2,
+          bgcolor: "primary.main",
           color: "white",
-          borderRadius: 1,
+          p: 2,
+          borderRadius: 2,
           boxShadow: 1,
+          mb: 3,
         }}
       >
-        <Typography variant="h4" gutterBottom>
+        <Typography
+          variant="h5"
+          sx={{ fontSize: { xs: "1.2rem", md: "1.5rem" }, fontWeight: 600 }}
+        >
           Resultados para: {query}
         </Typography>
-        <Typography>{searchProduct.count} productos encontrados</Typography>
+        <Typography variant="body1" sx={{ fontSize: { xs: "0.95rem", md: "1rem" } }}>
+          {searchProduct.count} productos encontrados
+        </Typography>
       </Box>
-      <Divider />
+
+      <Divider sx={{ mb: 2 }} />
+
+      {/* Productos */}
       <Box>
         <GridProduct products={searchProduct.results} />
       </Box>
 
-      {/* ⬇️ Paginación dentro de Suspense ⬇️ */}
+      {/* Paginación */}
       <Suspense fallback={<div>Cargando paginación...</div>}>
-        <PaginationButtons
-          totalPages={totalPages}
-          currentPage={currentPage}
-          query={query}
-          marca={marca}
-          subcategoria={subcategoria}
-        />
+        <Box sx={{ mt: 4 }}>
+          <PaginationButtons
+            totalPages={totalPages}
+            currentPage={currentPage}
+            query={query}
+            marca={marca}
+            subcategoria={subcategoria}
+          />
+        </Box>
       </Suspense>
-    </Box>
+    </Container>
   );
 }
