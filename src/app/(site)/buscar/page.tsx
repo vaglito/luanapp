@@ -82,7 +82,7 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
         >
           <ErrorIcon color="error" sx={{ fontSize: 50 }} />
           <Typography variant="h5" gutterBottom>
-            No se encontraron resultados para "{query}".
+            No se encontraron resultados para {query}.
           </Typography>
           <Link href="/">
             <Button variant="contained" color="primary" sx={{ mt: 2 }}>
