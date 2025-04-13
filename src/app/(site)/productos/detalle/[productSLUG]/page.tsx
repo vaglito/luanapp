@@ -7,6 +7,54 @@ import {
   ProductSpecifications1,
 } from "@/app/ui/product/detail/ProductSpecifications";
 import { ProductImageCarousel } from "@/app/ui/product/detail/ProductImageCarousel";
+import { Metadata } from "next";
+
+
+// --- SEO dinámico con Open Graph + Twitter ---
+export async function generateMetadata({
+  params,
+}: {
+  params: { productSLUG: string };
+}): Promise<Metadata> {
+  const product = await fetchProductDetail(params.productSLUG);
+
+  const title = product.sopprod.nom_prod;
+  const description =
+    product.resumen?.replace(/(<([^>]+)>)/gi, "").slice(0, 150) ||
+    "Compra este producto con descuento.";
+  const image = product.productimage_set?.[0]?.images;
+  const url = `https://tuweb.com/productos/detalle/${params.productSLUG}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: "Corporacion Luana",
+      images: image
+        ? [
+            {
+              url: image,
+              width: 1200,
+              height: 630,
+              alt: title,
+            },
+          ]
+        : [],
+      locale: "es_PE",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: image ? [image] : [],
+    },
+  };
+}
+
 
 interface ProductDetailProps {
   params: {
