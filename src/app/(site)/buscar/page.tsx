@@ -13,6 +13,8 @@ import Link from "next/link";
 import { GridProduct } from "@/app/components/product/grid-product";
 import { PaginationButtons } from "@/app/components/PaginationButtons";
 
+export const revalidate = 0;
+
 interface searchParamsProps {
   searchParams?: {
     query?: string;
