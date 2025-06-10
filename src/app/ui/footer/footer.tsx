@@ -142,7 +142,7 @@ export function Footer() {
                 </Typography>
                 <Box>
                   <Typography>Lun. - Sáb. de 9:45 am a 8:00 pm</Typography>
-                  <Typography>ventas@corporacionluana.pe</Typography>
+                  <Typography>ventas01@corporacionluana.pe</Typography>
                   <Typography>reclamos@corporacionluana.pe</Typography>
                   <Typography>RUC: 20543896129</Typography>
                   <Typography>Corporacion Luana S.A.C</Typography>
