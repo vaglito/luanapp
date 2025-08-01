@@ -7,6 +7,7 @@ import { HomeCategory } from "./components/ui/home-category";
 import { getCategoryList } from "./services/categorys";
 import { getBannerList } from "./services/common";
 import { BannerHome } from "./components/ui/banner/BannerHome";
+import { ComputerHome } from "@/app/ui/computer/computer-home"
 
 export const revalidate = 0;
 
@@ -29,6 +30,7 @@ export default async function Home() {
       <Container maxWidth="xl">
         <NewProducts products={newProduct.results} />
       </Container>
+      <ComputerHome />
       <SectionLaptop products={productsLaptop.results} />
       <HomeCategory categories={categories} />
     </>
