@@ -7,19 +7,15 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import { Detail } from "@/app/types/detail";
 
-export function ProductImageCarousel({ product }: { product: Detail }) {
+export default function ProductImageCarousel({ product }: { product: Detail }) {
   return (
     <Box
       sx={{
-        width: "100%",
-        maxWidth: 700,
-        margin: "20px auto",
         backgroundColor: "#fff",
         boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-        borderRadius: 4,
+        borderRadius: "12px",
         padding: 3,
-        position: "relative",
-        overflow: "hidden",
+        height: "100%",
       }}
     >
       <Swiper
@@ -30,7 +26,6 @@ export function ProductImageCarousel({ product }: { product: Detail }) {
         navigation
         pagination={{ clickable: true }}
         scrollbar={{ draggable: true }}
-        style={{ width: "100%", height: "auto" }}
       >
         {product.productimage_set.map((image, index) => (
           <SwiperSlide key={index}>
@@ -38,20 +33,18 @@ export function ProductImageCarousel({ product }: { product: Detail }) {
               sx={{
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "center",
-                height: 500, // Se asegura que el contenedor tenga el tamaño de la imagen
-                borderRadius: 3,
-                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                borderRadius: "12px",
               }}
             >
               <Image
                 src={image.images}
                 alt={`Imagen de ${product.sopprod.nom_prod}`}
-                width={500}
+                width={600}
                 height={500}
                 style={{
                   borderRadius: "12px",
                   transition: "transform 0.3s ease-in-out",
+                  objectFit: "cover",
                 }}
                 onMouseOver={(e) => {
                   (e.currentTarget as HTMLImageElement).style.transform =
