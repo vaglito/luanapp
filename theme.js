@@ -19,6 +19,7 @@ export const themeOptions = createTheme({
   },
   typography: {
     fontSize: 15,
+    color: "#545454",
     h1: {
       fontWeight: 800,
       fontSize: 65,

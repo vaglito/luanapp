@@ -5,7 +5,6 @@ import { Header } from "@/app/ui/header/header";
 import { Footer } from "./ui/footer/footer";
 import { ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from "../../theme";
-import Alert from '@mui/material/Alert';
 import "swiper/css";
 import "./globals.css";
 
@@ -32,7 +31,6 @@ export default function RootLayout({
       <ThemeProvider theme={themeOptions}>
         <AppRouterCacheProvider options={{ key: "css" }}>
           <Header />
-          <Alert severity="warning">Esta pagina puede variar el stock y el precio en algunos casos. Contactar con un asesor de ventas.</Alert>
           {children}
           <Footer />
         </AppRouterCacheProvider>
