@@ -5,13 +5,29 @@ import { CardProduct } from "../product/card-product";
 
 export const NewProducts = ({ products }: { products: Product[] }) => {
   return (
-    <Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "1.5rem" }}>
-        <Typography variant="h1" sx={{
-            fontSize: "2.0rem",
-            fontWeight: "bold",
-            color: "#333",
-        }}>Nuevos Ingresos</Typography>
+    <Box sx={{ marginY: 4 }}>
+      <Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h3" color="#545454" sx={{ fontWeight: "bold" }}>
+            Nuevos Ingresos
+          </Typography>
+          <Box>
+            <Typography
+              color="#545454"
+              sx={{
+                fontSize: 18,
+              }}
+            >
+              Consigue productos recien ingresados.
+            </Typography>
+          </Box>
+        </Box>
       </Box>
       <Box>
         <SliderProduct products={products} Component={CardProduct} />
