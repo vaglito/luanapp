@@ -40,7 +40,7 @@ const data = [
 
 export function ComputerHome() {
   return (
-    <Box bgcolor="white" sx={{ marginY: 8}}>
+    <Box bgcolor="white" sx={{ marginY: 5}}>
       <Container maxWidth="xl">
         {/* Header */}
         <Box>
