@@ -17,6 +17,7 @@ export const CardProduct = ({ product }: { product: Product }) => {
         flexDirection: "column",
         width: "100%",
         height: "100%",
+        backgroundColor: "white",
         borderRadius: 3,
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
         transition: "box-shadow 0.3s ease-in-out",
