@@ -28,6 +28,7 @@ export function CardImage({ title, productimage_set, slug }: CardImageProps) {
           aspectRatio: "1 / 1",
           overflow: "hidden",
           cursor: "pointer",
+          borderRadius: 3
         }}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
@@ -39,13 +40,14 @@ export function CardImage({ title, productimage_set, slug }: CardImageProps) {
             inset: 0,
             transition: hasSecondImage ? "opacity 0.5s ease" : "none",
             opacity: hasSecondImage && hover ? 0 : 1,
+            borderRadius: 3
           }}
         >
           <Image
             src={productimage_set[0]?.images}
             alt={title}
             fill
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "cover", borderRadius: 3 }}
           />
         </Box>
 
