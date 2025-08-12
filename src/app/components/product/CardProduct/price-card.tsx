@@ -28,111 +28,30 @@ export const PriceCard: React.FC<PriceCardProps> = ({ price }) => {
       }}
     >
       {price.precio_oferta_d > 0 ? (
-        <Box sx={{ display: "flex", gap: 1, flexDirection: "column" }}>
-          <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
-            <Typography variant="body2" sx={{ color: "text.secondary", textDecoration: "line-through" }}>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Box sx={{ display: "flex", flexDirection: "row", gap: 1, justifyContent: "center" }}>
+            <Typography variant="body2" sx={{ color: "gray", textDecoration: "line-through", fontSize: 18 }}>
               S/{price.precio_local}
             </Typography>
-            <Typography variant="body2" sx={{ color: "text.secondary", textDecoration: "line-through" }}>
+            <Typography variant="body2" sx={{ color: "gray", textDecoration: "line-through", fontSize: 18 }}>
               ${price.precio_decimal}
             </Typography>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
-            <Typography variant="subtitle1" sx={{ color: "error.main", fontWeight: 600 }}>
+            <Typography variant="subtitle1" sx={{ color: "error.main", fontWeight: 600, fontSize: {xs: 18, sm: 18, md: 22, lg: 24} }}>
               S/{price.precio_oferta}
             </Typography>
-            <Typography variant="subtitle1" sx={{ color: "error.main", fontWeight: 600 }}>
+            <Typography variant="subtitle1" sx={{ color: "error.main", fontWeight: 600, fontSize: {xs: 18, sm: 18, md: 22, lg: 24} }}>
               (${price.precio_oferta_d})
             </Typography>
           </Box>
         </Box>
       ) : (
-        <Box sx={{ display: "flex", gap: 1, flexDirection: "row" }}>
-          <Typography variant="subtitle1" sx={{ color: "text.d", fontWeight: 600}}>S/{price.precio_local}</Typography>
-          <Typography variant="subtitle1" sx={{ color: "text.d", fontWeight: 600}}>(${price.precio_decimal})</Typography>
+        <Box sx={{ display: "flex", gap: 1, flexDirection: "row", color: "primary.main" }}>
+          <Typography sx={{ fontWeight: 600, fontSize: {xs: 18, sm: 18, md: 22, lg: 24}}}>S/{price.precio_local}</Typography>
+          <Typography sx={{ fontWeight: 600, fontSize: {xs: 18, sm: 18, md: 22, lg: 24}}}>(${price.precio_decimal})</Typography>
         </Box>
       )}
     </Box>
   );
 };
-
-function pricesss({ price }: { price: any }) {
-  return (
-    <div>
-      {price.precio_oferta > 0 ? (
-        <>
-          <Typography
-            variant="body2"
-            sx={{
-              lineHeight: 1,
-              fontWeight: 600,
-              color: "error.main", // Color para destacar oferta
-            }}
-          >
-            S/. {price.precio_oferta}
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              lineHeight: 1,
-              fontWeight: 600,
-              color: "text.secondary",
-              textDecoration: "line-through", // Tachar el precio anterior
-            }}
-          >
-            S/. {price.precio_local}
-          </Typography>
-        </>
-      ) : (
-        <Typography
-          variant="body2"
-          sx={{
-            lineHeight: 1,
-            fontWeight: 600,
-            color: "primary.main",
-          }}
-        >
-          S/. {price.precio_local}
-        </Typography>
-      )}
-
-      {/* Precio de oferta en dólares */}
-      {price.precio_oferta_d > 0 ? (
-        <>
-          <Typography
-            variant="body2"
-            sx={{
-              lineHeight: 1,
-              fontWeight: 600,
-              color: "error.main",
-            }}
-          >
-            ${price.precio_oferta_d}
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              lineHeight: 1,
-              fontWeight: 600,
-              color: "text.secondary",
-              textDecoration: "line-through",
-            }}
-          >
-            ${price.precio_decimal}
-          </Typography>
-        </>
-      ) : (
-        <Typography
-          variant="body2"
-          sx={{
-            lineHeight: 1,
-            fontWeight: 600,
-            color: "text.secondary",
-          }}
-        >
-          ${price.precio_decimal}
-        </Typography>
-      )}
-    </div>
-  );
-}
