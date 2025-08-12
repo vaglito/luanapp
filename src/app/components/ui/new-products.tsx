@@ -5,7 +5,7 @@ import { CardProduct } from "../product/card-product";
 
 export const NewProducts = ({ products }: { products: Product[] }) => {
   return (
-    <Box sx={{ marginY: 4 }}>
+    <Box sx={{ marginTop: 4 }}>
       <Box>
         <Box
           sx={{
