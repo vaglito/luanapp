@@ -2,6 +2,7 @@
 import {  useRouter } from "next/navigation";
 import { Box, Typography, Container, Button } from "@mui/material";
 import { CardLaptop } from "../product/CardLaptop/card-laptop";
+import { CardProduct } from "../product/card-product";
 import { Product } from "@/app/types/v2/products-type";
 import { SliderProduct } from "../product/slider-product";
 
@@ -35,7 +36,7 @@ export const SectionLaptop = ({ products }: { products: Product[] }) => {
               textAlign: "center",
             }}
           >
-            Busca tú Laptop ideal
+            Busca tu Laptop ideal
           </Typography>
 
           <Typography
@@ -87,7 +88,7 @@ export const SectionLaptop = ({ products }: { products: Product[] }) => {
           </Typography>
         </Box>
         <Box>
-          <SliderProduct products={products} Component={CardLaptop} />
+          <SliderProduct products={products} Component={CardProduct} />
         </Box>
       </Container>
     </Box>
