@@ -24,8 +24,10 @@ export const SliderProduct = ({ products, Component }: SliderProductProps) => {
           position: "absolute",
           top: "50%",
           left: -50,
+          background: "white",
           zIndex: 10,
           boxShadow: 1,
+          "&:hover": { background: "white" },
         }}
       >
         <ArrowBackIosNewIcon fontSize="small" />
@@ -39,8 +41,10 @@ export const SliderProduct = ({ products, Component }: SliderProductProps) => {
           position: "absolute",
           top: "50%",
           right: -50,
+          background: "white",
           zIndex: 10,
           boxShadow: 1,
+          "&:hover": { background: "white" },
         }}
       >
         <ArrowForwardIosIcon fontSize="small" />
