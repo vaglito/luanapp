@@ -14,14 +14,10 @@ export const CardProduct = ({ product }: { product: Product }) => {
     <Box
       sx={{
         display: "flex",
-        marginTop: 4,
-        marginBottom: 8,
         flexDirection: "column",
-        position: "relative",
         width: "100%",
         height: "100%",
         borderRadius: 3,
-        overflow: "hidden",
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
         transition: "box-shadow 0.3s ease-in-out",
         "&:hover": {
