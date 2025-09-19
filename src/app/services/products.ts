@@ -231,7 +231,6 @@ export const getProductSearch = async ({
     }
 
     queryParams.append("page", page.toString());
-    console.log(queryParams.toString())
 
     const response = await fetch(
       `${apiUrl}/api/v2.0/products/search/?${queryParams.toString()}`,
