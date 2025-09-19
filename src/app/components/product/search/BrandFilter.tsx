@@ -1,65 +1,107 @@
 "use client";
-import { Box, Button } from "@mui/material";
+import { Box, Checkbox, FormControlLabel } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
-export const BrandFilter = ({ query }: { query: string }) => {
+import { ResponseBrands } from "@/app/types/v2/brands-type";
+
+export const BrandFilter = ({
+  query,
+  brands,
+}: {
+  query: string;
+  brands: ResponseBrands;
+}) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const currentBrand = searchParams.get("marca");
-  const [brands, setBrands] = useState([]);
+
+  const selectedBrands = searchParams.getAll("marca");
+  const [checked, setChecked] = useState<boolean[]>([]);
 
   useEffect(() => {
-    const fetchBrands = async () => {
-      try {
-        const response = await fetch(
-          `https://luanatech.pe/api/v2.0/brands/search?search=${query}`
-        );
-        const data = await response.json();
-        setBrands(data.results);
-      } catch (error) {
-        console.error("Error fetching brands:", error);
-      }
+    const loadBrands = async () => {
+      setChecked(
+        brands.results.map((brand) => selectedBrands.includes(brand.slug))
+      );
     };
 
-    fetchBrands();
-  }, [query]);
+    loadBrands();
+  }, [query, searchParams]);
 
-  const handleClick = (brandSlug?: string) => {
+  const handleParentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = event.target.checked;
+    setChecked(Array(checked.length).fill(isChecked));
+
     const params = new URLSearchParams(searchParams.toString());
+    params.delete("marca");
 
-    if (brandSlug) {
-      params.set("marca", brandSlug);
-    } else {
-      params.delete("marca");
+    if (isChecked && brands) {
+      brands.results.forEach((b) => params.append("marca", b.slug));
     }
+
+    // 🔹 resetear siempre a página 1
+    params.set("page", "1");
 
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      <Button
-        variant={!currentBrand ? "contained" : "outlined"}
-        size="small"
-        color="primary"
-        onClick={() => handleClick()}
-      >
-        Todas las marcas
-      </Button>
+  const handleChildChange =
+    (index: number, slug: string) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const updatedChecked = [...checked];
+      updatedChecked[index] = event.target.checked;
+      setChecked(updatedChecked);
 
-      {brands.map((brand: any) => (
-        <Button
-          key={brand.slug}
-          variant={currentBrand === brand.slug ? "contained" : "outlined"}
-          size="small"
-          color="primary"
-          onClick={() => handleClick(brand.slug)}
-        >
-          {brand.sopsub2.nom_sub2}
-        </Button>
-      ))}
+      const params = new URLSearchParams(searchParams.toString());
+      let updatedSelected = params.getAll("marca");
+
+      if (event.target.checked) {
+        if (!updatedSelected.includes(slug)) {
+          params.append("marca", slug);
+        }
+      } else {
+        updatedSelected = updatedSelected.filter((s) => s !== slug);
+        params.delete("marca");
+        updatedSelected.forEach((s) => params.append("marca", s));
+      }
+
+      // 🔹 resetear siempre a página 1
+      params.set("page", "1");
+
+      router.push(`${pathname}?${params.toString()}`);
+    };
+
+  const allChecked = checked.length > 0 && checked.every(Boolean);
+  const someChecked = checked.some(Boolean) && !allChecked;
+
+  return (
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <FormControlLabel
+        label="Todas las marcas"
+        control={
+          <Checkbox
+            checked={allChecked}
+            indeterminate={someChecked}
+            onChange={handleParentChange}
+          />
+        }
+      />
+
+      <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+        {brands?.results.map((brand, index) => (
+          <FormControlLabel
+            key={brand.slug}
+            label={brand.sopsub2.nom_sub2}
+            control={
+              <Checkbox
+                checked={checked[index] || false}
+                onChange={handleChildChange(index, brand.slug)}
+              />
+            }
+          />
+        ))}
+      </Box>
     </Box>
   );
 };
