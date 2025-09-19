@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import { Filter } from "@/app/components/product/search/Filter";
 import { Box, Container, Typography, Grid2 } from "@mui/material";
 
@@ -9,27 +9,44 @@ export default function SearchLayout({
 }) {
   return (
     <Container maxWidth="xl">
-      <Grid2 container spacing={3} sx={{ marginY: 4 }}>
-        <Grid2 size={{ xs: 12, sm: 12, md: 3, lg: 3, xl: 3 }}>
-          <Box
-            sx={{
-              padding: 2,
-              borderRadius: 2,
-              backgroundColor: "#e7e7e7",
-              minHeight: { xs: "auto", md: "100%" }, // 🔥 adapta altura para pantallas grandes
-            }}
+      <Box
+        sx={{
+          display: "flex",
+          marginY: 4,
+          flexDirection: {
+            xs: "column",
+            sm: "column",
+            md: "row",
+            lg: "row",
+            xl: "row",
+          },
+          gap: { xs: 1, sm: 1, md: 2, lg: 4, xl: 4 },
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "20%", lg: "20%", xl: "20%" },
+            backgroundColor: "#fff",
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+            borderRadius: "12px",
+          }}
+        >
+          <Suspense
+            fallback={<Typography variant="h6">Cargando filtros...</Typography>}
           >
-            <Suspense
-              fallback={
-                <Typography variant="h6">Cargando filtros...</Typography>
-              }
-            >
-              <Filter />
-            </Suspense>
-          </Box>
-        </Grid2>
-        <Grid2 size={{ xs: 12, sm: 12, md: 9, lg: 9, xl: 9 }}>{children}</Grid2>
-      </Grid2>
+            <Filter />
+          </Suspense>
+        </Box>
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "80%", lg: "80%", xl: "80%" },
+            backgroundColor: "#fff",
+            borderRadius: "12px",
+          }}
+        >
+          {children}
+        </Box>
+      </Box>
     </Container>
   );
 }
