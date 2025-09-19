@@ -1,4 +1,3 @@
-"use client";
 import {
   Box,
   Typography,
@@ -7,27 +6,12 @@ import {
   AccordionDetails,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useSearchParams } from "next/navigation";
 import { BrandFilter } from "./BrandFilter";
-import { CategoryFilter } from "./CategoryFilter";
+import { fetchBrandSearch } from "@/app/services/brands";
 
-export const Filter = () => {
-  const searchParams = useSearchParams();
-  const query = searchParams.get("query") || "";
 
-  if (!query)
-    return (
-      <Typography
-        variant="body1"
-        sx={{
-          fontSize: { xs: "0.9rem", sm: "1rem" },
-          textAlign: "center",
-          mt: 2,
-        }}
-      >
-        Ingresa una búsqueda para filtrar marcas.
-      </Typography>
-    );
+export const Filter = async ({ query }: { query: string }) => {
+  const brands = await fetchBrandSearch(query)
 
   return (
     <Box
@@ -48,7 +32,10 @@ export const Filter = () => {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography variant="h6" sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}>
+          <Typography
+            variant="h6"
+            sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}
+          >
             Marcas
           </Typography>
         </AccordionSummary>
@@ -62,7 +49,7 @@ export const Filter = () => {
           >
             Filtra los resultados por marca.
           </Typography>
-          <BrandFilter query={query} />
+          <BrandFilter query={query} brands={brands}/>
         </AccordionDetails>
       </Accordion>
 
@@ -73,12 +60,16 @@ export const Filter = () => {
           aria-controls="panel2-content"
           id="panel2-header"
         >
-          <Typography variant="h6" sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}>
+          <Typography
+            variant="h6"
+            sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}
+          >
             Categoría
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <CategoryFilter query={query} />
+          <Typography>{query}</Typography>
+          {/* <CategoryFilter query={query} /> */}
         </AccordionDetails>
       </Accordion>
     </Box>
