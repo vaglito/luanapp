@@ -7,11 +7,14 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { BrandFilter } from "./BrandFilter";
+import { CategoryFilter } from "./CategoryFilter";
 import { fetchBrandSearch } from "@/app/services/brands";
+import { fetchCategoriesSearch } from "@/app/services/categorys";
 
 
 export const Filter = async ({ query }: { query: string }) => {
   const brands = await fetchBrandSearch(query)
+  const categories = await fetchCategoriesSearch(query)
 
   return (
     <Box
@@ -69,7 +72,7 @@ export const Filter = async ({ query }: { query: string }) => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>{query}</Typography>
-          {/* <CategoryFilter query={query} /> */}
+          <CategoryFilter query={query} categories={categories}/>
         </AccordionDetails>
       </Accordion>
     </Box>
