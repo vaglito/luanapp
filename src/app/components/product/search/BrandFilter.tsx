@@ -1,5 +1,5 @@
 "use client";
-import { Box, Checkbox, FormControlLabel } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
@@ -29,23 +29,6 @@ export const BrandFilter = ({
     loadBrands();
   }, [query, searchParams]);
 
-  const handleParentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = event.target.checked;
-    setChecked(Array(checked.length).fill(isChecked));
-
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("marca");
-
-    if (isChecked && brands) {
-      brands.results.forEach((b) => params.append("marca", b.slug));
-    }
-
-    // 🔹 resetear siempre a página 1
-    params.set("page", "1");
-
-    router.push(`${pathname}?${params.toString()}`);
-  };
-
   const handleChildChange =
     (index: number, slug: string) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,31 +55,35 @@ export const BrandFilter = ({
       router.push(`${pathname}?${params.toString()}`);
     };
 
-  const allChecked = checked.length > 0 && checked.every(Boolean);
-  const someChecked = checked.some(Boolean) && !allChecked;
+  const handleClearAll = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("marca");
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <FormControlLabel
-        label="Todas las marcas"
-        control={
-          <Checkbox
-            checked={allChecked}
-            indeterminate={someChecked}
-            onChange={handleParentChange}
-          />
-        }
-      />
+      <Button
+        variant={selectedBrands.length === 0 ? "contained" : "outlined"}
+        size="small"
+        color="secondary"
+        onClick={handleClearAll}
+        sx={{ mb: 2 }}
+      >
+        Todas las marcas
+      </Button>
 
       <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
         {brands?.results.map((brand, index) => (
           <FormControlLabel
             key={brand.slug}
             label={brand.sopsub2.nom_sub2}
+            sx={{ fontWeight: 600}}
             control={
               <Checkbox
                 checked={checked[index] || false}
                 onChange={handleChildChange(index, brand.slug)}
+                sx={{ color: "primary.main"}}
               />
             }
           />
