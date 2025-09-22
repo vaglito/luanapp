@@ -1,17 +1,13 @@
 import { Suspense } from "react";
 import { getProductSearch } from "@/app/services/products";
 import { ResponseProducts } from "@/app/types/v2/products-type";
-import {
-  Box,
-  Container,
-  Typography,
-  Divider,
-  Button,
-} from "@mui/material";
+import { Box, Container, Typography, Button } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import Link from "next/link";
 import { GridProduct } from "@/app/components/product/grid-product";
 import { PaginationButtons } from "@/app/components/PaginationButtons";
+import { Filter } from "@/app/components/product/search/Filter";
+import { CategoryFilterSkeleton } from "@/app/components/ui/skeleton/categoryfilter-skeleton";
 
 export const revalidate = 0;
 
@@ -26,18 +22,27 @@ interface searchParamsProps {
 
 export default async function SearchPage({ searchParams }: searchParamsProps) {
   const query = searchParams?.query || "";
-  const keepFilters = searchParams?.query && query === searchParams.query;
-  const marca = keepFilters ? searchParams?.marca || "" : "";
-  const subcategoria = keepFilters ? searchParams?.subcategoria || "" : "";
-  let currentPage = Number(searchParams?.page) || 1;
 
+  // Convierte a array si hay más de un valor en la URL (&marca=xx&marca=yy)
+  const marca = Array.isArray(searchParams?.marca)
+    ? searchParams.marca
+    : searchParams?.marca
+    ? [searchParams.marca]
+    : [];
+  const subcategoria = Array.isArray(searchParams?.subcategoria)
+    ? searchParams.subcategoria
+    : searchParams?.subcategoria
+    ? [searchParams.subcategoria]
+    : [];
+
+  let currentPage = Number(searchParams?.page) || 1;
   let searchProduct: ResponseProducts | undefined;
 
   try {
     searchProduct = await getProductSearch({
-      query: query,
-      brandSlug: marca,
-      subcategorySlug: subcategoria,
+      query,
+      brandSlugs: marca,
+      subcategorySlugs: subcategoria,
       page: currentPage,
     });
   } catch (error) {
@@ -102,7 +107,7 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 } }}>
+    <Container maxWidth="xl">
       {/* Encabezado responsivo */}
       <Box
         sx={{
@@ -111,12 +116,12 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
           alignItems: { xs: "flex-start", md: "center" },
           justifyContent: "space-between",
           gap: 2,
-          bgcolor: "primary.main",
-          color: "white",
+          color: "#545454",
           p: 2,
-          borderRadius: 2,
-          boxShadow: 1,
           mb: 3,
+          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+          textShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+          borderRadius: "12px",
         }}
       >
         <Typography
@@ -125,30 +130,63 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
         >
           Resultados para: {query}
         </Typography>
-        <Typography variant="body1" sx={{ fontSize: { xs: "0.95rem", md: "1rem" } }}>
+        <Typography
+          variant="body1"
+          sx={{ fontSize: { xs: "0.95rem", md: "1rem" } }}
+        >
           {searchProduct.count} productos encontrados
         </Typography>
       </Box>
 
-      <Divider sx={{ mb: 2 }} />
-
       {/* Productos */}
-      <Box>
-        <GridProduct products={searchProduct.results} />
+      <Box
+        sx={{
+          display: "flex",
+          marginY: 4,
+          flexDirection: {
+            xs: "column",
+            sm: "column",
+            md: "row",
+            lg: "row",
+            xl: "row",
+          },
+          gap: { xs: 1, sm: 1, md: 2, lg: 4, xl: 4 },
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "20%", lg: "20%", xl: "20%" },
+            backgroundColor: "#fff",
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+            borderRadius: "12px",
+          }}
+        >
+          <Suspense
+            fallback={<CategoryFilterSkeleton/>}
+          >
+            <Filter query={query} />
+          </Suspense>
+        </Box>
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "80%", lg: "80%", xl: "80%" },
+          }}
+        >
+          <GridProduct products={searchProduct.results} />
+          <Suspense fallback={<div>Cargando paginación...</div>}>
+            <Box sx={{ mt: 4 }}>
+              <PaginationButtons
+                totalPages={totalPages}
+                currentPage={currentPage}
+                marca={marca}
+                subcategoria={subcategoria}
+              />
+            </Box>
+          </Suspense>
+        </Box>
       </Box>
 
       {/* Paginación */}
-      <Suspense fallback={<div>Cargando paginación...</div>}>
-        <Box sx={{ mt: 4 }}>
-          <PaginationButtons
-            totalPages={totalPages}
-            currentPage={currentPage}
-            query={query}
-            marca={marca}
-            subcategoria={subcategoria}
-          />
-        </Box>
-      </Suspense>
     </Container>
   );
 }

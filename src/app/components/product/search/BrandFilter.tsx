@@ -1,65 +1,94 @@
 "use client";
-import { Box, Button } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
-export const BrandFilter = ({ query }: { query: string }) => {
+import { ResponseBrands } from "@/app/types/v2/brands-type";
+
+export const BrandFilter = ({
+  query,
+  brands,
+}: {
+  query: string;
+  brands: ResponseBrands;
+}) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const currentBrand = searchParams.get("marca");
-  const [brands, setBrands] = useState([]);
+
+  const selectedBrands = searchParams.getAll("marca");
+  const [checked, setChecked] = useState<boolean[]>([]);
 
   useEffect(() => {
-    const fetchBrands = async () => {
-      try {
-        const response = await fetch(
-          `https://luanatech.pe/api/v2.0/brands/search?search=${query}`
-        );
-        const data = await response.json();
-        setBrands(data.results);
-      } catch (error) {
-        console.error("Error fetching brands:", error);
-      }
+    const loadBrands = async () => {
+      setChecked(
+        brands.results.map((brand) => selectedBrands.includes(brand.slug))
+      );
     };
 
-    fetchBrands();
-  }, [query]);
+    loadBrands();
+  }, [query, searchParams]);
 
-  const handleClick = (brandSlug?: string) => {
+  const handleChildChange =
+    (index: number, slug: string) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const updatedChecked = [...checked];
+      updatedChecked[index] = event.target.checked;
+      setChecked(updatedChecked);
+
+      const params = new URLSearchParams(searchParams.toString());
+      let updatedSelected = params.getAll("marca");
+
+      if (event.target.checked) {
+        if (!updatedSelected.includes(slug)) {
+          params.append("marca", slug);
+        }
+      } else {
+        updatedSelected = updatedSelected.filter((s) => s !== slug);
+        params.delete("marca");
+        updatedSelected.forEach((s) => params.append("marca", s));
+      }
+
+      // 🔹 resetear siempre a página 1
+      params.set("page", "1");
+
+      router.push(`${pathname}?${params.toString()}`);
+    };
+
+  const handleClearAll = () => {
     const params = new URLSearchParams(searchParams.toString());
-
-    if (brandSlug) {
-      params.set("marca", brandSlug);
-    } else {
-      params.delete("marca");
-    }
-
+    params.delete("marca");
     router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Button
-        variant={!currentBrand ? "contained" : "outlined"}
+        variant={selectedBrands.length === 0 ? "contained" : "outlined"}
         size="small"
-        color="primary"
-        onClick={() => handleClick()}
+        color="secondary"
+        onClick={handleClearAll}
+        sx={{ mb: 2 }}
       >
         Todas las marcas
       </Button>
 
-      {brands.map((brand: any) => (
-        <Button
-          key={brand.slug}
-          variant={currentBrand === brand.slug ? "contained" : "outlined"}
-          size="small"
-          color="primary"
-          onClick={() => handleClick(brand.slug)}
-        >
-          {brand.sopsub2.nom_sub2}
-        </Button>
-      ))}
+      <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+        {brands?.results.map((brand, index) => (
+          <FormControlLabel
+            key={brand.slug}
+            label={brand.sopsub2.nom_sub2}
+            sx={{ fontWeight: 600}}
+            control={
+              <Checkbox
+                checked={checked[index] || false}
+                onChange={handleChildChange(index, brand.slug)}
+                sx={{ color: "primary.main"}}
+              />
+            }
+          />
+        ))}
+      </Box>
     </Box>
   );
 };

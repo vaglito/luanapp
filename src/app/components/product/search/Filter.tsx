@@ -1,4 +1,3 @@
-"use client";
 import {
   Box,
   Typography,
@@ -7,27 +6,14 @@ import {
   AccordionDetails,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useSearchParams } from "next/navigation";
 import { BrandFilter } from "./BrandFilter";
 import { CategoryFilter } from "./CategoryFilter";
+import { fetchBrandSearch } from "@/app/services/brands";
+import { fetchCategoriesSearch } from "@/app/services/categorys";
 
-export const Filter = () => {
-  const searchParams = useSearchParams();
-  const query = searchParams.get("query") || "";
-
-  if (!query)
-    return (
-      <Typography
-        variant="body1"
-        sx={{
-          fontSize: { xs: "0.9rem", sm: "1rem" },
-          textAlign: "center",
-          mt: 2,
-        }}
-      >
-        Ingresa una búsqueda para filtrar marcas.
-      </Typography>
-    );
+export const Filter = async ({ query }: { query: string }) => {
+  const brands = await fetchBrandSearch(query);
+  const categories = await fetchCategoriesSearch(query);
 
   return (
     <Box
@@ -35,50 +21,59 @@ export const Filter = () => {
         width: "100%",
         maxWidth: 300,
         mx: "auto",
-        mt: 2,
         display: "flex",
         flexDirection: "column",
-        gap: 2,
       }}
     >
       {/* Filtro de marcas */}
       <Accordion defaultExpanded>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+          sx={{
+            backgroundColor: "primary.main",
+            borderTopRightRadius: "12px",
+            borderTopLeftRadius: "12px",
+          }}
         >
-          <Typography variant="h6" sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: { xs: "1rem", sm: "1.2rem" },
+              fontWeight: 600,
+              color: "white",
+            }}
+          >
             Marcas
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography
-            variant="body2"
-            sx={{
-              mb: 1,
-              fontSize: { xs: "0.85rem", sm: "0.95rem" },
-            }}
-          >
-            Filtra los resultados por marca.
-          </Typography>
-          <BrandFilter query={query} />
+          <BrandFilter query={query} brands={brands} />
         </AccordionDetails>
       </Accordion>
 
       {/* Filtro de categorías */}
       <Accordion>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
           aria-controls="panel2-content"
           id="panel2-header"
+          sx={{ backgroundColor: "primary.main" }}
         >
-          <Typography variant="h6" sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}>
-            Categoría
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: { xs: "1rem", sm: "1.2rem" },
+              fontWeight: 600,
+              color: "white",
+            }}
+          >
+            Categorías
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <CategoryFilter query={query} />
+          <CategoryFilter query={query} categories={categories} />
         </AccordionDetails>
       </Accordion>
     </Box>

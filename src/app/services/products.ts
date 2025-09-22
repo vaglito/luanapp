@@ -130,7 +130,9 @@ export const getProductList = async ({
     // ✅ soportar múltiples subcategorías
     if (subcategorySlug) {
       if (Array.isArray(subcategorySlug)) {
-        subcategorySlug.forEach((slug) => queryParams.append("subcategory", slug));
+        subcategorySlug.forEach((slug) =>
+          queryParams.append("subcategory", slug)
+        );
       } else {
         queryParams.append("subcategory", subcategorySlug);
       }
@@ -151,7 +153,9 @@ export const getProductList = async ({
     if (!response.ok) {
       switch (response.status) {
         case 404:
-          throw new Error("The requested resource could not be found. Not Found 404");
+          throw new Error(
+            "The requested resource could not be found. Not Found 404"
+          );
         case 500:
           throw new Error("Internal Server Error 500.");
         default:
@@ -171,8 +175,6 @@ export const getProductList = async ({
     };
   }
 };
-
-
 
 /**
  * Fetches a list of products based on the provided search parameters.
@@ -198,37 +200,54 @@ export const getProductList = async ({
  */
 export const getProductSearch = async ({
   query,
-  brandSlug,
-  categorySlug,
-  subcategorySlug,
+  brandSlugs,
+  categorySlugs,
+  subcategorySlugs,
   page = 1,
 }: {
   query: string;
-  brandSlug?: string;
-  categorySlug?: string;
-  subcategorySlug?: string;
+  brandSlugs?: string[]; // ahora es un array
+  categorySlugs?: string[]; // ahora es un array
+  subcategorySlugs?: string[]; // ahora es un array
   page?: number;
 }): Promise<ResponseProducts> => {
   try {
     const queryParams = new URLSearchParams();
-    if (query) queryParams.append("search", query);
-    if (brandSlug) queryParams.append("brand", brandSlug);
-    if (categorySlug) queryParams.append("category", categorySlug);
-    if (subcategorySlug) queryParams.append("subcategory", subcategorySlug);
+
+    if (query) queryParams.set("search", query ?? "");
+
+    if (brandSlugs && brandSlugs.length > 0) {
+      brandSlugs.forEach((slug) => queryParams.append("brand", slug));
+    }
+
+    if (categorySlugs && categorySlugs.length > 0) {
+      categorySlugs.forEach((slug) => queryParams.append("category", slug));
+    }
+
+    if (subcategorySlugs && subcategorySlugs.length > 0) {
+      subcategorySlugs.forEach((slug) =>
+        queryParams.append("subcategory", slug)
+      );
+    }
+
     queryParams.append("page", page.toString());
 
-    const response = await fetch(`${apiUrl}/api/v2.0/products/search/?${queryParams.toString()}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(`${apiUrl}/api/v2.0/products/search/?${queryParams.toString()}`);
+    const response = await fetch(
+      `${apiUrl}/api/v2.0/products/search/?${queryParams.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       switch (response.status) {
         case 404:
-          throw new Error("The requested resource could not be found. Not Found 404");
+          throw new Error(
+            "The requested resource could not be found. Not Found 404"
+          );
         case 500:
           throw new Error("Internal Server Error 500.");
         default:
@@ -247,4 +266,4 @@ export const getProductSearch = async ({
       results: [],
     };
   }
-}
+};

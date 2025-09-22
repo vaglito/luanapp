@@ -1,43 +1,64 @@
-import { Box, Button } from "@mui/material";
-import Link from "next/link";
+"use client";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import * as React from "react";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 interface PaginationProps {
-  totalPages: number;
   currentPage: number;
-  query?: string;
-  marca?: string;
-  subcategoria?: string;
+  totalPages: number;
+  marca?: string | string[];
+  subcategoria?: string | string[];
 }
 
-export const PaginationButtons = ({
-  totalPages,
+export function PaginationButtons({
   currentPage,
-  query = "",
-  marca = "",
-  subcategoria = "",
-}: PaginationProps) => {
-  return (
-    <Box display="flex" justifyContent="center" mt={3} flexWrap="wrap">
-      {Array.from({ length: totalPages }, (_, index) => {
-        const params = new URLSearchParams();
-        if (query) params.set("query", query);
-        if (marca) params.set("marca", marca);
-        if (subcategoria) params.set("subcategoria", subcategoria);
-        params.set("page", (index + 1).toString());
+  totalPages,
+  marca,
+  subcategoria,
+}: PaginationProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
-        return (
-          <Button
-            key={index + 1}
-            variant={currentPage === index + 1 ? "contained" : "outlined"}
-            color={currentPage === index + 1 ? "primary" : "primary"}
-            component={Link}
-            href={`/buscar?${params.toString()}`}
-            sx={{ mx: 0.5, my: 1 }}
-          >
-            {index + 1}
-          </Button>
-        );
-      })}
-    </Box>
+  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    // Page param
+    params.set("page", page.toString());
+
+    // Marca: soporta string y array
+    if (Array.isArray(marca) && marca.length > 0) {
+      params.delete("marca");
+      marca.forEach((m) => params.append("marca", m));
+    } else if (typeof marca === "string" && marca.trim() !== "") {
+      params.set("marca", marca);
+    } else {
+      params.delete("marca");
+    }
+
+    // Subcategoria: soporta string y array
+    if (Array.isArray(subcategoria) && subcategoria.length > 0) {
+      params.delete("subcategoria");
+      subcategoria.forEach((s) => params.append("subcategoria", s));
+    } else if (typeof subcategoria === "string" && subcategoria.trim() !== "") {
+      params.set("subcategoria", subcategoria);
+    } else {
+      params.delete("subcategoria");
+    }
+
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  return (
+    <Stack spacing={2} alignItems="center" className="mt-4">
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+        color="primary"
+        shape="rounded"
+      />
+    </Stack>
   );
-};
+}
