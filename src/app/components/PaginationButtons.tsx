@@ -1,5 +1,8 @@
 "use client";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import * as React from "react";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 interface PaginationProps {
   currentPage: number;
@@ -18,7 +21,7 @@ export function PaginationButtons({
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
     const params = new URLSearchParams(searchParams.toString());
 
     // Page param
@@ -26,7 +29,7 @@ export function PaginationButtons({
 
     // Marca: soporta string y array
     if (Array.isArray(marca) && marca.length > 0) {
-      params.delete("marca"); // limpiar antes de agregar
+      params.delete("marca");
       marca.forEach((m) => params.append("marca", m));
     } else if (typeof marca === "string" && marca.trim() !== "") {
       params.set("marca", marca);
@@ -48,24 +51,14 @@ export function PaginationButtons({
   };
 
   return (
-    <div className="flex gap-2 justify-center mt-4">
-      <button
-        onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
-      >
-        Anterior
-      </button>
-      <span>
-        Página {currentPage} de {totalPages}
-      </span>
-      <button
-        onClick={() => handlePageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
-      >
-        Siguiente
-      </button>
-    </div>
+    <Stack spacing={2} alignItems="center" className="mt-4">
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+        color="primary"
+        shape="rounded"
+      />
+    </Stack>
   );
 }
