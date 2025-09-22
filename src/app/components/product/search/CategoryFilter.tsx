@@ -68,10 +68,10 @@ export const CategoryFilter = ({
   };
 
   return (
-    <Box>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Button
         variant={currentCategories.length === 0 ? "contained" : "outlined"}
-        color="primary"
+        color="secondary"
         size="small"
         onClick={handleClearAll}
         sx={{ mb: 2 }}
@@ -99,13 +99,12 @@ export const CategoryFilter = ({
                   onChange={(e) =>
                     handleParentChange(subSlugs, e.target.checked)
                   }
-                  color="primary"
+                  sx={{ color: "primary.main"}}
                 />
               }
               label={
                 <Typography
                   variant="body1"
-                  color="text.primary"
                   sx={{ fontWeight: 600 }}
                 >
                   {category.soplinea.nom_line}
@@ -122,7 +121,7 @@ export const CategoryFilter = ({
                     <Checkbox
                       checked={currentCategories.includes(sub.slug)}
                       onChange={() => handleCheckboxChange(sub.slug)}
-                      color="primary"
+                      sx={{ color: "primary.main"}}
                     />
                   }
                   label={sub.sopsub1.nom_sub1}
