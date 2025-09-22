@@ -5,6 +5,7 @@ const apiUrl = process.env.API_URL;
 
 export const fetchBrandSearch = async (query?: string): Promise<ResponseBrands> => {
   try {
+    //await new Promise((resolve) => setTimeout(resolve, 5000));
     const response = await fetch(
       `${apiUrl}/api/v2.0/brands/search/?search=${query}`,
       {

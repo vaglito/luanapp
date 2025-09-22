@@ -33,6 +33,7 @@ export const getCategoryList = async (): Promise<Categorys[]> => {
 
 export const fetchCategoriesSearch = async (query: string) => {
   try {
+    //await new Promise((resolve) => setTimeout(resolve, 5000));
     const response = await fetch(
       `${apiUrl}/api/v2.0/categorys/search?search=${query}`,
       {
