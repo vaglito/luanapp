@@ -7,6 +7,7 @@ import Link from "next/link";
 import { GridProduct } from "@/app/components/product/grid-product";
 import { PaginationButtons } from "@/app/components/PaginationButtons";
 import { Filter } from "@/app/components/product/search/Filter";
+import { CategoryFilterSkeleton } from "@/app/components/ui/skeleton/categoryfilter-skeleton";
 
 export const revalidate = 0;
 
@@ -161,7 +162,7 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
           }}
         >
           <Suspense
-            fallback={<Typography variant="h6">Cargando filtros...</Typography>}
+            fallback={<CategoryFilterSkeleton/>}
           >
             <Filter query={query} />
           </Suspense>
@@ -172,21 +173,20 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
           }}
         >
           <GridProduct products={searchProduct.results} />
+          <Suspense fallback={<div>Cargando paginación...</div>}>
+            <Box sx={{ mt: 4 }}>
+              <PaginationButtons
+                totalPages={totalPages}
+                currentPage={currentPage}
+                marca={marca}
+                subcategoria={subcategoria}
+              />
+            </Box>
+          </Suspense>
         </Box>
       </Box>
 
       {/* Paginación */}
-      <Suspense fallback={<div>Cargando paginación...</div>}>
-        <Box sx={{ mt: 4 }}>
-          <PaginationButtons
-            totalPages={totalPages}
-            currentPage={currentPage}
-            query={query}
-            marca={marca}
-            subcategoria={subcategoria}
-          />
-        </Box>
-      </Suspense>
     </Container>
   );
 }
