@@ -3,57 +3,67 @@ import { createTheme } from '@mui/material/styles';
 
 export const themeOptions = createTheme({
   palette: {
-    mode: "light",
+    mode: 'light',
     primary: {
-      main: "#5914A3",
+      main: '#5914A3',
     },
     secondary: {
-      main: "#52FBFF",
+      main: '#A3147F',
+    },
+    background: {
+      default: '#F9FAFB',
+    },
+    text: {
+      primary: '#111827',
     },
     error: {
-      main: "#ff392a",
+      main: '#DC2626',
     },
-    other: {
-      main: "#A3147F",
-    }
+    warning: {
+      main: '#F59E0B',
+    },
+    info: {
+      main: '#9333EA',
+    },
+    success: {
+      main: '#16A34A',
+    },
   },
   typography: {
-    fontSize: 15,
-    color: "#545454",
     h1: {
-      fontWeight: 800,
-      fontSize: 65,
+      fontSize: '3rem',
+      fontWeight: 700,
+      lineHeight: 1.2,
     },
     h2: {
+      fontSize: '2.2rem',
       fontWeight: 600,
-      fontSize: 45,
+      lineHeight: 1.3,
     },
     h3: {
-      fontSize: 35,
-      fontWeight: 500,
+      fontSize: '1.8rem',
+      fontWeight: 600,
+      lineHeight: 1.3,
     },
     h4: {
-      fontSize: 25,
+      fontSize: '1.4rem',
+      fontWeight: 500,
+      lineHeight: 1.4,
     },
     h5: {
-      fontSize: 20,
+      fontSize: '1.2rem',
+      fontWeight: 500,
+      lineHeight: 1.4,
     },
     h6: {
-      fontSize: 18,
-    },
-    subtitle1: {
-      fontWeight: 500,
-      fontSize: 20,
+      fontSize: '1rem',
+      lineHeight: 1.4,
     },
     subtitle2: {
-      fontSize: 18,
+      fontWeight: 400,
     },
-    body1: {
-      fontSize: 15,
-    },
-    button: {
-      fontSize: 15,
-      fontWeight: 600,
+    body2: {
+      lineHeight: 1.5,
     },
   },
 });
