@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Box, Container, Typography, Divider } from "@mui/material";
-import { fetchComputerDetail } from "@/app/services/computer";
+import { fetchComputerDetail } from "@/app/lib/api/computer";
 import { ShopWhatsApp } from "@/app/ui/shop-whatsapp";
 
 interface ComputerDetailPageProps {

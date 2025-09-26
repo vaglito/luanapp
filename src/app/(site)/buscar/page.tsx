@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getProductSearch } from "@/app/services/products";
+import { getProductSearch } from "@/app/lib/api/products";
 import { ResponseProducts } from "@/app/types/v2/products-type";
 import { Box, Container, Typography, Button } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";

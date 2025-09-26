@@ -8,8 +8,8 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { BrandFilter } from "./BrandFilter";
 import { CategoryFilter } from "./CategoryFilter";
-import { fetchBrandSearch } from "@/app/services/brands";
-import { fetchCategoriesSearch } from "@/app/services/categorys";
+import { fetchBrandSearch } from "@/app/lib/api/brands";
+import { fetchCategoriesSearch } from "@/app/lib/api/categorys";
 
 export const Filter = async ({ query }: { query: string }) => {
   const brands = await fetchBrandSearch(query);
