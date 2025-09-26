@@ -1,4 +1,4 @@
-import { ResponseBrands } from "../types/v2/brands-type";
+import { ResponseBrands } from "../../types/v2/brands-type";
 
 const apiUrl = process.env.API_URL;
 

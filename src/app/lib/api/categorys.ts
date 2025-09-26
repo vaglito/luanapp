@@ -1,4 +1,4 @@
-import { Categorys } from "../types/v2/categorys-type";
+import { Categorys } from "../../types/v2/categorys-type";
 
 const apiUrl = process.env.API_URL;
 
