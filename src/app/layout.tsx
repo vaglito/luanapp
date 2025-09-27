@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { Roboto } from "next/font/google";
-import { Header } from "@/app/ui/header/header";
-import { Footer } from "./ui/footer/footer";
+import { Header } from "./components/layout/header/header";
+import { Footer } from "./components/layout/footer/footer";
 import { ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from "../../theme";
 import "swiper/css";
