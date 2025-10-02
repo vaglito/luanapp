@@ -1,13 +1,13 @@
 import { Container, Typography, Box, Button } from "@mui/material";
-import { fetchListProductCategory } from "@/app/utils/categories";
-import { ProductChart } from "@/app/ui/product-chart";
+import { getProductList } from "@/app/lib/api/products";
+import { GridProduct } from "@/app/components/product/grid-product";
 
 export const revalidate = 0;
 
 interface ListProductSubCategoryPageProps {
   params: {
-    categorySLUG: string;
-    subCategorySLUG: string;
+    categorySlug: string;
+    subcategorySlug: string;
     page?: string;
   };
   searchParams: {
@@ -19,14 +19,14 @@ export default async function ListProductSubCategoryPage({
   params,
   searchParams,
 }: ListProductSubCategoryPageProps) {
-  let currentPage = Number(searchParams?.page) || 1;
+  let page = Number(searchParams?.page) || 1;
 
-  const { categorySLUG, subCategorySLUG } = params;
-  const products = await fetchListProductCategory(
-    categorySLUG,
-    subCategorySLUG,
-    currentPage
-  );
+  const { categorySlug, subcategorySlug } = params;
+  const products = await getProductList({
+    categorySlug,
+    subcategorySlug,
+    page,
+  });
 
   if (!products) {
     return (
@@ -40,8 +40,8 @@ export default async function ListProductSubCategoryPage({
 
   const totalPages = Math.ceil(products.count / 20);
 
-  if (currentPage > totalPages && totalPages > 0) {
-    currentPage = totalPages;
+  if (page > totalPages && totalPages > 0) {
+    page = totalPages;
   }
 
   return (
@@ -57,20 +57,22 @@ export default async function ListProductSubCategoryPage({
           bgcolor: "#ffffff",
         }}
       >
-        <Typography>Estas en la pagina {currentPage}</Typography>
-        <Typography>{categorySLUG} / {subCategorySLUG}</Typography>
+        <Typography>Estas en la pagina {page}</Typography>
+        <Typography>
+          {categorySlug} / {subcategorySlug}
+        </Typography>
         <Typography>Productos encontrados {products.count}</Typography>
       </Box>
       {products && products.results.length > 0 ? (
         <>
-          <ProductChart products={products.results} />
+          <GridProduct products={products.results} />
 
           <Box display="flex" justifyContent="center" mt={3}>
             {Array.from({ length: totalPages }, (_, index) => (
               <Button
                 key={index + 1}
                 variant="outlined"
-                color={currentPage === index + 1 ? "primary" : "secondary"}
+                color={page === index + 1 ? "primary" : "secondary"}
                 href={`?page=${index + 1}`}
                 sx={{ mx: 0.5 }}
               >
