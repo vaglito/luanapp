@@ -1,28 +1,29 @@
+import { Suspense } from "react";
 import {
   Container,
   Box,
   Typography,
-  Button,
   Grid2,
   Divider,
 } from "@mui/material";
-import { fetchListProductBrand } from "@/app/utils/brands";
-import { ProductChart } from "@/app/ui/product-chart";
+import { PaginationButtons } from "@/app/components/PaginationButtons";
+import { getProductList } from "@/app/lib/api/products";
+import { GridProduct } from "@/app/components/product/grid-product";
 
 export const generateMetadata = ({
   params,
 }: {
-  params: { brandSLUG: string };
+  params: { brandSlug: string };
 }) => {
   return {
-    title: `Marca ${params.brandSLUG} | Corporación Luana`,
-    description: `Productos de la marca ${params.brandSLUG} en Corporación Luana.`,
+    title: `Marca ${params.brandSlug} | Corporación Luana`,
+    description: `Productos de la marca ${params.brandSlug} en Corporación Luana.`,
   };
 };
 
 interface BrandDetailProps {
   params: {
-    brandSLUG: string;
+    brandSlug: string;
   };
   searchParams: {
     page?: string;
@@ -35,14 +36,16 @@ export default async function BrandDetail({
   params,
   searchParams,
 }: BrandDetailProps) {
-  const currentPage = parseInt(searchParams.page || "1", 20);
+  let page = Number(searchParams?.page) || 1;
 
-  const { results, count } = await fetchListProductBrand(
-    params.brandSLUG,
-    currentPage
-  );
+  const { brandSlug } = params;
 
-  const totalPages = Math.ceil(count / 20);
+  const products = await getProductList({
+    brandSlug,
+    page,
+  });
+
+  const totalPages = Math.ceil(products.count / 20);
 
   return (
     <>
@@ -64,32 +67,24 @@ export default async function BrandDetail({
                 }}
               >
                 <Typography variant="h4">
-                  Productos{" "}
-                  <span className="uppercase">{params.brandSLUG}</span>
+                  Productos <span className="uppercase">{brandSlug}</span>
                 </Typography>
-                <Typography>{count} productos encontrados</Typography>
+                <Typography>{products.count} productos encontrados</Typography>
               </Box>
               <Divider sx={{ marginY: 2 }} />
               <Box>
-                {results && results.length > 0 ? (
+                {products && products.results.length > 0 ? (
                   <>
-                    <ProductChart products={results} />
+                    <GridProduct products={products.results} />
 
-                    <Box display="flex" justifyContent="center" mt={3}>
-                      {Array.from({ length: totalPages }, (_, index) => (
-                        <Button
-                          key={index + 1}
-                          variant="outlined"
-                          color={
-                            currentPage === index + 1 ? "primary" : "secondary"
-                          }
-                          href={`?&page=${index + 1}`}
-                          sx={{ mx: 0.5 }}
-                        >
-                          {index + 1}
-                        </Button>
-                      ))}
-                    </Box>
+                    <Suspense fallback={<div>Cargando paginación...</div>}>
+                      <Box sx={{ mt: 4 }}>
+                        <PaginationButtons
+                          totalPages={totalPages}
+                          currentPage={page}
+                        />
+                      </Box>
+                    </Suspense>
                   </>
                 ) : (
                   <Typography>No hay productos para mostrar</Typography>
