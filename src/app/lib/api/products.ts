@@ -124,7 +124,7 @@ export const getProductList = async ({
   try {
     const queryParams = new URLSearchParams();
 
-    if (brandSlug) queryParams.append("brands", brandSlug);
+    if (brandSlug) queryParams.append("brand", brandSlug);
     if (categorySlug) queryParams.append("category", categorySlug);
 
     // ✅ soportar múltiples subcategorías
@@ -162,7 +162,6 @@ export const getProductList = async ({
           throw new Error(`Unexpected error: ${response.status}`);
       }
     }
-
     const data: ResponseProducts = await response.json();
     return data;
   } catch (error) {
