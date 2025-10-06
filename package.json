@@ -16,6 +16,7 @@
     "@mui/material": "^6.0.1",
     "@mui/material-nextjs": "^6.0.1",
     "@mui/styled-engine-sc": "^6.0.1",
+    "lodash": "^4.17.21",
     "next": "^14.2.33",
     "react": "^18",
     "react-dom": "^18",
@@ -25,6 +26,7 @@
     "use-debounce": "^10.0.4"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.20",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
