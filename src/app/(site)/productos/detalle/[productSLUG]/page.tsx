@@ -1,6 +1,6 @@
 import { Container, Box, Skeleton } from "@mui/material";
 import { fetchProductDetail } from "@/app/utils/products";
-import { ProductSpecifications1 } from "@/app/ui/product/detail/ProductSpecifications";
+import { ProductSpecifications1 } from "@/app/components/product/detail/ProductSpecifications";
 import { ProductSpecificationsContainer } from "@/app/components/product/detail/product-spec";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
