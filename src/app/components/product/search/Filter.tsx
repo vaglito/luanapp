@@ -6,76 +6,57 @@ import {
   AccordionDetails,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { BrandFilter } from "./BrandFilter";
-import { CategoryFilter } from "./CategoryFilter";
 import { fetchBrandSearch } from "@/app/lib/api/brands";
 import { fetchCategoriesSearch } from "@/app/lib/api/categorys";
 
-export const Filter = async ({ query }: { query: string }) => {
-  const brands = await fetchBrandSearch(query);
-  const categories = await fetchCategoriesSearch(query);
+interface FilterItem<T> {
+  title: string;
+  fetchData: (query: string) => Promise<T>;
+  Component: React.ComponentType<{ query: string; data: T }>;
+}
+interface FilterProps {
+  query: string;
+  filters: FilterItem<any>[];
+}
+
+export const Filter = async ({ query, filters }: FilterProps) => {
+  const results = await Promise.all(filters.map((f) => f.fetchData(query)));
 
   return (
     <Box
       sx={{
         width: "100%",
-        maxWidth: 300,
+        maxWidth: "300",
         mx: "auto",
         display: "flex",
         flexDirection: "column",
       }}
     >
-      {/* Filtro de marcas */}
-      <Accordion defaultExpanded>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-          sx={{
-            backgroundColor: "primary.main",
-            borderTopRightRadius: "12px",
-            borderTopLeftRadius: "12px",
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{
-              fontSize: { xs: "1rem", sm: "1.2rem" },
-              fontWeight: 600,
-              color: "white",
-            }}
-          >
-            Marcas
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <BrandFilter query={query} brands={brands} />
-        </AccordionDetails>
-      </Accordion>
-
-      {/* Filtro de categorías */}
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
-          aria-controls="panel2-content"
-          id="panel2-header"
-          sx={{ backgroundColor: "primary.main" }}
-        >
-          <Typography
-            variant="h6"
-            sx={{
-              fontSize: { xs: "1rem", sm: "1.2rem" },
-              fontWeight: 600,
-              color: "white",
-            }}
-          >
-            Categorías
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <CategoryFilter query={query} categories={categories} />
-        </AccordionDetails>
-      </Accordion>
+      {filters.map((filter, index) => {
+        const data = results[index];
+        const FilterComponent = filter.Component;
+        return (
+          <Accordion key={filter.title} defaultExpanded>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
+              aria-controls={`panel-${index}-content`} id={`panel-${index}-header`} sx={{
+                backgroundColor: "primary.main",
+                borderTopRightRadius: "12px",
+                borderTopLeftRadius: "12px",
+              }}
+            >
+              <Typography variant="h6" sx={{
+                fontSize: {xs: "1rem", sm: "1.2rem"},
+                fontWeight: 600,
+                color: "white",
+              }}>{filter.title}</Typography>
+            </AccordionSummary>
+           <AccordionDetails>
+            <FilterComponent query={query} data={data} />
+            </AccordionDetails> 
+          </Accordion>
+        );
+      })}
     </Box>
   );
 };
