@@ -21,7 +21,7 @@ export const HomeCategory = ({ categories }: { categories: Categorys[] }) => {
           }}
           gutterBottom
         >
-          Categories
+          Categorías
         </Typography>
         <Typography
           variant="body1"
