@@ -7,10 +7,10 @@ import { ResponseBrands } from "@/app/types/v2/brands-type";
 
 export const BrandFilter = ({
   query,
-  brands,
+  data,
 }: {
   query: string;
-  brands: ResponseBrands;
+  data: ResponseBrands;
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -22,7 +22,7 @@ export const BrandFilter = ({
   useEffect(() => {
     const loadBrands = async () => {
       setChecked(
-        brands.results.map((brand) => selectedBrands.includes(brand.slug))
+        data.results.map((brand) => selectedBrands.includes(brand.slug))
       );
     };
 
@@ -74,7 +74,7 @@ export const BrandFilter = ({
       </Button>
 
       <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-        {brands?.results.map((brand, index) => (
+        {data?.results.map((brand, index) => (
           <FormControlLabel
             key={brand.slug}
             label={brand.sopsub2.nom_sub2}

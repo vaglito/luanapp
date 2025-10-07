@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getProductSearch } from "@/app/services/products";
+import { getProductSearch } from "@/app/lib/api/products";
 import { ResponseProducts } from "@/app/types/v2/products-type";
 import { Box, Container, Typography, Button } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -7,6 +7,10 @@ import Link from "next/link";
 import { GridProduct } from "@/app/components/product/grid-product";
 import { PaginationButtons } from "@/app/components/PaginationButtons";
 import { Filter } from "@/app/components/product/search/Filter";
+import { CategoryFilter } from "@/app/components/product/search/CategoryFilter";
+import { BrandFilter } from "@/app/components/product/search/BrandFilter";
+import { fetchCategoriesSearch } from "@/app/lib/api/categorys";
+import { fetchBrandSearch } from "@/app/lib/api/brands";
 import { CategoryFilterSkeleton } from "@/app/components/ui/skeleton/categoryfilter-skeleton";
 
 export const revalidate = 0;
@@ -161,10 +165,22 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
             borderRadius: "12px",
           }}
         >
-          <Suspense
-            fallback={<CategoryFilterSkeleton/>}
-          >
-            <Filter query={query} />
+          <Suspense fallback={<CategoryFilterSkeleton />}>
+            <Filter
+              query={query}
+              filters={[
+                {
+                  title: "Marcas",
+                  fetchData: fetchBrandSearch,
+                  Component: BrandFilter,
+                },
+                {
+                  title: "Categorías",
+                  fetchData: fetchCategoriesSearch,
+                  Component: CategoryFilter,
+                },
+              ]}
+            />
           </Suspense>
         </Box>
         <Box

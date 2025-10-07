@@ -19,14 +19,56 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Project structure
+```
+luanapp/
+│── .env.local                  # Variables de entorno locales
+│── next.config.js              # Configuración de Next.js
+│── tsconfig.json               # Configuración de TypeScript
+│── package.json
+│── public/                     # Archivos estáticos accesibles desde /
+│   └── images/
+│
+├── src/
+│   ├── app/                    # App Router (páginas, layouts y routing)
+│   │   ├── layout.tsx          # Layout global
+│   │   ├── page.tsx            # Página principal "/"
+│   │   ├── (auth)/             # Agrupador de rutas (ej: login, register)
+│   │   │   ├── login/page.tsx
+│   │   │   └── register/page.tsx
+│   │   ├── (shop)/             # Agrupador para tienda
+│   │   │   ├── products/page.tsx
+│   │   │   ├── products/[id]/page.tsx
+│   │   │   └── categories/[slug]/page.tsx
+│   │   └── api/                # Rutas API (Next.js API routes si las necesitas)
+│   │       └── auth/[...nextauth]/route.ts
+│   │
+│   ├── components/             # Componentes reutilizables UI
+│   │   ├── ui/                 # Botones, inputs, modales, etc.
+│   │   ├── layout/             # Navbar, Sidebar, Footer, etc.
+│   │   └── products/           # Componentes específicos de productos
+│   │
+│   ├── hooks/                  # Custom hooks (ej. useAuth, useCart)
+│   │
+│   ├── lib/
+|   |   |── api/                   # Utilidades, helpers, funciones de API
+│   │   |   ├── apis.ts              # Funciones fetch a tu backend
+│   │   └── auth.ts             # Helpers para NextAuth o JWT
+│   │
+│   ├── store/                  # Estado global (Zustand, Redux, etc.)
+│   │   └── cart.ts
+│   │
+│   ├── styles/                 # Estilos globales (CSS/SCSS/Tailwind config)
+│   │   └── globals.css
+│   │
+│   └── types/                  # Tipos TypeScript compartidos
+│       ├── product.ts
+│       └── user.ts
+│
+└── prisma/                     # (opcional) si usas Prisma como ORM
+    └── schema.prisma
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
 ## Deploy on PM2
 

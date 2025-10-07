@@ -4,7 +4,7 @@ import {
   typeComputerSerie,
   Computer,
   typeComputerDetail
-} from "../types/v2/computer-type";
+} from "../../types/v2/computer-type";
 
 const API_URL = process.env.API_URL;
 

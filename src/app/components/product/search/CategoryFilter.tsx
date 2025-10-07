@@ -15,10 +15,10 @@ import { ResponseCategories } from "@/app/types/v2/categorys-type";
 
 export const CategoryFilter = ({
   query,
-  categories,
+  data,
 }: {
   query: string;
-  categories: ResponseCategories;
+  data: ResponseCategories;
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -79,7 +79,7 @@ export const CategoryFilter = ({
         Todas las categorías
       </Button>
 
-      {categories.results.map((category) => {
+      {data.results.map((category) => {
         const subSlugs = category.subcategories.map((s) => s.slug);
         const allChecked =
           subSlugs.every((slug) => currentCategories.includes(slug)) &&

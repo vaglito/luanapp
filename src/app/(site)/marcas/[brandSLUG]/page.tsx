@@ -1,31 +1,32 @@
-import {
-  Container,
-  Box,
-  Typography,
-  Button,
-  Grid2,
-  Divider,
-} from "@mui/material";
-import { fetchListProductBrand } from "@/app/utils/brands";
-import { ProductChart } from "@/app/ui/product-chart";
+import { Suspense } from "react";
+import { Container, Box, Typography } from "@mui/material";
+import { PaginationButtons } from "@/app/components/PaginationButtons";
+import { getProductSearch } from "@/app/lib/api/products";
+import { GridProduct } from "@/app/components/product/grid-product";
+import { Filter } from "@/app/components/product/search/Filter";
+import { CategoryFilter } from "@/app/components/product/search/CategoryFilter";
+import { CategoryFilterSkeleton } from "@/app/components/ui/skeleton/categoryfilter-skeleton";
+import { startCase } from "lodash";
+import { fetchCategoriesSubCategoriesBrand } from "@/app/lib/api/categorys";
 
 export const generateMetadata = ({
   params,
 }: {
-  params: { brandSLUG: string };
+  params: { brandSlug: string };
 }) => {
   return {
-    title: `Marca ${params.brandSLUG} | Corporación Luana`,
-    description: `Productos de la marca ${params.brandSLUG} en Corporación Luana.`,
+    title: `Productos ${params.brandSlug} | Corporación Luana`,
+    description: `Productos de la marca ${params.brandSlug} en Corporación Luana.`,
   };
 };
 
 interface BrandDetailProps {
   params: {
-    brandSLUG: string;
+    brandSlug: string;
   };
   searchParams: {
     page?: string;
+    subcategoria?: string;
   };
 }
 
@@ -35,70 +36,113 @@ export default async function BrandDetail({
   params,
   searchParams,
 }: BrandDetailProps) {
-  const currentPage = parseInt(searchParams.page || "1", 20);
+  let page = Number(searchParams?.page) || 1;
+  const marca = Array.isArray(params?.brandSlug)
+    ? params.brandSlug
+    : params?.brandSlug
+    ? [params.brandSlug]
+    : [];
+  const subcategoria = Array.isArray(searchParams?.subcategoria)
+    ? searchParams.subcategoria
+    : searchParams?.subcategoria
+    ? [searchParams.subcategoria]
+    : [];
 
-  const { results, count } = await fetchListProductBrand(
-    params.brandSLUG,
-    currentPage
-  );
+  const { brandSlug } = params;
+  const brandName = startCase(brandSlug);
 
-  const totalPages = Math.ceil(count / 20);
+  const products = await getProductSearch({
+    query: brandName,
+    brandSlugs: marca,
+    subcategorySlugs: subcategoria,
+    page,
+  });
+
+  const totalPages = Math.ceil(products.count / 20);
 
   return (
-    <>
-      <Container maxWidth="xl">
-        <Grid2 container spacing={2}>
-          <Grid2 size={{ md: 2 }}>
-            <Box marginY={4}>
-              <Typography variant="h4">Categorias</Typography>
-              <Box></Box>
+    <Container maxWidth="xl" sx={{ marginY: 4 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: { xs: "flex-start", md: "center" },
+          justifyContent: "space-between",
+          gap: 2,
+          color: "#545454",
+          p: 2,
+          mb: 3,
+          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+          textShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+          borderRadius: "12px",
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{ fontSize: { xs: "1.2rem", md: "1.5rem" }, fontWeight: 600 }}
+        >
+          Productos {brandName}
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{ fontSize: { xs: "0.95rem", md: "1rem" } }}
+        >
+          {products.count} productos encontrados
+        </Typography>
+      </Box>
+      {/* products */}
+      <Box
+        sx={{
+          display: "flex",
+          marginY: 4,
+          flexDirection: {
+            xs: "column",
+            sm: "column",
+            md: "row",
+            lg: "row",
+            xl: "row",
+          },
+          gap: { xs: 1, sm: 1, md: 2, lg: 4, xl: 4 },
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "20%", lg: "20%", xl: "20%" },
+            backgroundColor: "#fff",
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+            borderRadius: "12px",
+          }}
+        >
+          <Suspense fallback={<CategoryFilterSkeleton />}>
+            <Filter
+              query={brandSlug}
+              filters={[
+                {
+                  title: "Categorias",
+                  fetchData: fetchCategoriesSubCategoriesBrand,
+                  Component: CategoryFilter
+                }
+              ]}
+            />
+          </Suspense>
+        </Box>
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "80%", lg: "80%", xl: "80%" },
+          }}
+        >
+          <GridProduct products={products.results} />
+          <Suspense fallback={<div>Cargando paginación...</div>}>
+            <Box sx={{ mt: 4 }}>
+              <PaginationButtons
+                totalPages={totalPages}
+                currentPage={page}
+                subcategoria={subcategoria}
+              />
             </Box>
-          </Grid2>
-          <Grid2 size={{ md: 10 }}>
-            <Box marginY={4}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Typography variant="h4">
-                  Productos{" "}
-                  <span className="uppercase">{params.brandSLUG}</span>
-                </Typography>
-                <Typography>{count} productos encontrados</Typography>
-              </Box>
-              <Divider sx={{ marginY: 2 }} />
-              <Box>
-                {results && results.length > 0 ? (
-                  <>
-                    <ProductChart products={results} />
-
-                    <Box display="flex" justifyContent="center" mt={3}>
-                      {Array.from({ length: totalPages }, (_, index) => (
-                        <Button
-                          key={index + 1}
-                          variant="outlined"
-                          color={
-                            currentPage === index + 1 ? "primary" : "secondary"
-                          }
-                          href={`?&page=${index + 1}`}
-                          sx={{ mx: 0.5 }}
-                        >
-                          {index + 1}
-                        </Button>
-                      ))}
-                    </Box>
-                  </>
-                ) : (
-                  <Typography>No hay productos para mostrar</Typography>
-                )}
-              </Box>
-            </Box>
-          </Grid2>
-        </Grid2>
-      </Container>
-    </>
+          </Suspense>
+        </Box>
+      </Box>
+    </Container>
   );
 }

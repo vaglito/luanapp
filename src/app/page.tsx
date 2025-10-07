@@ -1,13 +1,13 @@
 import { Container } from "@mui/material";
-import { getNewProductList, getProductList } from "../app/services/products";
+import { getNewProductList, getProductList } from "./lib/api/products";
 // Components
 import { NewProducts } from "./components/ui/new-products";
 import { SectionLaptop } from "./components/ui/category-product";
 import { HomeCategory } from "./components/ui/home-category";
-import { getCategoryList } from "./services/categorys";
-import { getBannerList } from "./services/common";
+import { getCategoryList } from "./lib/api/categorys";
+import { getBannerList } from "./lib/api/common";
 import { BannerHome } from "./components/ui/banner/BannerHome";
-import { ComputerHome } from "@/app/ui/computer/computer-home"
+import { ComputerHome } from "./components/computer/computer-home";
 
 export const revalidate = 0;
 

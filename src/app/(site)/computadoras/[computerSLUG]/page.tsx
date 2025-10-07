@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from "@mui/material";
-import { fetchComputerSerieList } from "@/app/services/computer";
-import { ComputerSerieContainer } from "@/app/ui/computer/computer-serie-container";
+import { fetchComputerSerieList } from "@/app/lib/api/computer";
+import { ComputerSerieContainer } from "@/app/components/computer/computer-serie-container";
 
 interface ComputerPageProps {
   params: {
