@@ -62,7 +62,7 @@ interface ProductDetailProps {
 export const revalidate = 0;
 
 const ProductImageCarousel = dynamic<{ product: Detail }>( // 👈 especifica los props que recibe
-  () => import("@/app/ui/product/detail/ProductImageCarousel"),
+  () => import("@/app/components/product/detail/ProductImageCarousel"),
   {
     ssr: false,
     loading: () => (
