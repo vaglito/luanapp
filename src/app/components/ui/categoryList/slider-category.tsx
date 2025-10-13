@@ -1,14 +1,14 @@
 "use client";
-// Import Swiper styles
+
 import "swiper/css";
 import "swiper/css/pagination";
-
+import { Box, IconButton } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-// import required modules
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Navigation } from "swiper/modules";
 import { Categorys } from "@/app/types/v2/categorys-type";
 import { CardCategory } from "./card-category";
-import { Box, Grid2 } from "@mui/material";
 
 interface SliderCategoryProps {
   categories: Categorys[];
@@ -16,36 +16,81 @@ interface SliderCategoryProps {
 
 export const SliderCategory = ({ categories }: SliderCategoryProps) => {
   return (
-    <Swiper
-      slidesPerView={2}
-      spaceBetween={1}
-      navigation={true}
-      breakpoints={{
-        640: {
-          slidesPerView: 3,
-          spaceBetween: 1,
-        },
-        768: {
-          slidesPerView: 4,
-          spaceBetween: 20,
-        },
-        1024: {
-          slidesPerView: 4,
-          spaceBetween: 20,
-        },
-        1280: {
-          slidesPerView: 6,
-          spaceBetween: 30,
-        },
-      }}
-      modules={[Navigation]}
-      className="mySwiper"
-    >
-      {categories.map((category) => (
-        <SwiperSlide key={category.pk}>
-          <CardCategory category={category} />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <Box sx={{ position: "relative", width: "100%" }}>
+      {/* Botón anterior */}
+      <IconButton
+        className="custom-prev"
+        color="primary"
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: { xs: -10, sm: -20, md: -30, lg: -40, xl: -50 },
+          transform: "translateY(-50%)",
+          backgroundColor: "white",
+          boxShadow: 1,
+          zIndex: 10,
+          "&:hover": { backgroundColor: "white" },
+          width: { xs: 30, sm: 36, md: 40 },
+          height: { xs: 30, sm: 36, md: 40 },
+        }}
+      >
+        <ArrowBackIosNewIcon sx={{ fontSize: { xs: 14, sm: 16, md: 18 } }} />
+      </IconButton>
+
+      {/* Botón siguiente */}
+      <IconButton
+        className="custom-next"
+        color="primary"
+        sx={{
+          position: "absolute",
+          top: "50%",
+          right: { xs: -10, sm: -20, md: -30, lg: -40, xl: -50 },
+          transform: "translateY(-50%)",
+          backgroundColor: "white",
+          boxShadow: 1,
+          zIndex: 10,
+          "&:hover": { backgroundColor: "white" },
+          width: { xs: 30, sm: 36, md: 40 },
+          height: { xs: 30, sm: 36, md: 40 },
+        }}
+      >
+        <ArrowForwardIosIcon sx={{ fontSize: { xs: 14, sm: 16, md: 18 } }} />
+      </IconButton>
+
+      {/* Swiper */}
+      <Swiper
+        modules={[Navigation]}
+        slidesPerView={2}
+        spaceBetween={20}
+        navigation={{
+          prevEl: ".custom-prev",
+          nextEl: ".custom-next",
+        }}
+        breakpoints={{
+          640: {
+            slidesPerView: 3,
+            spaceBetween: 10,
+          },
+          768: {
+            slidesPerView: 4,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 5,
+            spaceBetween: 25,
+          },
+          1280: {
+            slidesPerView: 6,
+            spaceBetween: 30,
+          },
+        }}
+      >
+        {categories.map((category) => (
+          <SwiperSlide key={category.pk}>
+            <CardCategory category={category} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </Box>
   );
 };
