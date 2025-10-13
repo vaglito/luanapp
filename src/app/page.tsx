@@ -32,7 +32,9 @@ export default async function Home() {
       </Container>
       <ComputerHome />
       <SectionLaptop products={productsLaptop.results} />
-      <HomeCategory categories={categories} />
+      <Container maxWidth="xl">
+        <HomeCategory categories={categories} />
+      </Container>
     </>
   );
 }
