@@ -6,37 +6,31 @@ export const HomeCategory = ({ categories }: { categories: Categorys[] }) => {
   return (
     <Box
       sx={{
-        padding: 4,
-        marginTop: 1,
+        marginTop: 4,
         marginBottom: 4,
-      }}>
-      <Box>
-        <Typography
-          variant="h2"
-          sx={{
-            fontSize: "2.0rem",
-            fontWeight: "bold",
-            color: "#333",
-            textAlign: "center",
-          }}
-          gutterBottom
-        >
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h3" color="#545454" sx={{ fontWeight: "bold" }}>
           Categorías
         </Typography>
         <Typography
-          variant="body1"
-          gutterBottom
+          color="#545454"
           sx={{
-            fontSize: "1.0rem",
-            textAlign: "center",
-            mb: 3,
+            fontSize: 18,
           }}
         >
           Explora nuestra amplia gama de categorías para encontrar lo que
           necesitas.
         </Typography>
       </Box>
-      <Box>
+      <Box sx={{ marginY: 4 }}>
         <SliderCategory categories={categories} />
       </Box>
     </Box>
