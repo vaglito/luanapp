@@ -116,7 +116,7 @@ export const getProductList = async ({
   subcategorySlug,
   page = 1,
 }: {
-  brandSlug?: string;
+  brandSlug?: string | string[];
   categorySlug?: string;
   subcategorySlug?: string | string[]; // 👈 permitir array también
   page?: number;
@@ -124,8 +124,17 @@ export const getProductList = async ({
   try {
     const queryParams = new URLSearchParams();
 
-    if (brandSlug) queryParams.append("brand", brandSlug);
     if (categorySlug) queryParams.append("category", categorySlug);
+
+    if (brandSlug) {
+      if (Array.isArray(brandSlug)) {
+        brandSlug.forEach((slug) =>
+          queryParams.append("brand", slug)
+        );
+      } else {
+        queryParams.append("brand", brandSlug)
+      }
+    }
 
     // ✅ soportar múltiples subcategorías
     if (subcategorySlug) {
@@ -162,6 +171,7 @@ export const getProductList = async ({
           throw new Error(`Unexpected error: ${response.status}`);
       }
     }
+    console.log(response)
     const data: ResponseProducts = await response.json();
     return data;
   } catch (error) {
