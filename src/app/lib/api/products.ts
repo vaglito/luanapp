@@ -171,7 +171,7 @@ export const getProductList = async ({
           throw new Error(`Unexpected error: ${response.status}`);
       }
     }
-    console.log(response)
+    
     const data: ResponseProducts = await response.json();
     return data;
   } catch (error) {
