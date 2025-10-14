@@ -19,7 +19,7 @@ export const SliderCategory = ({ categories }: SliderCategoryProps) => {
     <Box sx={{ position: "relative", width: "100%" }}>
       {/* Botón anterior */}
       <IconButton
-        className="custom-prev"
+        className="category-prev"
         color="primary"
         sx={{
           position: "absolute",
@@ -39,7 +39,7 @@ export const SliderCategory = ({ categories }: SliderCategoryProps) => {
 
       {/* Botón siguiente */}
       <IconButton
-        className="custom-next"
+        className="category-next"
         color="primary"
         sx={{
           position: "absolute",
@@ -63,8 +63,8 @@ export const SliderCategory = ({ categories }: SliderCategoryProps) => {
         slidesPerView={2}
         spaceBetween={20}
         navigation={{
-          prevEl: ".custom-prev",
-          nextEl: ".custom-next",
+          prevEl: ".category-prev",
+          nextEl: ".category-next",
         }}
         breakpoints={{
           640: {
