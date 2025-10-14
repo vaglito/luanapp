@@ -1,8 +1,36 @@
-import { Container, Typography, Box, Button } from "@mui/material";
-import { getProductList } from "@/app/lib/api/products";
+import { Suspense } from "react";
+import { Container, Typography, Box } from "@mui/material";
+import { PaginationButtons } from "@/app/components/PaginationButtons";
+import { Filter } from "@/app/components/product/search/Filter";
+import { BrandFilter } from "@/app/components/product/search/BrandFilter";
+import { CategoryFilterSkeleton } from "@/app/components/ui/skeleton/categoryfilter-skeleton";
 import { GridProduct } from "@/app/components/product/grid-product";
+import { getProductList } from "@/app/lib/api/products";
+import { fetchBrandCategoriesSubCategories } from "@/app/lib/api/brands";
+import { startCase } from "lodash";
 
 export const revalidate = 0;
+
+export const generateMetadata = ({
+  params,
+}: {
+  params: { categorySlug: string; subcategorySlug: string };
+}) => {
+  return {
+    title: `${startCase(params.categorySlug)} - ${startCase(
+      params.subcategorySlug
+    )} | Corporacion Luana`,
+    description: `Explora nuestra colección de ${startCase(
+      params.categorySlug
+    )}. Encuentra las mejores marcas, precios y estilos. ¡Compra online con envío rápido en Perú!`,
+    keywords: [
+      "comprar rapido",
+      "envio rapido",
+      "tienda virtual",
+      "envio a todo el peru",
+    ],
+  };
+};
 
 interface ListProductSubCategoryPageProps {
   params: {
@@ -11,6 +39,7 @@ interface ListProductSubCategoryPageProps {
     page?: string;
   };
   searchParams: {
+    marca: string;
     page?: string;
   };
 }
@@ -21,10 +50,17 @@ export default async function ListProductSubCategoryPage({
 }: ListProductSubCategoryPageProps) {
   let page = Number(searchParams?.page) || 1;
 
+  const brands = Array.isArray(searchParams?.marca)
+    ? searchParams.marca
+    : searchParams?.marca
+    ? [searchParams.marca]
+    : [];
+
   const { categorySlug, subcategorySlug } = params;
   const products = await getProductList({
-    categorySlug,
-    subcategorySlug,
+    categorySlug: categorySlug,
+    subcategorySlug: subcategorySlug,
+    brandSlug: brands,
     page,
   });
 
@@ -49,41 +85,80 @@ export default async function ListProductSubCategoryPage({
       <Box
         sx={{
           display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: { xs: "flex-start", md: "center" },
           justifyContent: "space-between",
-          marginY: 4,
-          padding: "20px",
-          boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+          gap: 2,
+          color: "#545454",
+          p: 2,
+          mb: 3,
+          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+          textShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
           borderRadius: "12px",
-          bgcolor: "#ffffff",
         }}
       >
-        <Typography>Estas en la pagina {page}</Typography>
-        <Typography>
-          {categorySlug} / {subcategorySlug}
+        <Typography
+          variant="h5"
+          sx={{ fontSize: { xs: "1.2rem", md: "1.5rem" }, fontWeight: 600 }}
+        >
+          Ver {startCase(params.subcategorySlug)}
         </Typography>
-        <Typography>Productos encontrados {products.count}</Typography>
+        <Typography
+          variant="body1"
+          sx={{ fontSize: { xs: "0.95rem", md: "1rem" } }}
+        >
+          {products.count} productos encontrados
+        </Typography>
       </Box>
-      {products && products.results.length > 0 ? (
-        <>
+      {/* products */}
+      <Box
+        sx={{
+          display: "flex",
+          marginY: 4,
+          flexDirection: {
+            xs: "column",
+            sm: "column",
+            md: "row",
+            lg: "row",
+            xl: "row",
+          },
+          gap: { xs: 1, sm: 1, md: 2, lg: 4, xl: 4 },
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "20%", lg: "20%", xl: "20%" },
+            backgroundColor: "#fff",
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+            borderRadius: "12px",
+          }}
+        >
+          <Suspense fallback={<CategoryFilterSkeleton />}>
+            <Filter
+              query={subcategorySlug}
+              filters={[
+                {
+                  title: "Marcas",
+                  fetchData: fetchBrandCategoriesSubCategories,
+                  Component: BrandFilter,
+                },
+              ]}
+            />
+          </Suspense>
+        </Box>
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "80%", lg: "80%", xl: "80%" },
+          }}
+        >
           <GridProduct products={products.results} />
-
-          <Box display="flex" justifyContent="center" mt={3}>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <Button
-                key={index + 1}
-                variant="outlined"
-                color={page === index + 1 ? "primary" : "secondary"}
-                href={`?page=${index + 1}`}
-                sx={{ mx: 0.5 }}
-              >
-                {index + 1}
-              </Button>
-            ))}
-          </Box>
-        </>
-      ) : (
-        <Typography> No se encontraron ningun productos</Typography>
-      )}
+          <Suspense fallback={<div>Cargando paginación...</div>}>
+            <Box sx={{ mt: 4 }}>
+              <PaginationButtons totalPages={totalPages} currentPage={page} marca={brands}/>
+            </Box>
+          </Suspense>
+        </Box>
+      </Box>
     </Container>
   );
 }
