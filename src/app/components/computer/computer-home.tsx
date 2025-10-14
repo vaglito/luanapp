@@ -51,7 +51,7 @@ export function ComputerHome() {
               alignItems: "center",
             }}
           >
-            <Typography variant="h3" color="#545454" sx={{ fontWeight: "bold" }}>
+            <Typography variant="h3" color="#545454" sx={{ fontWeight: "bold", marginY: 4 }}>
               Computadoras
             </Typography>
             <Box>
