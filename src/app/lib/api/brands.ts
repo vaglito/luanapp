@@ -73,7 +73,7 @@ export const fetchBrandCategoriesSubCategories = async (
 ): Promise<ResponseBrands> => {
   try {
     const response = await fetch(
-      `${apiUrl}/api/v2.0/categorys/brand/?subcategory=${subcategory}`,
+      `${apiUrl}/api/v2.0/brands/brand/?subcategory=${subcategory}`,
       {
         method: "GET",
         headers: {
