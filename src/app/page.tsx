@@ -73,8 +73,8 @@ export default async function Home() {
       <Container maxWidth="xl">
         <NewProducts products={newProduct.results} />
       </Container>
-      <ComputerHome />
       <SectionLaptop products={productsLaptop.results} />
+      <ComputerHome />
     </>
   );
 }
