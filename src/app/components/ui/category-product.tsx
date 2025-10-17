@@ -62,30 +62,30 @@ export const SectionLaptop = ({ products }: { products: Product[] }) => {
           }}
         >
           <Button
-            variant="outlined"
-            color="secondary"
+            variant="contained"
+            color="info"
             onClick={() => handleFilter("laptop-c-video-integrada")}
           >
             Laptop con video Integradas
           </Button>
           <Button
-            variant="outlined"
-            color="secondary"
+            variant="contained"
+            color="info"
             onClick={() => handleFilter("laptop-cvideo-dedicada")}
           >
             Laptop con video dedicadas
           </Button>
-          <Typography
+          <Button
+          variant="text"
             onClick={() => router.push("/buscar?query=laptop")}
             sx={{
-              fontSize: "1.0rem",
               color: "#fff",
+              fontSize: "1.0rem",
               textAlign: "center",
-              cursor: "pointer",
             }}
           >
             Ver más
-          </Typography>
+          </Button>
         </Box>
         <Box>
           <SliderProduct products={products} Component={CardProduct} />
