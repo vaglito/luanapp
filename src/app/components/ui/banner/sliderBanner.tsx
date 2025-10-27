@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // import required modules
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
-import { Banner } from "@/app/utils/extras";
+import { Banner } from "@/app/types/banner.type";
 
 // Import Swiper styles
 import "swiper/css";
