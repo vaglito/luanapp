@@ -7,17 +7,16 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Navigation } from "swiper/modules";
-import { Categorys } from "@/app/types/v2/categorys-type";
 import { CardCategory } from "./card-category";
+import { Categories } from "@/app/types/categories.type";
 
 interface SliderCategoryProps {
-  categories: Categorys[];
+  categories: Categories[];
 }
 
 export const SliderCategory = ({ categories }: SliderCategoryProps) => {
   return (
     <Box sx={{ position: "relative", width: "100%" }}>
-      {/* Botón anterior */}
       <IconButton
         className="category-prev"
         color="primary"
@@ -37,7 +36,6 @@ export const SliderCategory = ({ categories }: SliderCategoryProps) => {
         <ArrowBackIosNewIcon sx={{ fontSize: { xs: 14, sm: 16, md: 18 } }} />
       </IconButton>
 
-      {/* Botón siguiente */}
       <IconButton
         className="category-next"
         color="primary"
@@ -86,7 +84,7 @@ export const SliderCategory = ({ categories }: SliderCategoryProps) => {
         }}
       >
         {categories.map((category) => (
-          <SwiperSlide key={category.pk}>
+          <SwiperSlide key={category.id}>
             <CardCategory category={category} />
           </SwiperSlide>
         ))}

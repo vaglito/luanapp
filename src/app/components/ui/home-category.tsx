@@ -1,8 +1,8 @@
-import { Categorys } from "@/app/types/v2/categorys-type";
+import { Categories } from "@/app/types/categories.type";
 import { Box, Typography } from "@mui/material";
 import { SliderCategory } from "./categoryList/slider-category";
 
-export const HomeCategory = ({ categories }: { categories: Categorys[] }) => {
+export const HomeCategory = ({ categories }: { categories: Categories[] }) => {
   return (
     <Box
       sx={{

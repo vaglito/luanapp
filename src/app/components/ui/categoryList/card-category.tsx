@@ -2,7 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Box, Typography, Menu, MenuItem } from "@mui/material";
-import { Categorys, Subcategory } from "@/app/types/v2/categorys-type";
+import { Categories, SubCategories } from "@/app/types/categories.type";
 import { styled } from "@mui/material/styles";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 
@@ -17,17 +17,17 @@ const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }));
 
-export const CardCategory = ({ category }: { category: Categorys }) => {
+export const CardCategory = ({ category }: { category: Categories }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [selectedSubcategories, setSelectedSubcategories] = useState<
-    Subcategory[]
+    SubCategories[]
   >([]);
   const [selectedCategorySlug, setSelectedCategorySlug] = useState<string>("");
 
   const handleClick = (
     event: React.MouseEvent<HTMLImageElement>,
-    subcategories: Subcategory[],
+    subcategories: SubCategories[],
     categorySlug: string
   ) => {
     setAnchorEl(event.currentTarget);
@@ -43,7 +43,7 @@ export const CardCategory = ({ category }: { category: Categorys }) => {
 
   return (
     <>
-      <BootstrapTooltip title={category.soplinea.nom_line}>
+      <BootstrapTooltip title={category.relay.categoryName}>
         <Box
           sx={{
             bgcolor: "#e1e1e1",
@@ -52,36 +52,36 @@ export const CardCategory = ({ category }: { category: Categorys }) => {
             justifyContent: "center",
             alignItems: "center",
             padding: 2,
-            width: { xs: 110, sm: 120, md: 190 }, // Tamaño ajustable según el viewport
+            width: { xs: 110, sm: 120, md: 190 },
             height: { xs: 110, sm: 120, md: 190 },
-            overflow: "hidden", // Evita que la imagen sobresalga del borde redondo
-            mx: "auto", // Centra el contenedor
+            overflow: "hidden",
+            mx: "auto",
           }}
         >
           {category.image ? (
             <Image
               src={category.image}
-              alt={`Imagen de ${category.soplinea.nom_line ?? "categoría"}`}
+              alt={`Imagen de ${category.relay.categoryName ?? "categoría"}`}
               sizes="100vw"
               width={250}
               height={250}
               className="transition duration-150 ease-in-out hover:scale-110"
               style={{
-                width: "100%", // Ajustar a contenedor
-                height: "100%", // Ajustar a contenedor
-                objectFit: "cover", // Evitar distorsión
-                borderRadius: "50%", // Hacer la imagen redonda
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "50%",
                 cursor: "pointer",
               }}
               aria-label={`Ver subcategorias de ${
-                category.soplinea.nom_line ?? "categoria"
+                category.relay.categoryName ?? "categoria"
               }`}
-              id={`categoria-${category.pk}`}
+              id={`categoria-${category.id}`}
               aria-controls={open ? "demo-positioned-menu" : undefined}
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
               onClick={(event: React.MouseEvent<HTMLImageElement>) =>
-                handleClick(event, category.subcategory, category.slug)
+                handleClick(event, category.categoriesWeb, category.relay.categoryWeb)
               }
             />
           ) : (
@@ -93,7 +93,7 @@ export const CardCategory = ({ category }: { category: Categorys }) => {
                 color: "#333",
               }}
             >
-              {category.soplinea.nom_line}
+              {category.relay.categoryName}
             </Typography>
           )}
         </Box>
@@ -115,13 +115,13 @@ export const CardCategory = ({ category }: { category: Categorys }) => {
       >
         {selectedSubcategories.map((subcategory) => (
           <>
-            {subcategory.is_active && (
+            {subcategory.isActive && (
               <Link
-                href={`/productos/${selectedCategorySlug}/${subcategory.slug}`}
-                key={subcategory.sopsub1.cod_sub1}
+                href={`/productos/${selectedCategorySlug}/${subcategory.relay.subcategoryweb}`}
+                key={subcategory.id}
               >
                 <MenuItem onClick={handleClose}>
-                  {subcategory.sopsub1.nom_sub1}
+                  {subcategory.relay.subcategoryName}
                 </MenuItem>
               </Link>
             )}
