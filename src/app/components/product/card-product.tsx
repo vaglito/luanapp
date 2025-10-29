@@ -1,14 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Product } from "@/app/types/v2/products-type";
+import { Products } from "@/app/types/products.type";
 import { Box, Typography, Button } from "@mui/material";
 import { CardImage } from "./CardProduct/card-imagen";
 import { CardStock } from "./CardProduct/card-stock";
-
 import { PriceCard } from "./CardProduct/price-card";
 
-export const CardProduct = ({ product }: { product: Product }) => {
+export const CardProduct = ({ product, exchange }: { product: Products, exchange: number; }) => {
   const router = useRouter();
   return (
     <Box
@@ -31,8 +30,8 @@ export const CardProduct = ({ product }: { product: Product }) => {
     >
       {/* Contenedor de la imagen */}
       <CardImage
-        productimage_set={product.productimage_set}
-        title={product.sopprod.nom_prod}
+        productimage_set={product.productsimages}
+        title={product.relay.productName}
         slug={product.slug}
       />
 
@@ -58,12 +57,12 @@ export const CardProduct = ({ product }: { product: Product }) => {
               },
             }}
           >
-            {product.sopprod.nom_prod}
+            {product.relay.productName}
           </Typography>
-          <PriceCard price={product.sopprod.cod_prod_relation_precios[0]} />
+          <PriceCard priceSale={product.relay.priceSale} priceBulk={product.relay.priceBulk} exchange={exchange} />
           <CardStock
-            stock={product.sopprod.stock_index}
-            cod={product.sopprod.pk}
+            stock={product.relay.totalStock}
+            cod={product.relay.productId}
           />
         </Box>
       </Link>

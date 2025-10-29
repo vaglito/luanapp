@@ -1,9 +1,9 @@
 import { Typography, Box } from "@mui/material";
 import { SliderProduct } from "../product/slider-product";
-import { Product } from "@/app/types/v2/products-type";
+import { Products } from "@/app/types/products.type";
 import { CardProduct } from "../product/card-product";
 
-export const NewProducts = ({ products }: { products: Product[] }) => {
+export const NewProducts = ({ products, exchange }: { products: Products[], exchange: number }) => {
   return (
     <Box sx={{ marginTop: 4 }}>
       <Box>
@@ -30,7 +30,7 @@ export const NewProducts = ({ products }: { products: Product[] }) => {
         </Box>
       </Box>
       <Box>
-        <SliderProduct products={products} Component={CardProduct} />
+        <SliderProduct products={products} Component={CardProduct} exchange={exchange}/>
       </Box>
     </Box>
   );

@@ -5,9 +5,9 @@ import "swiper/css/pagination";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"; // Modulos adicionales que puedes usar
 import { Box } from "@mui/material";
 import Image from "next/image";
-import { Detail } from "@/app/types/detail";
+import { ProductDetail } from "@/app/types/products.type";
 
-export default function ProductImageCarousel({ product }: { product: Detail }) {
+export default function ProductImageCarousel({ product }: { product: ProductDetail }) {
   return (
     <Box
       sx={{
@@ -27,7 +27,7 @@ export default function ProductImageCarousel({ product }: { product: Detail }) {
         pagination={{ clickable: true }}
         scrollbar={{ draggable: true }}
       >
-        {product.productimage_set.map((image, index) => (
+        {product.productsimages.map((image, index) => (
           <SwiperSlide key={index}>
             <Box
               sx={{
@@ -38,7 +38,7 @@ export default function ProductImageCarousel({ product }: { product: Detail }) {
             >
               <Image
                 src={image.images}
-                alt={`Imagen de ${product.sopprod.nom_prod}`}
+                alt={`Imagen de ${product.relay.productName}`}
                 width={600}
                 height={500}
                 style={{

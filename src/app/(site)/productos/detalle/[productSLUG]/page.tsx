@@ -1,12 +1,13 @@
-import { Container, Box, Skeleton } from "@mui/material";
-import { fetchProductDetail } from "@/app/utils/products";
-import { ProductSpecifications1 } from "@/app/components/product/detail/ProductSpecifications";
-import { ProductSpecificationsContainer } from "@/app/components/product/detail/product-spec";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
+import { Container, Box, Skeleton } from "@mui/material";
+import { fetchDetailProduct } from "@/app/services/products";
+import { ProductSpecifications1 } from "@/app/components/product/detail/ProductSpecifications";
+import { ProductSpecificationsContainer } from "@/app/components/product/detail/product-spec";
 import { ProductDetailDescription } from "@/app/components/product/detail/product-detail-description";
-import { Detail } from "@/app/types/detail";
+import { ProductDetail } from "@/app/types/products.type";
 import { ProductDetailMore } from "@/app/components/product/detail/product-detail-more";
+import { fetchExchangeRate } from "@/app/services/exchangeRate";
 
 // --- SEO dinámico con Open Graph + Twitter ---
 export async function generateMetadata({
@@ -14,13 +15,13 @@ export async function generateMetadata({
 }: {
   params: { productSLUG: string };
 }): Promise<Metadata> {
-  const product = await fetchProductDetail(params.productSLUG);
+  const product = await fetchDetailProduct(params.productSLUG);
 
-  const title = product.sopprod.nom_prod;
+  const title = product.relay.productName;
   const description =
     product.resumen?.replace(/(<([^>]+)>)/gi, "").slice(0, 150) ||
     "Compra este producto con descuento.";
-  const image = product.productimage_set?.[0]?.images;
+  const image = product.productsimages?.[0]?.images;
   const url = `https://corporacionluana.pe/productos/detalle/${params.productSLUG}`;
 
   return {
@@ -61,7 +62,7 @@ interface ProductDetailProps {
 
 export const revalidate = 0;
 
-const ProductImageCarousel = dynamic<{ product: Detail }>( // 👈 especifica los props que recibe
+const ProductImageCarousel = dynamic<{ product: ProductDetail }>( // 👈 especifica los props que recibe
   () => import("@/app/components/product/detail/ProductImageCarousel"),
   {
     ssr: false,
@@ -79,7 +80,8 @@ export default async function ProductDetailPage({
   params,
 }: ProductDetailProps) {
   const { productSLUG } = params;
-  const product = await fetchProductDetail(productSLUG);
+  const product = await fetchDetailProduct(productSLUG);
+  const exchange = await fetchExchangeRate();
 
   return (
     <Container maxWidth="xl" sx={{ marginY: 4}}>
@@ -109,10 +111,12 @@ export default async function ProductDetailPage({
           }}
         >
           <ProductDetailDescription
-            title={product.sopprod.nom_prod}
+            title={product.relay.productName}
             resumen={product.resumen}
-            stock={product.sopprod.stock_index}
-            prices={product.sopprod.cod_prod_relation_precios[0]}
+            stock={product.relay.totalStock}
+            prices={product.relay.priceSale}
+            priceb={product.relay.priceBulk}
+            exchange={exchange.exchange}
           />
         </Box>
       </Box>

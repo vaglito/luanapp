@@ -1,23 +1,21 @@
+"use client";
 import { Box, Typography, Chip } from "@mui/material";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import { convertUsdToPen } from "@/app/lib/currency";
 
 interface ProductPriceProps {
-  prices: {
-    precio_decimal: number;
-    precio_local: number;
-    precio_oferta_d: number;
-    precio_oferta: number;
-  };
+  prices: number;
+  priceb: number;
+  exchange: number
 }
 
-export function ProductPrice({ prices }: ProductPriceProps) {
-  const hasOffer = prices.precio_oferta_d > 0;
-  const porcentajeDescuento =
-    prices.precio_oferta_d > 0
-      ? ((prices.precio_decimal - prices.precio_oferta_d) /
-          prices.precio_decimal) *
-        100
-      : 0;
+export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
+
+  const hasOffer = priceb > 0;
+  const discountPercentage = hasOffer ? ((prices - priceb) / prices) * 100 : 0;
+
+  const priceSalePen = convertUsdToPen(priceb || prices, exchange);
+  const priceOriginalPen = convertUsdToPen(prices, exchange);
 
   return (
     <Box sx={{ marginTop: 3 }}>
@@ -30,30 +28,27 @@ export function ProductPrice({ prices }: ProductPriceProps) {
             gap: 1,
           }}
         >
-          <Box sx={{ display: "flex" }}>
+          <Box sx={{ display: "flex", gap: 2 }}>
             <Typography
               sx={{
-                marginRight: 2,
                 fontWeight: "bold",
-                fontSize: { xs: 26, sm: 26, md: 27, lg: 38 },
+                fontSize: { xs: 24, sm: 24, md: 27, lg: 38 },
                 color: "error.main",
-                textShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
               }}
             >
-              S/{prices.precio_oferta}
+              S/{priceSalePen}
             </Typography>
             <Typography
               sx={{
                 fontWeight: "semibold",
                 fontSize: { xs: 24, sm: 24, md: 27, lg: 38 },
                 color: "gray",
-                textShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
               }}
             >
-              (${prices.precio_oferta_d})
+              (${priceb})
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", gap: 2}}>
+          <Box sx={{ display: "flex", gap: 2 }}>
             <Typography
               sx={{
                 textDecoration: "line-through",
@@ -61,7 +56,7 @@ export function ProductPrice({ prices }: ProductPriceProps) {
                 fontSize: { xs: 19, sm: 20, md: 24, lg: 27 },
               }}
             >
-              S/{prices.precio_local}
+              S/{priceOriginalPen}
             </Typography>
             <Typography
               sx={{
@@ -70,11 +65,11 @@ export function ProductPrice({ prices }: ProductPriceProps) {
                 fontSize: { xs: 19, sm: 20, md: 24, lg: 27 },
               }}
             >
-              (${prices.precio_decimal})
+              (${prices})
             </Typography>
             <Chip
               color="primary"
-              label={`${porcentajeDescuento.toFixed(0)}% de descuento`}
+              label={`${discountPercentage.toFixed(0)}% de descuento`}
             />
           </Box>
         </Box>
@@ -92,21 +87,18 @@ export function ProductPrice({ prices }: ProductPriceProps) {
               fontWeight: "bold",
               fontSize: { xs: 26, sm: 26, md: 27, lg: 38 },
               color: "#A3147F",
-              textShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-              marginRight: 2,
             }}
           >
-            S/{prices.precio_local}
+            S/{priceOriginalPen}
           </Typography>
           <Typography
             sx={{
               fontWeight: "semibold",
               fontSize: { xs: 24, sm: 24, md: 27, lg: 38 },
               color: "gray",
-              textShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
             }}
           >
-            (${prices.precio_decimal})
+            (${prices})
           </Typography>
           <Chip label="Incluye IGV" />
         </Box>
@@ -118,17 +110,12 @@ export function ProductPrice({ prices }: ProductPriceProps) {
             color: "#545454",
             marginTop: 0.1,
             fontWeight: "semibold",
-            
           }}
         >
-          Ahorra, sin recargo con Transferencia / Deposito o efectivo
+          Ahorra, sin recargo con Transferencia / Depósito o efectivo
         </Typography>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-        }}
-      >
+      <Box sx={{ display: "flex" }}>
         <Box sx={{ marginTop: 2, display: "flex", alignItems: "center" }}>
           <LocalShippingIcon sx={{ color: "primary.main", marginRight: 1 }} />
           <Typography
@@ -138,7 +125,7 @@ export function ProductPrice({ prices }: ProductPriceProps) {
               fontWeight: "semibold",
             }}
           >
-            Pide ahora y recibe en Lima Metropolitana y provincias.
+            Pide ahora y recibe en Lima Metropolitana y provincias
           </Typography>
         </Box>
       </Box>

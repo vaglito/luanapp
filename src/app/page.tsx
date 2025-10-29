@@ -6,6 +6,9 @@ import { HomeCategory } from "./components/ui/home-category";
 import { BannerHome } from "./components/ui/banner/BannerHome";
 import { ComputerHome } from "./components/computer/computer-home";
 import { fetchBannerHome } from "./services/siteInfo";
+import { fetchCategories } from "./services/categories";
+import { fetchNewProducts } from "./services/products";
+import { fetchExchangeRate } from "./services/exchangeRate";
 
 export const revalidate = 0;
 
@@ -56,16 +59,19 @@ export const generateMetadata = () => {
 
 export default async function Home() {
   const banners = await fetchBannerHome()
-
+  const categories = await fetchCategories()
+  const newProduct = await fetchNewProducts()
+  const exchange = await fetchExchangeRate()
   return (
     <>
       <BannerHome banners={banners} />
-{/*       <Container maxWidth="xl">
+      <Container maxWidth="xl">
         <HomeCategory categories={categories} />
       </Container>
-      <Container maxWidth="xl">
-        <NewProducts products={newProduct.results} />
+       <Container maxWidth="xl">
+        <NewProducts products={newProduct.results} exchange={exchange.exchange}/>
       </Container>
+      {/*
       <SectionLaptop products={productsLaptop.results} />
       <ComputerHome /> */}
     </>

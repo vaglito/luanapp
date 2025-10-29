@@ -1,3 +1,4 @@
+
 import { Box, Typography } from "@mui/material";
 import { ProductPrice } from "@/app/components/product/detail/product-price";
 import { ShopFunction } from "./shop-functions";
@@ -6,19 +7,18 @@ interface ProductDetailDescriptionProps {
   title: string;
   resumen: string;
   stock: number;
-  prices: {
-    precio_decimal: number;
-    precio_local: number;
-    precio_oferta_d: number;
-    precio_oferta: number;
-  };
+  prices: number;
+  priceb: number;
+  exchange: number;
 }
 
 export function ProductDetailDescription({
   title,
   resumen,
   prices,
+  priceb,
   stock,
+  exchange,
 }: ProductDetailDescriptionProps) {
   return (
     <Box
@@ -56,8 +56,8 @@ export function ProductDetailDescription({
       >
         <Box dangerouslySetInnerHTML={{ __html: resumen }} />
       </Box>
-      <ProductPrice prices={prices} />
-      <ShopFunction title={title} stock={stock}/>
+      <ProductPrice prices={prices} priceb={priceb} exchange={exchange}/>
+      <ShopFunction title={title} stock={stock} />
     </Box>
   );
 }

@@ -4,16 +4,21 @@ import "swiper/css/navigation";
 import { Box, IconButton } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
-import { Product } from "@/app/types/v2/products-type";
+import { Products } from "@/app/types/products.type";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 interface SliderProductProps {
-  products: Product[];
+  products: Products[];
   Component: React.ElementType;
+  exchange: number;
 }
 
-export const SliderProduct = ({ products, Component }: SliderProductProps) => {
+export const SliderProduct = ({
+  products,
+  Component,
+  exchange,
+}: SliderProductProps) => {
   return (
     <Box sx={{ position: "relative", marginTop: 2 }}>
       {/* Botón anterior */}
@@ -71,9 +76,9 @@ export const SliderProduct = ({ products, Component }: SliderProductProps) => {
         }}
       >
         {products.map((product) => (
-          <SwiperSlide key={product.pk}>
+          <SwiperSlide key={product.id}>
             <Box sx={{ paddingY: 4, paddingX: { xs: 1, sm: 1, md: 2, lg: 2 } }}>
-              <Component product={product} />
+              <Component product={product} exchange={exchange} />
             </Box>
           </SwiperSlide>
         ))}
