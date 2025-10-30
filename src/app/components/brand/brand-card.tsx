@@ -2,11 +2,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Box, Typography } from "@mui/material";
-import { Brands } from "@/app/types/brands";
+import { Brands } from "@/app/types/brands.type";
 
 export const BrandCard = ({ brand }: { brand: Brands }) => {
   return (
-    <Link href={`/marcas/${brand.slug}`}>
+    <Link href={`/marcas/${brand.relay.brands}`}>
       <Box
         sx={{
           p: 3,
@@ -26,7 +26,7 @@ export const BrandCard = ({ brand }: { brand: Brands }) => {
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Image
             src={brand.image}
-            alt={`Marca ${brand.sopsub2.nom_sub2}`}
+            alt={`Marca ${brand.relay.brandName}`}
             width={250}
             height={100}
             style={{ objectFit: "cover", borderRadius: 3 }}
@@ -51,7 +51,7 @@ export const BrandCard = ({ brand }: { brand: Brands }) => {
             },
           }}
         >
-          {brand.sopsub2.nom_sub2}
+          {brand.relay.brandName}
         </Typography>
       </Box>
     </Link>

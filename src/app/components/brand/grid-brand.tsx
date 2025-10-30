@@ -1,5 +1,5 @@
 import { Grid2, Box, Typography } from "@mui/material";
-import { Brands } from "@/app/types/brands";
+import { Brands } from "@/app/types/brands.type";
 import { BrandCard } from "./brand-card";
 
 export const GridBrand = ({ brands }: { brands: Brands[] }) => {
