@@ -23,3 +23,18 @@ export async function fetchBrandsSearch(search: string): Promise<Brands[]> {
     throw new Error("Failed fetch search brands");
   }
 }
+
+export async function fetchBrandsCategories(
+  subcategory: string
+): Promise<Brands[]> {
+  try {
+    const response = await apiClient.get("/api/categories/categories/brand/", {
+      params: {
+        subcategory: subcategory,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed fetch subcategory brands");
+  }
+}
