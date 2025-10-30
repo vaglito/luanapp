@@ -1,13 +1,14 @@
 import { Suspense } from "react";
+import { startCase } from "lodash";
 import { Container, Typography, Box } from "@mui/material";
 import { PaginationButtons } from "@/app/components/PaginationButtons";
 import { Filter } from "@/app/components/product/search/Filter";
 import { BrandFilter } from "@/app/components/product/search/BrandFilter";
 import { CategoryFilterSkeleton } from "@/app/components/ui/skeleton/categoryfilter-skeleton";
 import { GridProduct } from "@/app/components/product/grid-product";
-import { getProductList } from "@/app/lib/api/products";
-import { fetchBrandCategoriesSubCategories } from "@/app/lib/api/brands";
-import { startCase } from "lodash";
+import { fetchProductList } from "@/app/services/products";
+import { fetchBrandsCategories } from "@/app/services/brands";
+import { fetchExchangeRate } from "@/app/services/exchangeRate";
 
 export const revalidate = 0;
 
@@ -48,6 +49,7 @@ export default async function ListProductSubCategoryPage({
   params,
   searchParams,
 }: ListProductSubCategoryPageProps) {
+  const exchange = await fetchExchangeRate();
   let page = Number(searchParams?.page) || 1;
 
   const brands = Array.isArray(searchParams?.marca)
@@ -57,10 +59,10 @@ export default async function ListProductSubCategoryPage({
     : [];
 
   const { categorySlug, subcategorySlug } = params;
-  const products = await getProductList({
-    categorySlug: categorySlug,
-    subcategorySlug: subcategorySlug,
-    brandSlug: brands,
+  const products = await fetchProductList({
+    category: categorySlug,
+    subcategory: subcategorySlug,
+    brand: brands,
     page,
   });
 
@@ -139,7 +141,7 @@ export default async function ListProductSubCategoryPage({
               filters={[
                 {
                   title: "Marcas",
-                  fetchData: fetchBrandCategoriesSubCategories,
+                  fetchData: fetchBrandsCategories,
                   Component: BrandFilter,
                 },
               ]}
@@ -151,10 +153,17 @@ export default async function ListProductSubCategoryPage({
             width: { xs: "100%", sm: "100%", md: "80%", lg: "80%", xl: "80%" },
           }}
         >
-          <GridProduct products={products.results} />
+          <GridProduct
+            products={products.results}
+            exchange={exchange.exchange}
+          />
           <Suspense fallback={<div>Cargando paginación...</div>}>
             <Box sx={{ mt: 4 }}>
-              <PaginationButtons totalPages={totalPages} currentPage={page} marca={brands}/>
+              <PaginationButtons
+                totalPages={totalPages}
+                currentPage={page}
+                marca={brands}
+              />
             </Box>
           </Suspense>
         </Box>
