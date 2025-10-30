@@ -6,8 +6,6 @@ import {
   AccordionDetails,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { fetchBrandSearch } from "@/app/lib/api/brands";
-import { fetchCategoriesSearch } from "@/app/lib/api/categorys";
 
 interface FilterItem<T> {
   title: string;
