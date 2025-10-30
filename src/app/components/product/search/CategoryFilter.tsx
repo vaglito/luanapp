@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import {
   Box,
@@ -11,53 +10,63 @@ import {
   Checkbox,
   Button,
 } from "@mui/material";
-import { ResponseCategories } from "@/app/types/v2/categorys-type";
+import { Categories } from "@/app/types/categories.type";
 
 export const CategoryFilter = ({
   query,
   data,
 }: {
   query: string;
-  data: ResponseCategories;
+  data: Categories[];
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const currentCategories = searchParams.getAll("subcategoria");
+  const raw = searchParams.get("subcategoria");
+  const currentCategories = raw ? raw.split(",") : [];
 
   const handleCheckboxChange = (subcategorySlug: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    const selected = params.getAll("subcategoria");
+    const selectedRaw = params.get("subcategoria");
+    const selected = selectedRaw ? selectedRaw.split(",") : [];
+
+    let updated: string[];
 
     if (selected.includes(subcategorySlug)) {
-      // quitar
-      const updated = selected.filter((cat) => cat !== subcategorySlug);
-      params.delete("subcategoria");
-      updated.forEach((cat) => params.append("subcategoria", cat));
+      updated = selected.filter((cat) => cat !== subcategorySlug);
     } else {
-      // agregar
-      params.append("subcategoria", subcategorySlug);
+      updated = [...selected, subcategorySlug];
     }
 
-    params.set("page", "1"); // reset paginación
+    if (updated.length > 0) {
+      params.set("subcategoria", updated.join(","));
+    } else {
+      params.delete("subcategoria");
+    }
+
+    params.set("page", "1");
     router.push(`${pathname}?${params.toString()}`);
   };
 
   const handleParentChange = (subcategories: string[], checked: boolean) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.delete("subcategoria");
+    const selectedRaw = params.get("subcategoria");
+    const selected = selectedRaw ? selectedRaw.split(",") : [];
 
-    let selected = currentCategories.filter(
-      (slug) => !subcategories.includes(slug)
-    );
+    let updated = selected.filter((slug) => !subcategories.includes(slug));
 
     if (checked) {
-      selected = [...selected, ...subcategories];
+      updated = [...updated, ...subcategories];
     }
 
-    selected.forEach((s) => params.append("subcategoria", s));
-    params.set("page", "1"); // reset paginación
+    if (updated.length > 0) {
+      params.set("subcategoria", updated.join(","));
+    } else {
+      params.delete("subcategoria");
+    }
+
+    params.set("page", "1");
     router.push(`${pathname}?${params.toString()}`);
   };
 
@@ -79,8 +88,10 @@ export const CategoryFilter = ({
         Todas las categorías
       </Button>
 
-      {data.results.map((category) => {
-        const subSlugs = category.subcategories.map((s) => s.slug);
+      {data.map((category) => {
+        const subSlugs = category.categoriesWeb.map(
+          (s) => s.relay.subcategoryweb
+        );
         const allChecked =
           subSlugs.every((slug) => currentCategories.includes(slug)) &&
           subSlugs.length > 0;
@@ -99,32 +110,33 @@ export const CategoryFilter = ({
                   onChange={(e) =>
                     handleParentChange(subSlugs, e.target.checked)
                   }
-                  sx={{ color: "primary.main"}}
+                  sx={{ color: "primary.main" }}
                 />
               }
               label={
-                <Typography
-                  variant="body1"
-                  sx={{ fontWeight: 600 }}
-                >
-                  {category.soplinea.nom_line}
+                <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                  {category.relay.categoryName}
                 </Typography>
               }
             />
 
             {/* Subcategorías */}
             <Stack spacing={1} sx={{ ml: 3 }}>
-              {category.subcategories.map((sub) => (
+              {category.categoriesWeb.map((sub) => (
                 <FormControlLabel
-                  key={sub.pk}
+                  key={sub.id}
                   control={
                     <Checkbox
-                      checked={currentCategories.includes(sub.slug)}
-                      onChange={() => handleCheckboxChange(sub.slug)}
-                      sx={{ color: "primary.main"}}
+                      checked={currentCategories.includes(
+                        sub.relay.subcategoryweb
+                      )}
+                      onChange={() =>
+                        handleCheckboxChange(sub.relay.subcategoryweb)
+                      }
+                      sx={{ color: "primary.main" }}
                     />
                   }
-                  label={sub.sopsub1.nom_sub1}
+                  label={sub.relay.subcategoryName}
                 />
               ))}
             </Stack>
