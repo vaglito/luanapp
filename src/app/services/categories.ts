@@ -25,3 +25,19 @@ export async function fetchCategoriesSearch(
     throw new Error("Failed fetch serach categories.");
   }
 }
+
+export async function fetchCategoriesBrands(
+  brand: string
+): Promise<Categories[]> {
+  try {
+    const response = await apiClient.get("/api/brands/brands/categories/", {
+      params: {
+        brand: brand,
+      },
+      paramsSerializer: { indexes: null },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed fetch categories with brand.");
+  }
+}
