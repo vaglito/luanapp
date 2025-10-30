@@ -1,13 +1,14 @@
 import { Suspense } from "react";
 import { Container, Box, Typography } from "@mui/material";
 import { PaginationButtons } from "@/app/components/PaginationButtons";
-import { getProductSearch } from "@/app/lib/api/products";
+import { fetchProductList } from "@/app/services/products";
 import { GridProduct } from "@/app/components/product/grid-product";
 import { Filter } from "@/app/components/product/search/Filter";
 import { CategoryFilter } from "@/app/components/product/search/CategoryFilter";
 import { CategoryFilterSkeleton } from "@/app/components/ui/skeleton/categoryfilter-skeleton";
+import { fetchCategoriesBrands } from "@/app/services/categories";
+import { fetchExchangeRate } from "@/app/services/exchangeRate";
 import { startCase } from "lodash";
-import { fetchCategoriesSubCategoriesBrand } from "@/app/lib/api/categorys";
 
 export const generateMetadata = ({
   params,
@@ -36,6 +37,7 @@ export default async function BrandDetail({
   params,
   searchParams,
 }: BrandDetailProps) {
+  const exchange = await fetchExchangeRate();
   let page = Number(searchParams?.page) || 1;
   const marca = Array.isArray(params?.brandSlug)
     ? params.brandSlug
@@ -49,17 +51,15 @@ export default async function BrandDetail({
     : [];
 
   const { brandSlug } = params;
-  const brandName = startCase(brandSlug);
 
-  const products = await getProductSearch({
-    query: brandName,
-    brandSlugs: marca,
-    subcategorySlugs: subcategoria,
+  const products = await fetchProductList({
+    brand: marca,
+    subcategory: subcategoria,
     page,
   });
 
   const totalPages = Math.ceil(products.count / 20);
-
+  const brandName = startCase(params.brandSlug);
   return (
     <Container maxWidth="xl" sx={{ marginY: 4 }}>
       <Box
@@ -119,9 +119,9 @@ export default async function BrandDetail({
               filters={[
                 {
                   title: "Categorias",
-                  fetchData: fetchCategoriesSubCategoriesBrand,
-                  Component: CategoryFilter
-                }
+                  fetchData: fetchCategoriesBrands,
+                  Component: CategoryFilter,
+                },
               ]}
             />
           </Suspense>
@@ -131,7 +131,10 @@ export default async function BrandDetail({
             width: { xs: "100%", sm: "100%", md: "80%", lg: "80%", xl: "80%" },
           }}
         >
-          <GridProduct products={products.results} />
+          <GridProduct
+            products={products.results}
+            exchange={exchange.exchange}
+          />
           <Suspense fallback={<div>Cargando paginación...</div>}>
             <Box sx={{ mt: 4 }}>
               <PaginationButtons
