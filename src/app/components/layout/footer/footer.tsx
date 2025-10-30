@@ -2,8 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Box, Container, Typography, Divider, Grid2 } from "@mui/material";
 import { AiFillTikTok, AiFillFacebook, AiFillInstagram } from "react-icons/ai";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const footerLinks = [
   {
@@ -35,8 +34,8 @@ const footerLinks = [
     id: 6,
     title: "Servicio Tecnico",
     link: "/servicio-tecnico",
-  }
-]
+  },
+];
 
 const socialLinks = [
   {
@@ -57,9 +56,13 @@ const socialLinks = [
     link: "https://www.tiktok.com/@corporacionluana",
     icon: <AiFillTikTok className="text-3xl" />,
   },
-]
+];
 
-export function Footer() {
+interface FooterProps {
+  address: string;
+}
+
+export function Footer({ address }: FooterProps) {
   return (
     <Box sx={{ bgcolor: "primary.main", color: "white", marginTop: 5 }}>
       <Container maxWidth="xl">
@@ -79,7 +82,7 @@ export function Footer() {
                 width={0}
                 height={0}
                 priority={true}
-                style={{ width: "200px" }} // Ajusta el tamaño en pantallas pequeñas
+                style={{ width: "350px" }} // Ajusta el tamaño en pantallas pequeñas
               />
             </Box>
             <Divider
@@ -99,7 +102,12 @@ export function Footer() {
               }}
             >
               {socialLinks.map((link) => (
-                <Link key={link.id} target="_blank" href={link.link} className="hover:text-cyan-600">
+                <Link
+                  key={link.id}
+                  target="_blank"
+                  href={link.link}
+                  className="hover:text-cyan-600"
+                >
                   {link.icon}
                 </Link>
               ))}
@@ -112,7 +120,7 @@ export function Footer() {
               }}
             >
               <Typography>
-                <LocationOnIcon /> Av. Inca Garcilaso de la Vega 1251 - Tienda 118, Tienda 209
+                <LocationOnIcon /> {address}
               </Typography>
             </Box>
           </Box>
@@ -120,7 +128,7 @@ export function Footer() {
           <Divider sx={{ bgcolor: "white", marginY: 4 }} />
 
           <Grid2 container spacing={3}>
-            <Grid2 size={{ xs: 12, md: 3}}>
+            <Grid2 size={{ xs: 12, md: 3 }}>
               <Box>
                 <Typography>Métodos de pago</Typography>
                 <Box>
@@ -135,7 +143,7 @@ export function Footer() {
                 </Box>
               </Box>
             </Grid2>
-            <Grid2 size={{ xs: 12, md: 3}}>
+            <Grid2 size={{ xs: 12, md: 3 }}>
               <Box>
                 <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   Atención al cliente
@@ -149,14 +157,18 @@ export function Footer() {
                 </Box>
               </Box>
             </Grid2>
-            <Grid2 size={{ xs: 12, md: 3}}>
+            <Grid2 size={{ xs: 12, md: 3 }}>
               <Box>
                 <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   Servicio al cliente
                 </Typography>
                 <Box>
                   {footerLinks.map((link) => (
-                    <Link key={link.id} href={link.link} className="hover:text-cyan-600">
+                    <Link
+                      key={link.id}
+                      href={link.link}
+                      className="hover:text-cyan-600"
+                    >
                       <Typography>{link.title}</Typography>
                     </Link>
                   ))}
@@ -169,7 +181,8 @@ export function Footer() {
 
       <Box sx={{ bgcolor: "other.main", p: 2 }}>
         <Typography variant="body2" align="center">
-          &copy; {new Date().getFullYear()} CORPORACION LUANA S.A.C. Todos los derechos reservados
+          &copy; {new Date().getFullYear()} CORPORACION LUANA S.A.C. Todos los
+          derechos reservados
         </Typography>
       </Box>
     </Box>
