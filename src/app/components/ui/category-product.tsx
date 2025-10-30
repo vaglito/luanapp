@@ -1,12 +1,11 @@
 "use client"
 import {  useRouter } from "next/navigation";
 import { Box, Typography, Container, Button } from "@mui/material";
-import { CardLaptop } from "../product/CardLaptop/card-laptop";
 import { CardProduct } from "../product/card-product";
-import { Product } from "@/app/types/v2/products-type";
+import { Products } from "@/app/types/products.type";
 import { SliderProduct } from "../product/slider-product";
 
-export const SectionLaptop = ({ products }: { products: Product[] }) => {
+export const SectionLaptop = ({ products, exchange }: { products: Products[], exchange: number }) => {
   const router = useRouter();
 
   const handleFilter = (subcategory: string) => {
@@ -88,7 +87,7 @@ export const SectionLaptop = ({ products }: { products: Product[] }) => {
           </Button>
         </Box>
         <Box>
-          <SliderProduct products={products} Component={CardProduct} />
+          <SliderProduct products={products} Component={CardProduct} exchange={exchange}/>
         </Box>
       </Container>
     </Box>
