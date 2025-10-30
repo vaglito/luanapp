@@ -21,3 +21,25 @@ export async function fetchDetailProduct(slug: string): Promise<ProductDetail> {
     throw new Error(`Failed to fetch product with ${slug}.`);
   }
 }
+
+interface ProductFilters {
+  category?: string[];
+  subcategory?: string[];
+  brand?: string[];
+  ordering?: string;
+  page?: string;
+}
+
+export async function fetchProductList(
+  filters: ProductFilters
+): Promise<PaginatedResponse<Products>> {
+  try {
+    const response = await apiClient.get("/api/products/products/", {
+      params: filters,
+      paramsSerializer: { indexes: null },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to fetch list products");
+  }
+}
