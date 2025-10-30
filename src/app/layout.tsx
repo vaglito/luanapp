@@ -46,7 +46,7 @@ export default async function RootLayout({
           <AppRouterCacheProvider options={{ key: "css" }}>
             <Header logo={site.logo}/>
             {children}
-            <Footer />
+            <Footer address={site.address || ""}/>
           </AppRouterCacheProvider>
         </ThemeProvider>
       </body>
