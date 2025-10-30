@@ -9,6 +9,7 @@ import { fetchBannerHome } from "./services/siteInfo";
 import { fetchCategories } from "./services/categories";
 import { fetchNewProducts } from "./services/products";
 import { fetchExchangeRate } from "./services/exchangeRate";
+import { fetchProductList } from "./services/products";
 
 export const revalidate = 0;
 
@@ -62,6 +63,9 @@ export default async function Home() {
   const categories = await fetchCategories()
   const newProduct = await fetchNewProducts()
   const exchange = await fetchExchangeRate()
+  const productsLaptop = await fetchProductList({
+    subcategory: ["laptop-cvideo-dedicada", "laptop-c-video-integrada"]
+  })
   return (
     <>
       <BannerHome banners={banners} />
@@ -71,9 +75,7 @@ export default async function Home() {
        <Container maxWidth="xl">
         <NewProducts products={newProduct.results} exchange={exchange.exchange}/>
       </Container>
-      {/*
-      <SectionLaptop products={productsLaptop.results} />
-      <ComputerHome /> */}
+      <SectionLaptop products={productsLaptop.results} exchange={exchange.exchange} />
     </>
   );
 }
