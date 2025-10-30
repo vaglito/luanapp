@@ -1,17 +1,19 @@
 import { Suspense } from "react";
-import { getProductSearch } from "@/app/lib/api/products";
-import { ResponseProducts } from "@/app/types/v2/products-type";
+import Link from "next/link";
+import { fetchProductSearchList } from "@/app/services/products";
+import { PaginatedResponse } from "@/app/types/paginatedResponse.type";
+import { Products } from "@/app/types/products.type";
 import { Box, Container, Typography, Button } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
-import Link from "next/link";
 import { GridProduct } from "@/app/components/product/grid-product";
 import { PaginationButtons } from "@/app/components/PaginationButtons";
 import { Filter } from "@/app/components/product/search/Filter";
 import { CategoryFilter } from "@/app/components/product/search/CategoryFilter";
 import { BrandFilter } from "@/app/components/product/search/BrandFilter";
-import { fetchCategoriesSearch } from "@/app/lib/api/categorys";
-import { fetchBrandSearch } from "@/app/lib/api/brands";
+import { fetchCategoriesSearch } from "@/app/services/categories";
+import { fetchBrandsSearch } from "@/app/services/brands";
 import { CategoryFilterSkeleton } from "@/app/components/ui/skeleton/categoryfilter-skeleton";
+import { fetchExchangeRate } from "@/app/services/exchangeRate";
 
 export const revalidate = 0;
 
@@ -19,34 +21,25 @@ interface searchParamsProps {
   searchParams?: {
     query?: string;
     page?: string;
-    marca?: string;
-    subcategoria?: string;
+    marca?: string[];
+    subcategoria?: string[];
   };
 }
 
 export default async function SearchPage({ searchParams }: searchParamsProps) {
+  const exchange = await fetchExchangeRate();
   const query = searchParams?.query || "";
 
-  // Convierte a array si hay más de un valor en la URL (&marca=xx&marca=yy)
-  const marca = Array.isArray(searchParams?.marca)
-    ? searchParams.marca
-    : searchParams?.marca
-    ? [searchParams.marca]
-    : [];
-  const subcategoria = Array.isArray(searchParams?.subcategoria)
-    ? searchParams.subcategoria
-    : searchParams?.subcategoria
-    ? [searchParams.subcategoria]
-    : [];
+  const { marca, subcategoria } = searchParams ?? {};
 
   let currentPage = Number(searchParams?.page) || 1;
-  let searchProduct: ResponseProducts | undefined;
+  let searchProduct: PaginatedResponse<Products> | undefined;
 
   try {
-    searchProduct = await getProductSearch({
-      query,
-      brandSlugs: marca,
-      subcategorySlugs: subcategoria,
+    searchProduct = await fetchProductSearchList({
+      search: query,
+      brand: marca,
+      subcategory: subcategoria,
       page: currentPage,
     });
   } catch (error) {
@@ -112,7 +105,6 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
 
   return (
     <Container maxWidth="xl">
-      {/* Encabezado responsivo */}
       <Box
         sx={{
           display: "flex",
@@ -132,8 +124,9 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
           variant="h5"
           sx={{ fontSize: { xs: "1.2rem", md: "1.5rem" }, fontWeight: 600 }}
         >
-          Resultados para: {query}
+          Resultados para: {query === "" ? "Todos los productos" : query}
         </Typography>
+
         <Typography
           variant="body1"
           sx={{ fontSize: { xs: "0.95rem", md: "1rem" } }}
@@ -142,7 +135,6 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
         </Typography>
       </Box>
 
-      {/* Productos */}
       <Box
         sx={{
           display: "flex",
@@ -169,9 +161,9 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
             <Filter
               query={query}
               filters={[
-                {
+                 {
                   title: "Marcas",
-                  fetchData: fetchBrandSearch,
+                  fetchData: fetchBrandsSearch,
                   Component: BrandFilter,
                 },
                 {
@@ -180,7 +172,7 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
                   Component: CategoryFilter,
                 },
               ]}
-            />
+            /> 
           </Suspense>
         </Box>
         <Box
@@ -188,7 +180,10 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
             width: { xs: "100%", sm: "100%", md: "80%", lg: "80%", xl: "80%" },
           }}
         >
-          <GridProduct products={searchProduct.results} />
+          <GridProduct
+            products={searchProduct.results}
+            exchange={exchange.exchange}
+          />
           <Suspense fallback={<div>Cargando paginación...</div>}>
             <Box sx={{ mt: 4 }}>
               <PaginationButtons
@@ -202,7 +197,6 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
         </Box>
       </Box>
 
-      {/* Paginación */}
     </Container>
   );
 }
