@@ -8,7 +8,11 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Navbar } from "./navbar";
 import { Search } from "../search";
 
-export function Header() {
+interface HeaderProps {
+  logo: string;
+}
+
+export function Header({ logo }: HeaderProps) {
   return (
     <Box component="header" sx={{ backgroundColor: "white" }}>
       <Container maxWidth="xl">
@@ -23,7 +27,7 @@ export function Header() {
           <Box sx={{ width: { sm: "100%", xs: "100%", md: "30%" } }}>
             <Link href="/">
               <Image
-                src="/logo-corporacion-luana.jpg"
+                src={logo}
                 width={0}
                 height={0}
                 alt="Logo de corporacion luana"
