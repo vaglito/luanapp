@@ -1,59 +1,44 @@
 "use client";
 import { Box, Checkbox, FormControlLabel, Button } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-
-import { ResponseBrands } from "@/app/types/v2/brands-type";
+import { Brands } from "@/app/types/brands.type";
 
 export const BrandFilter = ({
   query,
   data,
 }: {
   query: string;
-  data: ResponseBrands;
+  data: Brands[];
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const selectedBrands = searchParams.getAll("marca");
-  const [checked, setChecked] = useState<boolean[]>([]);
+  const raw = searchParams.get("marca");
+  const currentBrands = raw ? raw.split(",") : [];
 
-  useEffect(() => {
-    const loadBrands = async () => {
-      setChecked(
-        data.results.map((brand) => selectedBrands.includes(brand.slug))
-      );
-    };
+  const handleCheckbocChange = (brandSlug: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    const selectedRaw = params.get("marca");
+    const selected = selectedRaw ? selectedRaw.split(",") : [];
 
-    loadBrands();
-  }, [query, searchParams]);
+    let updated: string[];
 
-  const handleChildChange =
-    (index: number, slug: string) =>
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const updatedChecked = [...checked];
-      updatedChecked[index] = event.target.checked;
-      setChecked(updatedChecked);
+    if (selected.includes(brandSlug)) {
+      updated = selected.filter((brand) => brand !== brandSlug);
+    } else {
+      updated = [...selected, brandSlug];
+    }
 
-      const params = new URLSearchParams(searchParams.toString());
-      let updatedSelected = params.getAll("marca");
+    if (updated.length > 0) {
+      params.set("marca", updated.join(","));
+    } else {
+      params.delete("marca");
+    }
 
-      if (event.target.checked) {
-        if (!updatedSelected.includes(slug)) {
-          params.append("marca", slug);
-        }
-      } else {
-        updatedSelected = updatedSelected.filter((s) => s !== slug);
-        params.delete("marca");
-        updatedSelected.forEach((s) => params.append("marca", s));
-      }
-
-      // 🔹 resetear siempre a página 1
-      params.set("page", "1");
-
-      router.push(`${pathname}?${params.toString()}`);
-    };
+    params.set("page", "1");
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   const handleClearAll = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -64,7 +49,7 @@ export const BrandFilter = ({
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Button
-        variant={selectedBrands.length === 0 ? "contained" : "outlined"}
+        variant={currentBrands.length === 0 ? "contained" : "outlined"}
         size="small"
         color="secondary"
         onClick={handleClearAll}
@@ -74,16 +59,16 @@ export const BrandFilter = ({
       </Button>
 
       <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-        {data?.results.map((brand, index) => (
+        {data?.map((brand) => (
           <FormControlLabel
-            key={brand.slug}
-            label={brand.sopsub2.nom_sub2}
-            sx={{ fontWeight: 600}}
+            key={brand.id}
+            label={brand.relay.brandName}
+            sx={{ fontWeight: 600 }}
             control={
               <Checkbox
-                checked={checked[index] || false}
-                onChange={handleChildChange(index, brand.slug)}
-                sx={{ color: "primary.main"}}
+                checked={currentBrands.includes(brand.relay.brands)}
+                onChange={() => handleCheckbocChange(brand.relay.brands)}
+                sx={{ color: "primary.main" }}
               />
             }
           />
