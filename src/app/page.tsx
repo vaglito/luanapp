@@ -10,6 +10,7 @@ import { fetchCategories } from "./services/categories";
 import { fetchNewProducts } from "./services/products";
 import { fetchExchangeRate } from "./services/exchangeRate";
 import { fetchProductList } from "./services/products";
+import { TopFooter } from "./components/layout/footer/top-footer";
 
 export const revalidate = 0;
 
@@ -76,6 +77,7 @@ export default async function Home() {
         <NewProducts products={newProduct.results} exchange={exchange.exchange}/>
       </Container>
       <SectionLaptop products={productsLaptop.results} exchange={exchange.exchange} />
+      <TopFooter />
     </>
   );
 }
