@@ -20,9 +20,7 @@ const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
 export const CardCategory = ({ category }: { category: Categories }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
-  const [selectedSubcategories, setSelectedSubcategories] = useState<
-    SubCategories[]
-  >([]);
+  const [selectedSubcategories, setSelectedSubcategories] = useState<SubCategories[]>([]);
   const [selectedCategorySlug, setSelectedCategorySlug] = useState<string>("");
 
   const handleClick = (
@@ -73,15 +71,13 @@ export const CardCategory = ({ category }: { category: Categories }) => {
                 borderRadius: "50%",
                 cursor: "pointer",
               }}
-              aria-label={`Ver subcategorias de ${
-                category.relay.categoryName ?? "categoria"
-              }`}
+              aria-label={`Ver subcategorías de ${category.relay.categoryName ?? "categoría"}`}
               id={`categoria-${category.id}`}
               aria-controls={open ? "demo-positioned-menu" : undefined}
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
               onClick={(event: React.MouseEvent<HTMLImageElement>) =>
-                handleClick(event, category.categoriesWeb, category.relay.categoryWeb)
+                handleClick(event, category.categoriesWeb, category.relay.categoryweb)
               }
             />
           ) : (
@@ -98,6 +94,7 @@ export const CardCategory = ({ category }: { category: Categories }) => {
           )}
         </Box>
       </BootstrapTooltip>
+
       <Menu
         id="demo-positioned-menu"
         aria-labelledby="demo-positioned-button"
@@ -113,20 +110,18 @@ export const CardCategory = ({ category }: { category: Categories }) => {
           horizontal: "left",
         }}
       >
-        {selectedSubcategories.map((subcategory) => (
-          <>
-            {subcategory.isActive && (
-              <Link
-                href={`/productos/${selectedCategorySlug}/${subcategory.relay.subcategoryweb}`}
-                key={subcategory.id}
-              >
-                <MenuItem onClick={handleClose}>
-                  {subcategory.relay.subcategoryName}
-                </MenuItem>
-              </Link>
-            )}
-          </>
-        ))}
+        {selectedSubcategories
+          .filter((subcategory) => subcategory.isActive)
+          .map((subcategory) => (
+            <Link
+              href={`/productos/${selectedCategorySlug}/${subcategory.relay.subcategoryweb}`}
+              key={subcategory.id}
+            >
+              <MenuItem onClick={handleClose}>
+                {subcategory.relay.subcategoryName}
+              </MenuItem>
+            </Link>
+          ))}
       </Menu>
     </>
   );
