@@ -5,7 +5,7 @@ export interface Categories {
   relay: {
     categoryCode: string;
     categoryName: string;
-    categoryWeb: string;
+    categoryweb: string;
   };
   categoriesWeb: SubCategories[];
 }
