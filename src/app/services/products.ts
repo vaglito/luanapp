@@ -27,7 +27,7 @@ interface ProductFilters {
   subcategory?: string[];
   brand?: string[];
   ordering?: string;
-  page?: string;
+  page?: number;
 }
 
 export async function fetchProductList(
@@ -41,5 +41,27 @@ export async function fetchProductList(
     return response.data;
   } catch (error) {
     throw new Error("Failed to fetch list products");
+  }
+}
+
+interface ProductSearchFielters {
+  search?: string;
+  category?: string[];
+  subcategory?: string[];
+  brand?: string[];
+  ordering?: string;
+  page?: number;
+}
+export async function fetchProductSearchList(
+  filters: ProductSearchFielters
+): Promise<PaginatedResponse<Products>> {
+  try {
+    const response = await apiClient.get("/api/products/products/search/", {
+      params: filters,
+      paramsSerializer: { indexes: null },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to fetch serach products");
   }
 }
