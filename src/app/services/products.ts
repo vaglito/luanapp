@@ -23,9 +23,9 @@ export async function fetchDetailProduct(slug: string): Promise<ProductDetail> {
 }
 
 interface ProductFilters {
-  category?: string[];
-  subcategory?: string[];
-  brand?: string[];
+  category?: string | string[];
+  subcategory?: string | string[];
+  brand?: string | string[];
   ordering?: string;
   page?: number;
 }
