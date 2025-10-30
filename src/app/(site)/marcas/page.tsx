@@ -1,5 +1,5 @@
 import { Container, Box, Typography, Grid2 } from "@mui/material";
-import { getListBrands } from "@/app/utils/brands";
+import { fetchBrands } from "@/app/services/brands";
 import { GridBrand } from "@/app/components/brand/grid-brand";
 
 export const metadata = {
@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 export default async function BrandPage() {
-  const brands = await getListBrands();
+  const brands = await fetchBrands();
 
   return (
     <Container maxWidth="xl">
