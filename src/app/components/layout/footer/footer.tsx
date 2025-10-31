@@ -7,8 +7,8 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 const footerLinks = [
   {
     id: 1,
-    title: "Contacto",
-    link: "/contacto",
+    title: "Libro de reclamaciones",
+    link: "/libro-reclamaciones",
   },
   {
     id: 2,
