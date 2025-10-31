@@ -6,7 +6,6 @@ import { Box, Typography, Button } from "@mui/material";
 import { CardImage } from "./CardProduct/card-imagen";
 import { CardStock } from "./CardProduct/card-stock";
 import { PriceCard } from "./CardProduct/price-card";
-import { useCart } from "@/app/hooks/use-cart";
 
 export const CardProduct = ({ product, exchange }: { product: Products, exchange: number; }) => {
   const router = useRouter();
