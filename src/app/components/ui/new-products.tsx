@@ -1,9 +1,16 @@
+"use client"
 import { Typography, Box } from "@mui/material";
 import { SliderProduct } from "../product/slider-product";
 import { Products } from "@/app/types/products.type";
 import { CardProduct } from "../product/card-product";
 
-export const NewProducts = ({ products, exchange }: { products: Products[], exchange: number }) => {
+export const NewProducts = ({
+  products,
+  exchange,
+}: {
+  products: Products[];
+  exchange: number;
+}) => {
   return (
     <Box sx={{ marginTop: 4 }}>
       <Box>
@@ -30,7 +37,11 @@ export const NewProducts = ({ products, exchange }: { products: Products[], exch
         </Box>
       </Box>
       <Box>
-        <SliderProduct products={products} Component={CardProduct} exchange={exchange}/>
+        <SliderProduct
+          products={products}
+          Component={CardProduct}
+          exchange={exchange}
+        />
       </Box>
     </Box>
   );
