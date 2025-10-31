@@ -3,22 +3,20 @@ import Link from "next/link";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useState } from "react";
+import { useCart } from "@/app/hooks/use-cart";
+import { Products } from "@/app/types/products.type";
 
 interface CardImageProps {
-  title: string;
-  slug: string;
-  productimage_set: {
-    images: string;
-  }[];
+  product: Products;
 }
 
-export function CardImage({ title, productimage_set, slug }: CardImageProps) {
+export function CardImage({ product }: CardImageProps) {
   const [hover, setHover] = useState(false);
-  const hasSecondImage = productimage_set.length > 1;
-
+  const hasSecondImage = product.productsimages.length > 1;
+  const { addItem } = useCart();
   return (
     <Link
-      href={`/productos/detalle/${slug}`} // Ajusta la ruta según tu estructura
+      href={`/productos/detalle/${product.slug}`} // Ajusta la ruta según tu estructura
       style={{ display: "block", textDecoration: "none", color: "inherit" }}
     >
       <Box
@@ -28,7 +26,7 @@ export function CardImage({ title, productimage_set, slug }: CardImageProps) {
           aspectRatio: "1 / 1",
           overflow: "hidden",
           cursor: "pointer",
-          borderRadius: 3
+          borderRadius: 3,
         }}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
@@ -40,13 +38,14 @@ export function CardImage({ title, productimage_set, slug }: CardImageProps) {
             inset: 0,
             transition: hasSecondImage ? "opacity 0.5s ease" : "none",
             opacity: hasSecondImage && hover ? 0 : 1,
-            borderRadius: 3
+            borderRadius: 3,
           }}
         >
           <Image
-            src={productimage_set[0]?.images}
-            alt={title}
+            src={product.productsimages[0]?.images}
+            alt={product.relay.productName}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             style={{ objectFit: "cover", borderRadius: 3 }}
           />
         </Box>
@@ -62,9 +61,10 @@ export function CardImage({ title, productimage_set, slug }: CardImageProps) {
             }}
           >
             <Image
-              src={productimage_set[1]?.images}
-              alt={title}
+              src={product.productsimages[1]?.images}
+              alt={product.relay.productName}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{ objectFit: "cover" }}
             />
           </Box>
@@ -84,8 +84,8 @@ export function CardImage({ title, productimage_set, slug }: CardImageProps) {
               transition: "opacity 0.3s ease",
             }}
             onClick={(e) => {
-              e.preventDefault(); // Evita que el click del carrito siga el link
-              console.log("Añadir al carrito");
+              e.preventDefault();
+              addItem(product);
             }}
           >
             <AddShoppingCartIcon />
