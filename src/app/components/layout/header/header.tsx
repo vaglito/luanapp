@@ -1,4 +1,5 @@
-import { Suspense } from "react";
+"use client";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Box, Container, Button, IconButton, Badge } from "@mui/material";
@@ -7,12 +8,18 @@ import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Navbar } from "./navbar";
 import { Search } from "../search";
+import { useCart } from "@/app/hooks/use-cart";
+import { CartDrawer } from "../../cart/CartDrawer";
 
 interface HeaderProps {
   logo: string;
 }
 
 export function Header({ logo }: HeaderProps) {
+  const cart = useCart();
+  const [openCart, setOpenCart] = useState(false);
+  const toggleCart = () => setOpenCart((prev) => !prev);
+
   return (
     <Box component="header" sx={{ backgroundColor: "white" }}>
       <Container maxWidth="xl">
@@ -40,9 +47,9 @@ export function Header({ logo }: HeaderProps) {
           <Box sx={{ flexGrow: 1, marginY: 1 }}>
             <Box
               sx={{
-                display: "flex", // flex en todas las pantallas para permitir centrado
-                flexDirection: { xs: "column", md: "row" }, // En xs, los elementos se apilan verticalmente, en md, se alinean horizontalmente
-                justifyContent: "center", // Centra el contenido horizontalmente
+                display: "flex",
+                flexDirection: { xs: "column", md: "row" },
+                justifyContent: "center",
                 width: "100%",
               }}
             >
@@ -55,14 +62,15 @@ export function Header({ logo }: HeaderProps) {
             <Box sx={{ display: "flex", gap: 4 }}>
               <IconButton
                 color="primary"
-                aria-label="agrega al carrito de compras"
+                aria-label="abrir carrito"
+                onClick={toggleCart}
               >
-                <Badge badgeContent={0} color="secondary">
+                <Badge badgeContent={cart.items.length} color="secondary">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
               <Button variant="outlined" startIcon={<LoginIcon />}>
-                Iniciar sesion
+                Iniciar sesión
               </Button>
               <Button variant="contained" startIcon={<PersonIcon />}>
                 Crear Cuenta
@@ -72,6 +80,7 @@ export function Header({ logo }: HeaderProps) {
         </Box>
       </Container>
       <Navbar />
+      <CartDrawer open={openCart} onClose={toggleCart} /> {/* ✅ aquí se integra */}
     </Box>
   );
 }
