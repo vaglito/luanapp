@@ -5,6 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Image from "next/image";
 import { Products } from "@/app/types/products.type";
 import { useCart } from "@/app/hooks/use-cart";
+import { convertUsdToPen } from "@/app/lib/currency";
 
 interface CartItemProps {
   product: Products & { quantity: number };
@@ -12,13 +13,15 @@ interface CartItemProps {
 
 export function CartItem({ product }: CartItemProps) {
   const { removeItem, updatedItemQuantity } = useCart();
+  const exchange = 3.75;
 
   const useOfferPrice = product.relay.priceBulk > 0;
-  const unitPrice = useOfferPrice
+  const unitPriceUSD = useOfferPrice
     ? product.relay.priceBulk
     : product.relay.priceSale;
-  const subtotal = unitPrice * product.quantity;
-
+  const unitPricePEN = convertUsdToPen(unitPriceUSD, exchange);
+  const subtotalUSD = unitPriceUSD * product.quantity;
+  const subtotalPEN = convertUsdToPen(subtotalUSD, exchange);
 
   const handleChange = (delta: number) => {
     const newQty = product.quantity + delta;
@@ -64,7 +67,7 @@ export function CartItem({ product }: CartItemProps) {
         </Box>
 
         <Typography variant="body2" color="text.secondary">
-          Precio unit.$ {unitPrice.toFixed(2)}
+          Precio unit: ${unitPriceUSD.toFixed(2)} - S/ {unitPricePEN.toFixed(2)}
         </Typography>
         {useOfferPrice && (
           <Typography variant="caption" color="success.main">
@@ -76,7 +79,7 @@ export function CartItem({ product }: CartItemProps) {
           color="text.primary"
           sx={{ fontWeight: 600 }}
         >
-          Subtotal: $ {subtotal.toFixed(2)}
+          Subtotal: ${subtotalUSD.toFixed(2)} - S/ {subtotalPEN.toFixed(2)}
         </Typography>
       </Box>
       <IconButton onClick={() => removeItem(product.id)}>
