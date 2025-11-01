@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Stack } from "@mui/material";
 import { useCart } from "@/app/hooks/use-cart";
 import { convertUsdToPen } from "@/app/lib/currency";
 
@@ -16,13 +16,24 @@ export function CartSummary() {
 
   return (
     <Box>
-      <Typography variant="subtitle1" sx={{ mb: 2 }}>
-        Total: $ {totalUSD.toFixed(2)} - S/ {totalPEN}
+      <Typography variant="h6" fontWeight={700} mb={1}>
+        Resumen del carrito
       </Typography>
-      <Button variant="contained">Ir al checkout</Button>
-      <Button variant="contained" color="error" onClick={() => removeAll()}>
-        Eliminar todo el carrito
-      </Button>
+
+      <Typography variant="body1" mb={2}>
+        Total: <strong>${totalUSD.toFixed(2)}</strong> -{" "}
+        <strong>S/. {totalPEN.toFixed(2)}</strong>
+      </Typography>
+
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+        <Button variant="contained" fullWidth color="success">
+          Descargar Proforma
+        </Button>
+        <Button variant="outlined" color="error" fullWidth onClick={removeAll}>
+          Vaciar carrito
+        </Button>
+      </Stack>
     </Box>
+
   );
 }

@@ -15,9 +15,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
-      <Box sx={{ width: 350, padding: 2 }}>
+      <Box sx={{ width: {xs: "100vw", sm: 450}, padding: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography variant="h6">Tu carrito</Typography>
+          <Typography variant="h6" fontWeight={600}>Tu carrito</Typography>
           <IconButton onClick={onClose}>
             <CloseIcon />
           </IconButton>
