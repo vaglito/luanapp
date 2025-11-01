@@ -8,6 +8,7 @@ import { themeOptions } from "../../theme";
 import "swiper/css";
 import "./globals.css";
 import { fetchSiteMetadata } from "./services/siteInfo";
+import { fetchExchangeRate } from "./services/exchangeRate";
 
 const roboto = Roboto({
   weight: ["400", "500", "700"],
@@ -39,12 +40,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const site = await fetchSiteMetadata(1)
+  const exchange = await fetchExchangeRate()
+
   return (
     <html lang="es">
       <body className={`${roboto.className} antialiased`}>
         <ThemeProvider theme={themeOptions}>
           <AppRouterCacheProvider options={{ key: "css" }}>
-            <Header logo={site.logo}/>
+            <Header logo={site.logo} exchange={exchange.exchange}/>
             {children}
             <Footer address={site.address || ""}/>
           </AppRouterCacheProvider>

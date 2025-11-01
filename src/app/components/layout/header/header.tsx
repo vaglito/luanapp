@@ -13,9 +13,10 @@ import { CartDrawer } from "../../cart/CartDrawer";
 
 interface HeaderProps {
   logo: string;
+  exchange: number;
 }
 
-export function Header({ logo }: HeaderProps) {
+export function Header({ logo, exchange }: HeaderProps) {
   const cart = useCart();
   const [openCart, setOpenCart] = useState(false);
   const toggleCart = () => setOpenCart((prev) => !prev);
@@ -80,7 +81,7 @@ export function Header({ logo }: HeaderProps) {
         </Box>
       </Container>
       <Navbar />
-      <CartDrawer open={openCart} onClose={toggleCart} /> {/* ✅ aquí se integra */}
+      <CartDrawer open={openCart} onClose={toggleCart} exchange={exchange}/> {/* ✅ aquí se integra */}
     </Box>
   );
 }

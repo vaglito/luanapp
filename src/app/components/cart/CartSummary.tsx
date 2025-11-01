@@ -2,9 +2,8 @@ import { Box, Typography, Button, Stack } from "@mui/material";
 import { useCart } from "@/app/hooks/use-cart";
 import { convertUsdToPen } from "@/app/lib/currency";
 
-export function CartSummary() {
+export function CartSummary({ exchange }: { exchange: number }) {
   const { items, removeAll } = useCart();
-  const exchange = 3.75;
 
   const totalUSD = items.reduce((sum, item) => {
     const price =
@@ -12,7 +11,7 @@ export function CartSummary() {
     return sum + price * item.quantity;
   }, 0);
 
-  const totalPEN = convertUsdToPen(totalUSD, exchange)
+  const totalPEN = convertUsdToPen(totalUSD, exchange);
 
   return (
     <Box>
@@ -34,6 +33,5 @@ export function CartSummary() {
         </Button>
       </Stack>
     </Box>
-
   );
 }

@@ -8,16 +8,25 @@ import { CartSummary } from "./CartSummary";
 interface CartDrawerProps {
   open: boolean;
   onClose: () => void;
+  exchange: number;
 }
 
-export function CartDrawer({ open, onClose }: CartDrawerProps) {
+export function CartDrawer({ open, onClose, exchange }: CartDrawerProps) {
   const { items } = useCart();
 
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
-      <Box sx={{ width: {xs: "100vw", sm: 450}, padding: 2 }}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography variant="h6" fontWeight={600}>Tu carrito</Typography>
+      <Box sx={{ width: { xs: "100vw", sm: 450 }, padding: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h6" fontWeight={600}>
+            Tu carrito
+          </Typography>
           <IconButton onClick={onClose}>
             <CloseIcon />
           </IconButton>
@@ -30,10 +39,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         ) : (
           <>
             {items.map((item) => (
-              <CartItem key={item.id} product={item} />
+              <CartItem key={item.id} product={item} exchange={exchange}/>
             ))}
             <Divider sx={{ my: 2 }} />
-            <CartSummary />
+            <CartSummary exchange={exchange}/>
           </>
         )}
       </Box>

@@ -9,11 +9,11 @@ import { convertUsdToPen } from "@/app/lib/currency";
 
 interface CartItemProps {
   product: Products & { quantity: number };
+  exchange: number;
 }
 
-export function CartItem({ product }: CartItemProps) {
+export function CartItem({ product, exchange }: CartItemProps) {
   const { removeItem, updatedItemQuantity } = useCart();
-  const exchange = 3.75;
 
   const useOfferPrice = product.relay.priceBulk > 0;
   const unitPriceUSD = useOfferPrice
