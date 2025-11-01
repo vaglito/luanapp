@@ -85,7 +85,7 @@ export function CardImage({ product }: CardImageProps) {
             }}
             onClick={(e) => {
               e.preventDefault();
-              addItem(product);
+              addItem(product, 1);
             }}
           >
             <AddShoppingCartIcon />
