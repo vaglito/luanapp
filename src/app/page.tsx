@@ -4,7 +4,6 @@ import { NewProducts } from "./components/ui/new-products";
 import { SectionLaptop } from "./components/ui/category-product";
 import { HomeCategory } from "./components/ui/home-category";
 import { BannerHome } from "./components/ui/banner/BannerHome";
-import { ComputerHome } from "./components/computer/computer-home";
 import { fetchBannerHome } from "./services/siteInfo";
 import { fetchCategories } from "./services/categories";
 import { fetchNewProducts } from "./services/products";
