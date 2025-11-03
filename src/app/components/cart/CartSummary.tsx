@@ -1,6 +1,8 @@
+"use client"
 import { Box, Typography, Button, Stack } from "@mui/material";
 import { useCart } from "@/app/hooks/use-cart";
 import { convertUsdToPen } from "@/app/lib/currency";
+import { generateProformaPDF } from "@/app/utils/pdf-proforma";
 
 export function CartSummary({ exchange }: { exchange: number }) {
   const { items, removeAll } = useCart();
@@ -25,7 +27,7 @@ export function CartSummary({ exchange }: { exchange: number }) {
       </Typography>
 
       <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-        <Button variant="contained" fullWidth color="success">
+        <Button variant="contained" fullWidth color="success" onClick={() => generateProformaPDF(items, exchange)}>
           Descargar Proforma
         </Button>
         <Button variant="outlined" color="error" fullWidth onClick={removeAll}>
