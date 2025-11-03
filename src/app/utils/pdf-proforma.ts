@@ -1,16 +1,19 @@
 "use client";
 import { Products } from "@/app/types/products.type";
 import { convertUsdToPen } from "@/app/lib/currency";
-import { logoBase64 } from "./assets/logo-64";
-import { logoBcp } from "./assets/bcp-logo-64";
-import { logoBbva } from "./assets/bbva-logo";
-import { logoInterbank } from "./assets/interbank-logo";
-import { logoAmd } from "./assets/amd-logo";
-import { logoIntel } from "./assets/intel-logo";
-import { logoGigabyte } from "./assets/gigabyte-logo";
-import { logoNvidea } from "./assets/nvidea-logo";
+import { header } from "./assets/header";
+import { cuenta } from "./assets/cuentas";
 
 type generateProformaPDFProps = Products & { quantity: number };
+
+function getCuentasTable() {
+  return {
+    image: "cuenta",
+    width: 450,
+    margin: [0, 1, 0, 1],
+    alignment: "center",
+  };
+}
 
 export async function generateProformaPDF(
   cartItems: generateProformaPDFProps[],
@@ -30,34 +33,25 @@ export async function generateProformaPDF(
   const totalPEN = convertUsdToPen(totalUSD, exchangeRate);
   const today = new Date().toLocaleDateString("es-PE");
 
-  const docDefinition = {
-    content: [
+  const chunkedItems = [];
+  for (let i = 0; i < cartItems.length; i += 6) {
+    chunkedItems.push(cartItems.slice(i, i + 6));
+  }
+
+  const content: any[] = [];
+
+  chunkedItems.forEach((group, index) => {
+    if (index > 0) content.push({ text: "", pageBreak: "before" });
+
+    content.push(
       {
         columns: [
           {
-            image: "logo",
-            width: 210,
-          },
-          {
-            stack: [
-              { text: "CORPORACION LUANA S.A.C", style: "title" },
-              { text: "RUC: 20543896129", style: "info" },
-              {
-                text: [
-                  "AV. GARCILASO DE LA VEGA Nº 1251\n",
-                  "INT. 118 - 209\n",
-                  "ventas01@corporacionluana.pe",
-                ],
-                style: "info",
-              },
-            ],
-            alignment: "right",
+            text: "PROFORMA DE VENTA",
+            style: "header",
+            margin: [0, 100, 0, 1],
           },
         ],
-        margin: [0, 0, 0, 5],
-      },
-      {
-        columns: [{ text: "PROFORMA DE VENTA", style: "header" }],
       },
       {
         columns: [
@@ -76,7 +70,7 @@ export async function generateProformaPDF(
               { text: "P. U", style: "tableHeader" },
               { text: "TOTAL", style: "tableHeader" },
             ],
-            ...cartItems.map((item) => {
+            ...group.map((item) => {
               const price =
                 item.relay.priceBulk > 0
                   ? item.relay.priceBulk
@@ -87,28 +81,32 @@ export async function generateProformaPDF(
                   text: item.quantity.toString(),
                   alignment: "center",
                   margin: [0, 5, 0, 5],
+                  fontSize: 11,
                 },
                 {
                   text: item.relay.productName,
                   alignment: "justify",
                   margin: [0, 5, 0, 5],
+                  fontSize: 11,
                 },
                 {
                   text: `$${price.toFixed(2)}`,
                   alignment: "center",
                   margin: [0, 5, 0, 5],
+                  fontSize: 11,
                 },
                 {
                   text: `$${subtotal.toFixed(2)}`,
                   alignment: "center",
                   margin: [0, 5, 0, 5],
+                  fontSize: 11,
                 },
               ];
             }),
           ],
         },
         layout: "headerLineOnly",
-        margin: [0, 10, 0, 1],
+        margin: [0, 5, 0, 1],
       },
       {
         columns: [
@@ -116,9 +114,7 @@ export async function generateProformaPDF(
             ul: [
               "VALIDEZ DE OFERTA: 3 DIAS",
               "IMPUESTO: INCLUYE IGV",
-              "TIEMPO DE ENTREGA: INMEDIATA",
               "PRECIOS SUJETOS A TIPO DE CAMBIO",
-              "CONDICIÓN DE PAGO: CONTADO",
             ],
           },
           {
@@ -128,145 +124,71 @@ export async function generateProformaPDF(
             alignment: "right",
           },
         ],
-        fontSize: 11,
-        margin: [0, 5, 0, 1],
-      },
-      {
-        table: {
-          widths: ["*", "auto"],
-          body: [
-            [
-              {
-                text: "Total Doc.",
-                colSpan: 2,
-                alignment: "right",
-                fontSize: 15,
-                bold: true,
-                decoration: "underline",
-              },
-              "",
-            ],
-            [
-              { text: "$", alignment: "right", fontSize: 14 },
-              { text: totalUSD.toFixed(2), alignment: "right", fontSize: 14 },
-            ],
-            [
-              { text: "S/", alignment: "right", fontSize: 14 },
-              { text: totalPEN.toFixed(2), alignment: "right", fontSize: 14 },
-            ],
-          ],
-        },
-        layout: "headerLineOnly",
-        margin: [0, 5, 0, 1],
-      },
-      {
-        table: {
-          widths: ["auto", "*", "*"],
-          body: [
-            [
-              { text: "BANCO", style: "tableHeader" },
-              { text: "CUENTA S/", style: "tableHeader" },
-              { text: "CUENTA $", style: "tableHeader" },
-            ],
-            [
-              { image: logoBbva, width: 50, margin: [0, 3, 0, 3] },
-              {
-                text: "0011 01750100065080\nCCI 01117500010006508072",
-                alignment: "center",
-                margin: [0, 3, 0, 3],
-              },
-              {
-                text: "0011 0353010003853607",
-                alignment: "center",
-                margin: [0, 3, 0, 3],
-              },
-            ],
-            [
-              { image: "logoBcp", width: 50, margin: [0, 3, 0, 3] },
-              {
-                text: "191 1941377 0 67\nCCI 00219100194137706758",
-                alignment: "center",
-                margin: [0, 3, 0, 3],
-              },
-              {
-                text: "191 1931817 1 11\nCCI 00219100193181711153",
-                alignment: "center",
-                margin: [0, 3, 0, 3],
-              },
-            ],
-            [
-              { image: "logoInterbank", width: 70, margin: [0, 3, 0, 3] },
-              {
-                text: "CUENTA CORRIENTE\n488 300267117 1",
-                alignment: "center",
-                margin: [0, 3, 0, 3],
-              },
-              "",
-            ],
-          ],
-        },
-        layout: "lightHorizontalLines",
+        fontSize: 10,
+        margin: [0, 1, 0, 1],
       },
       {
         columns: [
           {
+            width: "*",
             text: "LAS COMPRAS ESTÁN SUJETAS A TÉRMINOS Y CONDICIONES\nhttps://corporacionluana.pe/terminos-de-garantia/",
+            fontSize: 11,
+            margin: [0, 5, 10, 1],
           },
-        ],
-        fontSize: 11,
-        margin: [0, 5, 0, 1],
-      },
-      {
-        columns: [
-          { width: "*", text: "" }, // espacio flexible a la izquierda
           {
             width: "auto",
-            stack: [
-              {
-                columns: [
+            table: {
+              widths: ["*", "auto"],
+              body: [
+                [
                   {
-                    image: "logoAmd",
-                    width: 70,
-                    alignment: "center",
-                    margin: [0, 3, 0, 3],
+                    text: "Total Doc.",
+                    colSpan: 2,
+                    alignment: "right",
+                    fontSize: 15,
+                    bold: true,
+                    decoration: "underline",
                   },
+                  "",
+                ],
+                [
+                  { text: "$", alignment: "right", fontSize: 14 },
                   {
-                    image: "logoIntel",
-                    width: 70,
-                    alignment: "center",
-                    margin: [0, 3, 0, 3],
-                  },
-                  {
-                    image: "logoGigabyte",
-                    width: 70,
-                    alignment: "center",
-                    margin: [0, 3, 0, 3],
-                  },
-                  {
-                    image: "logoNvidea",
-                    width: 70,
-                    alignment: "center",
-                    margin: [0, 3, 0, 3],
+                    text: totalUSD.toFixed(2),
+                    alignment: "right",
+                    fontSize: 14,
                   },
                 ],
-                columnGap: 10,
-              },
-            ],
+                [
+                  { text: "S/", alignment: "right", fontSize: 14 },
+                  {
+                    text: totalPEN.toFixed(2),
+                    alignment: "right",
+                    fontSize: 14,
+                  },
+                ],
+              ],
+            },
+            layout: "headerLineOnly",
+            margin: [0, 1, 0, 1],
           },
-          { width: "*", text: "" }, // espacio flexible a la derecha
         ],
-        margin: [0, 5, 0, 1],
       },
-    ],
+      getCuentasTable()
+    );
+  });
+
+  const docDefinition = {
+    header: {
+      image: "header",
+      fit: [540, 500],
+      margin: [0, 5, 0, 5],
+      alignment: "center",
+    },
+    content,
     images: {
-      logo: logoBase64,
-      logoBcp: logoBcp,
-      logoBbva: logoBbva,
-      logoInterbank: logoInterbank,
-      logoAmd: logoAmd,
-      logoIntel: logoIntel,
-      logoGigabyte: logoGigabyte,
-      logoNvidea: logoNvidea,
+      header: header,
+      cuenta: cuenta,
     },
     styles: {
       title: {
@@ -285,19 +207,6 @@ export async function generateProformaPDF(
         color: "#333333",
         alignment: "center",
       },
-      slogan: {
-        fontSize: 10,
-        italics: true,
-        alignment: "center",
-        margin: [0, 5, 0, 5],
-        color: "#666666",
-      },
-      sectionHeader: {
-        fontSize: 11,
-        bold: true,
-        margin: [0, 10, 0, 5],
-        color: "#333333",
-      },
       tableHeader: {
         fillColor: "#5914A3",
         color: "white",
@@ -311,3 +220,4 @@ export async function generateProformaPDF(
 
   pdfMakeModule.default.createPdf(docDefinition).open();
 }
+``;
