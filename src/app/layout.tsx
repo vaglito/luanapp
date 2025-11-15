@@ -8,7 +8,10 @@ import { themeOptions } from "../../theme";
 import "swiper/css";
 import "./globals.css";
 import { fetchSiteMetadata } from "./services/siteInfo";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { fetchExchangeRate } from "./services/exchangeRate";
+import { GTMHead } from "./components/GTMhead";
+import { GTMBody } from "./components/GTMbody";
 
 const roboto = Roboto({
   weight: ["400", "500", "700"],
@@ -29,8 +32,8 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [site.logo],
     },
     icons: {
-      icon: site.favicon
-    }
+      icon: site.favicon,
+    },
   };
 }
 
@@ -39,17 +42,22 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const site = await fetchSiteMetadata(1)
-  const exchange = await fetchExchangeRate()
+  const site = await fetchSiteMetadata(1);
+  const exchange = await fetchExchangeRate();
 
   return (
     <html lang="es">
+      <head>
+        <GoogleAnalytics gaId="G-XELJ23CNWC" />
+        <GTMHead />
+      </head>
       <body className={`${roboto.className} antialiased`}>
+        <GTMBody />
         <ThemeProvider theme={themeOptions}>
           <AppRouterCacheProvider options={{ key: "css" }}>
-            <Header logo={site.logo} exchange={exchange.exchange}/>
+            <Header logo={site.logo} exchange={exchange.exchange} />
             {children}
-            <Footer address={site.address || ""}/>
+            <Footer address={site.address || ""} />
           </AppRouterCacheProvider>
         </ThemeProvider>
       </body>
