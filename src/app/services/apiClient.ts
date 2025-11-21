@@ -1,10 +1,12 @@
 import axios from "axios";
 
 const API_URL = process.env.API_URL;
+const API_KEY = process.env.API_KEY;
 
 const apiClient = axios.create({
   baseURL: `${API_URL}`,
   headers: {
+    "Authorization": `Api-Key ${API_KEY}`,
     "Content-Type": "application/json",
     Accept: "application/json",
   },
