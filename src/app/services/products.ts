@@ -2,6 +2,9 @@ import apiClient from "./apiClient";
 import { Products, ProductDetail } from "../types/products.type";
 import { PaginatedResponse } from "../types/paginatedResponse.type";
 
+import { notFound, redirect  } from "next/navigation";
+import { AxiosError } from "axios";
+
 export async function fetchNewProducts(): Promise<PaginatedResponse<Products>> {
   try {
     const response = await apiClient.get(
@@ -13,14 +16,42 @@ export async function fetchNewProducts(): Promise<PaginatedResponse<Products>> {
   }
 }
 
+
 export async function fetchDetailProduct(slug: string): Promise<ProductDetail> {
   try {
     const response = await apiClient.get(`/api/products/product/${slug}/`);
     return response.data;
   } catch (error) {
-    throw new Error(`Failed to fetch product with ${slug}.`);
+    const err = error as AxiosError;
+
+    // --- Manejo de errores típicos ---
+    switch (err.response?.status) {
+      case 400:
+        throw new Error("Solicitud inválida. Verifica los parámetros enviados.");
+      case 401:
+        // No autenticado → podrías redirigir al login
+        redirect("/login");
+      case 403:
+        throw new Error("No tienes permisos para acceder a este recurso.");
+      case 404:
+        // Producto no encontrado → página not-found
+        notFound();
+      case 408:
+        throw new Error("La solicitud tardó demasiado. Intenta nuevamente.");
+      case 429:
+        throw new Error("Demasiadas solicitudes. Espera un momento antes de reintentar.");
+      case 500:
+        throw new Error("Error interno del servidor. Intenta más tarde.");
+      case 502:
+      case 503:
+      case 504:
+        throw new Error("El servicio no está disponible temporalmente.");
+      default:
+        throw new Error(`Error inesperado al obtener el producto: ${slug}.`);
+    }
   }
 }
+
 
 interface ProductFilters {
   category?: string | string[];
