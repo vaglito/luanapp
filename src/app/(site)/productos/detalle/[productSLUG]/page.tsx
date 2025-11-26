@@ -8,6 +8,7 @@ import { ProductDetailDescription } from "@/app/components/product/detail/produc
 import { ProductDetail } from "@/app/types/products.type";
 import { ProductDetailMore } from "@/app/components/product/detail/product-detail-more";
 import { fetchExchangeRate } from "@/app/services/exchangeRate";
+import { notFound } from "next/navigation";
 
 // --- SEO dinámico con Open Graph + Twitter ---
 export async function generateMetadata({
@@ -80,11 +81,22 @@ export default async function ProductDetailPage({
   params,
 }: ProductDetailProps) {
   const { productSLUG } = params;
-  const product = await fetchDetailProduct(productSLUG);
+  let product: ProductDetail | null = null;
+
+  try {
+    product = await fetchDetailProduct(productSLUG);
+  } catch (error) {
+    notFound();
+  }
+
+  if (!product) {
+    notFound();
+  }
+
   const exchange = await fetchExchangeRate();
 
   return (
-    <Container maxWidth="xl" sx={{ marginY: 4}}>
+    <Container maxWidth="xl" sx={{ marginY: 4 }}>
       <Box
         sx={{
           display: "flex",
@@ -144,7 +156,7 @@ export default async function ProductDetailPage({
         <Box
           sx={{
             display: "flex",
-            width: { xs: "100%", sm: "%50", md: "50%", lg: "50%" },
+            width: { xs: "100%", sm: "50%", md: "50%", lg: "50%" },
           }}
         >
           <ProductDetailMore />
@@ -152,7 +164,7 @@ export default async function ProductDetailPage({
         <Box
           sx={{
             display: "flex",
-            width: { xs: "100%", sm: "%50", md: "50%", lg: "50%" },
+            width: { xs: "100%", sm: "50%", md: "50%", lg: "50%" },
           }}
         >
           {product.specs ? (
