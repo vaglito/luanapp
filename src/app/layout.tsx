@@ -12,6 +12,8 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { fetchExchangeRate } from "./services/exchangeRate";
 import { GTMHead } from "./components/GTMhead";
 import { GTMBody } from "./components/GTMbody";
+import { Box } from "@mui/material";
+
 
 const roboto = Roboto({
   weight: ["400"],
@@ -55,12 +57,27 @@ export default async function RootLayout({
         <GTMBody />
         <ThemeProvider theme={themeOptions}>
           <AppRouterCacheProvider options={{ key: "css" }}>
-            <Header logo={site.logo} exchange={exchange.exchange} />
-            {children}
-            <Footer address={site.address || ""} />
+            {/* Layout con flex para empujar el footer abajo */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                minHeight: "100vh",
+              }}
+            >
+              <Header logo={site.logo} exchange={exchange.exchange} />
+
+              {/* Contenido principal ocupa el espacio restante */}
+              <Box component="main" sx={{ flex: 1 }}>
+                {children}
+              </Box>
+
+              <Footer address={site.address || ""} />
+            </Box>
           </AppRouterCacheProvider>
         </ThemeProvider>
       </body>
     </html>
+
   );
 }

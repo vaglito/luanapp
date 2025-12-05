@@ -1,7 +1,8 @@
-
 import { Box, Typography } from "@mui/material";
 import { ProductPrice } from "@/app/components/product/detail/product-price";
 import { ShopFunction } from "./shop-functions";
+import ReportProblemIcon from "@mui/icons-material/ReportProblem";
+import { isRestrictedSubcategory } from "@/app/utils/restricted";
 
 interface ProductDetailDescriptionProps {
   title: string;
@@ -10,6 +11,7 @@ interface ProductDetailDescriptionProps {
   prices: number;
   priceb: number;
   exchange: number;
+  subCategories: string;
 }
 
 export function ProductDetailDescription({
@@ -19,7 +21,10 @@ export function ProductDetailDescription({
   priceb,
   stock,
   exchange,
+  subCategories,
 }: ProductDetailDescriptionProps) {
+  const isRestricted = isRestrictedSubcategory(subCategories);
+
   return (
     <Box
       sx={{
@@ -56,8 +61,21 @@ export function ProductDetailDescription({
       >
         <Box dangerouslySetInnerHTML={{ __html: resumen }} />
       </Box>
-      <ProductPrice prices={prices} priceb={priceb} exchange={exchange}/>
-      <ShopFunction title={title} stock={stock} />
+      {isRestricted ? (
+        <Typography
+          sx={{
+            color: "error.main",
+            fontWeight: 600,
+            fontSize: { xs: 18 },
+            mt: 1,
+          }}
+        >
+          <ReportProblemIcon /> Precio no disponible
+        </Typography>
+      ) : (
+        <ProductPrice prices={prices} priceb={priceb} exchange={exchange} />
+      )}
+      <ShopFunction title={title} stock={stock} subCategory={subCategories}/>
     </Box>
   );
 }
