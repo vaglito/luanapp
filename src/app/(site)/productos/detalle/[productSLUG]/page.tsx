@@ -129,6 +129,7 @@ export default async function ProductDetailPage({
             prices={product.relay.priceSale}
             priceb={product.relay.priceBulk}
             exchange={exchange.exchange}
+            subCategories={product.relay.subcategoryCode.subcategoryweb}
           />
         </Box>
       </Box>

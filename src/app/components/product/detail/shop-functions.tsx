@@ -5,8 +5,17 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import CancelIcon from "@mui/icons-material/Cancel";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import { showToast } from "nextjs-toast-notify"; // 🔹 importamos toast
 
-export function ShopFunction({ title, stock }: { title: string, stock: number }) {
+export function ShopFunction({
+  title,
+  stock,
+  subCategory,
+}: {
+  title: string;
+  stock: number;
+  subCategory: string;
+}) {
   const [counter, setCounter] = useState(1);
 
   const increment = () => {
@@ -21,9 +30,31 @@ export function ShopFunction({ title, stock }: { title: string, stock: number })
     }
   };
 
+  // 🔹 Validación de subcategorías directamente aquí
+  const restrictedSubcategories =
+    process.env.NEXT_PUBLIC_RESTRICTED_SUBCATEGORIES?.split(",") || [];
+  const isRestricted = restrictedSubcategories.includes(subCategory);
+
   // Arreglo de números para seleccionar aleatoriamente
   const numbers = [51919443359, 51922481325, 981355117];
+
   const addProduct = () => {
+    if (isRestricted) {
+      showToast.error("❌ Este producto solo se vende en computadoras completas", {
+        duration: 3000,
+        position: "top-right",
+      });
+      return;
+    }
+
+    if (stock === 0) {
+      showToast.error("❌ No hay stock disponible", {
+        duration: 3000,
+        position: "top-right",
+      });
+      return;
+    }
+
     // Seleccionar aleatoriamente un número del array
     const randomNumber = numbers[Math.floor(Math.random() * numbers.length)];
 
@@ -37,6 +68,11 @@ export function ShopFunction({ title, stock }: { title: string, stock: number })
 
     // Abrir WhatsApp
     window.open(whatsappUrl, "_blank");
+
+    showToast.success("✅ Redirigiendo a WhatsApp para completar la compra", {
+      duration: 3000,
+      position: "top-right",
+    });
   };
 
   let content;
@@ -124,9 +160,7 @@ export function ShopFunction({ title, stock }: { title: string, stock: number })
             sx={{
               backgroundColor: "#ff6b6b",
               color: "white",
-              "&:hover": {
-                backgroundColor: "#ff5252",
-              },
+              "&:hover": { backgroundColor: "#ff5252" },
             }}
           >
             -
@@ -150,9 +184,7 @@ export function ShopFunction({ title, stock }: { title: string, stock: number })
             sx={{
               backgroundColor: "#1e90ff",
               color: "white",
-              "&:hover": {
-                backgroundColor: "#1c7ed6",
-              },
+              "&:hover": { backgroundColor: "#1c7ed6" },
             }}
           >
             +
@@ -164,13 +196,10 @@ export function ShopFunction({ title, stock }: { title: string, stock: number })
           variant="contained"
           fullWidth
           startIcon={<WhatsAppIcon />}
-          disabled={stock==0}
           sx={{
             backgroundColor: "#38d9a9",
             color: "white",
-            "&:hover": {
-              backgroundColor: "#20c997",
-            },
+            "&:hover": { backgroundColor: "#20c997" },
           }}
         >
           Comprar por WhatsApp
