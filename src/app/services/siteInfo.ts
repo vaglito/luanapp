@@ -1,6 +1,8 @@
 import apiClient from "./apiClient";
 import { Banner } from "../types/banner.type";
 import { SiteInfoMetadata } from "../types/siteinfo.type";
+import { unstable_cache } from "next/cache";
+
 
 export async function fetchBannerHome(): Promise<Banner[]> {
   try {
@@ -11,11 +13,15 @@ export async function fetchBannerHome(): Promise<Banner[]> {
   }
 }
 
-export async function fetchSiteMetadata(id: number): Promise<SiteInfoMetadata> {
-  try {
-    const response = await apiClient.get(`/api/site/site-info/${id}/`);
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to fetch sitemetadata");
-  }
-}
+export const fetchSiteMetadata = unstable_cache(
+  async (id: number): Promise<SiteInfoMetadata> => {
+    try {
+      const response = await apiClient.get(`/api/site/site-info/${id}/`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Error al obtener metadata: ${error}`);
+    }
+  },
+  ["site-metadata"], // clave de caché
+  { revalidate: 300 }
+);
