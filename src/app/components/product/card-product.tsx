@@ -6,8 +6,19 @@ import { Box, Typography, Button } from "@mui/material";
 import { CardImage } from "./CardProduct/card-imagen";
 import { CardStock } from "./CardProduct/card-stock";
 import { PriceCard } from "./CardProduct/price-card";
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
+import { isRestrictedSubcategory } from "@/app/utils/restricted";
 
-export const CardProduct = ({ product, exchange }: { product: Products, exchange: number; }) => {
+export const CardProduct = ({
+  product,
+  exchange,
+}: {
+  product: Products;
+  exchange: number;
+}) => {
+  const isRestricted = isRestrictedSubcategory(
+    product.relay.subcategoryCode.subcategoryweb
+  );
   const router = useRouter();
   return (
     <Box
@@ -29,8 +40,7 @@ export const CardProduct = ({ product, exchange }: { product: Products, exchange
       }}
     >
       {/* Contenedor de la imagen */}
-      <CardImage product={product}
-      />
+      <CardImage product={product} />
 
       {/* Información del producto */}
       <Link href={`/productos/detalle/${product.slug}`}>
@@ -56,7 +66,24 @@ export const CardProduct = ({ product, exchange }: { product: Products, exchange
           >
             {product.relay.productName}
           </Typography>
-          <PriceCard priceSale={product.relay.priceSale} priceBulk={product.relay.priceBulk} exchange={exchange} />
+          {isRestricted ? (
+            <Typography
+              sx={{
+                color: "error.main",
+                fontWeight: 600,
+                fontSize: { xs: 18 },
+                mt: 1,
+              }}
+            >
+              <ReportProblemIcon /> Precio no disponible
+            </Typography>
+          ) : (
+            <PriceCard
+              priceSale={product.relay.priceSale}
+              priceBulk={product.relay.priceBulk}
+              exchange={exchange}
+            />
+          )}
           <CardStock
             stock={product.relay.totalStock}
             cod={product.relay.productId}

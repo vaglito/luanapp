@@ -5,6 +5,10 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useState } from "react";
 import { useCart } from "@/app/hooks/use-cart";
 import { Products } from "@/app/types/products.type";
+import { showToast } from "nextjs-toast-notify";
+import { isRestrictedSubcategory } from "@/app/utils/restricted";
+
+
 
 interface CardImageProps {
   product: Products;
@@ -14,9 +18,26 @@ export function CardImage({ product }: CardImageProps) {
   const [hover, setHover] = useState(false);
   const hasSecondImage = product.productsimages.length > 1;
   const { addItem } = useCart();
+
+  const isRestricted = isRestrictedSubcategory(
+    product.relay.subcategoryCode.subcategoryweb
+  );
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isRestricted) {
+      showToast.error("❌ No se puede agregar este producto", {
+        duration: 3000,
+        position: "top-right",
+      });
+      return;
+    }
+    addItem(product, 1);
+  };
+
   return (
     <Link
-      href={`/productos/detalle/${product.slug}`} // Ajusta la ruta según tu estructura
+      href={`/productos/detalle/${product.slug}`}
       style={{ display: "block", textDecoration: "none", color: "inherit" }}
     >
       <Box
@@ -50,7 +71,7 @@ export function CardImage({ product }: CardImageProps) {
           />
         </Box>
 
-        {/* Imagen secundaria (solo si existe) */}
+        {/* Imagen secundaria */}
         {hasSecondImage && (
           <Box
             sx={{
@@ -70,7 +91,7 @@ export function CardImage({ product }: CardImageProps) {
           </Box>
         )}
 
-        {/* Icono del carrito */}
+        {/* Botón de carrito */}
         <Tooltip title="Agregar al carrito" placement="top">
           <IconButton
             aria-label="add"
@@ -83,10 +104,7 @@ export function CardImage({ product }: CardImageProps) {
               opacity: hover ? 1 : 0,
               transition: "opacity 0.3s ease",
             }}
-            onClick={(e) => {
-              e.preventDefault();
-              addItem(product, 1);
-            }}
+            onClick={handleAddToCart}
           >
             <AddShoppingCartIcon />
           </IconButton>

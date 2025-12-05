@@ -18,7 +18,7 @@ export interface Relay {
   subcategoryCode: {
     subcategoryCode: string;
     subcategoryName: string;
-    subcategoryWeb: string;
+    subcategoryweb: string;
   };
   priceSale: number;
   priceBulk: number;
