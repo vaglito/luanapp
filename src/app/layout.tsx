@@ -14,7 +14,7 @@ import { GTMHead } from "./components/GTMhead";
 import { GTMBody } from "./components/GTMbody";
 
 const roboto = Roboto({
-  weight: ["400", "500", "700"],
+  weight: ["400"],
   subsets: ["latin"],
   display: "swap",
 });
