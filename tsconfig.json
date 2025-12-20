@@ -33,7 +33,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "theme.js",
-    "global.d.ts"
+    "global.d.ts",
+    "mdx.d.ts",
   ],
   "exclude": [
     "node_modules"
