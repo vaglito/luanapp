@@ -13,6 +13,7 @@ import { fetchExchangeRate } from "./services/exchangeRate";
 import { GTMHead } from "./components/GTMhead";
 import { GTMBody } from "./components/GTMbody";
 import { Box } from "@mui/material";
+import PromoDialog from "./components/promo-dialog";
 
 
 const roboto = Roboto({
@@ -69,6 +70,7 @@ export default async function RootLayout({
 
               {/* Contenido principal ocupa el espacio restante */}
               <Box component="main" sx={{ flex: 1 }}>
+                <PromoDialog />
                 {children}
               </Box>
 
