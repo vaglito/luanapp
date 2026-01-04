@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import {
   Box,
@@ -17,6 +18,7 @@ import {
 import { loginSchema, LoginSchema } from "@/validations/auth/login.schema";
 
 export const LoginForm = () => {
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -40,12 +42,9 @@ export const LoginForm = () => {
 
     setLoading(false);
 
-    if (!res) {
-      setError("Correo electrónico o contraseña no válidos");
-      return;
-    }
-
-    if (res.error) {
+    if (res?.ok) {
+      router.push("/dashboard");
+    } else {
       setError("Correo electrónico o contraseña no válidos");
       return;
     }

@@ -1,15 +1,27 @@
 "use client";
+
 import { Suspense, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Box, Container, Button, IconButton, Badge } from "@mui/material";
+import {
+  Box,
+  Container,
+  Button,
+  IconButton,
+  Badge,
+  Typography,
+} from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
+import { useSession } from "next-auth/react";
+
 import { Navbar } from "./navbar";
 import { Search } from "../search";
 import { useCart } from "@/app/hooks/use-cart";
 import { CartDrawer } from "../../cart/CartDrawer";
+import { LogoutButton } from "../../auth/LogoutButton";
 
 interface HeaderProps {
   logo: string;
@@ -20,6 +32,10 @@ export function Header({ logo, exchange }: HeaderProps) {
   const cart = useCart();
   const [openCart, setOpenCart] = useState(false);
   const toggleCart = () => setOpenCart((prev) => !prev);
+
+  const { data: session, status } = useSession();
+
+  const isAuthenticated = status === "authenticated";
 
   return (
     <Box component="header" sx={{ backgroundColor: "white" }}>
@@ -32,56 +48,81 @@ export function Header({ logo, exchange }: HeaderProps) {
             alignItems: "center",
           }}
         >
-          <Box sx={{ width: { sm: "100%", xs: "100%", md: "30%" } }}>
+          {/* Logo */}
+          <Box sx={{ width: { sm: "100%", md: "30%" } }}>
             <Link href="/">
               <Image
                 src={logo}
                 width={0}
                 height={0}
-                alt="Logo de corporacion luana"
+                alt="Logo"
                 sizes="100vw"
                 style={{ width: "100%", height: "auto" }}
-                priority={true}
+                priority
               />
             </Link>
           </Box>
+
+          {/* Search */}
           <Box sx={{ flexGrow: 1, marginY: 1 }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: { xs: "column", md: "row" },
-                justifyContent: "center",
-                width: "100%",
-              }}
-            >
-              <Suspense fallback={<div>Loading search...</div>}>
-                <Search />
-              </Suspense>
-            </Box>
+            <Suspense fallback={<div>Loading search...</div>}>
+              <Search />
+            </Suspense>
           </Box>
-          <Box>
-            <Box sx={{ display: "flex", gap: 4 }}>
-              <IconButton
-                color="primary"
-                aria-label="abrir carrito"
-                onClick={toggleCart}
-              >
-                <Badge badgeContent={cart.items.length} color="secondary">
-                  <ShoppingCartIcon />
-                </Badge>
-              </IconButton>
-              <Button variant="outlined" startIcon={<LoginIcon />}>
-                Iniciar sesión
-              </Button>
-              <Button variant="contained" startIcon={<PersonIcon />}>
-                Crear Cuenta
-              </Button>
-            </Box>
+
+          {/* Actions */}
+          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+            <IconButton color="primary" onClick={toggleCart}>
+              <Badge badgeContent={cart.items.length} color="secondary">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+
+            {/* AUTH SECTION */}
+            {isAuthenticated ? (
+              <>
+                <Typography variant="body2" fontWeight={500}>
+                  Hola, {session.user.name}
+                </Typography>
+
+                <Button
+                  variant="outlined"
+                  component={Link}
+                  href="/dashboard"
+                  startIcon={<PersonIcon />}
+                >
+                  Dashboard
+                </Button>
+
+                <LogoutButton />
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="outlined"
+                  startIcon={<LoginIcon />}
+                  component={Link}
+                  href="/login"
+                >
+                  Iniciar sesión
+                </Button>
+
+                <Button
+                  variant="contained"
+                  startIcon={<PersonIcon />}
+                  component={Link}
+                  href="/register"
+                >
+                  Crear Cuenta
+                </Button>
+              </>
+            )}
           </Box>
         </Box>
       </Container>
+
       <Navbar />
-      <CartDrawer open={openCart} onClose={toggleCart} exchange={exchange}/> {/* ✅ aquí se integra */}
+      <CartDrawer open={openCart} onClose={toggleCart} exchange={exchange} />
     </Box>
   );
 }

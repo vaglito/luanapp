@@ -1,3 +1,4 @@
+import { LogoutButton } from "@/app/components/auth/LogoutButton";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
@@ -11,6 +12,7 @@ export default async function DashboardPage() {
   return (
     <div>
       <h1>Hola, {session.user?.email}</h1>
+      <LogoutButton />
     </div>
   );
 }
