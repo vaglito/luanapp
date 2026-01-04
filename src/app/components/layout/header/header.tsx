@@ -9,7 +9,8 @@ import {
   Button,
   IconButton,
   Badge,
-  Typography,
+  Skeleton,
+  Divider,
 } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonIcon from "@mui/icons-material/Person";
@@ -31,65 +32,108 @@ interface HeaderProps {
 export function Header({ logo, exchange }: HeaderProps) {
   const cart = useCart();
   const [openCart, setOpenCart] = useState(false);
-  const toggleCart = () => setOpenCart((prev) => !prev);
 
-  const { data: session, status } = useSession();
-
+  const { status } = useSession();
   const isAuthenticated = status === "authenticated";
 
   return (
-    <Box component="header" sx={{ backgroundColor: "white" }}>
+    <Box
+      component="header"
+      sx={{
+        position: "sticky",
+        top: 0,
+        zIndex: 1100,
+        backgroundColor: "white",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+      }}
+    >
       <Container maxWidth="xl">
         <Box
           sx={{
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
-            paddingY: 2,
             alignItems: "center",
+            gap: { xs: 2, md: 3 },
+            py: 2,
           }}
         >
-          {/* Logo */}
-          <Box sx={{ width: { sm: "100%", md: "30%" } }}>
+          {/* LOGO */}
+          <Box
+            sx={{
+              flexShrink: 0,
+              alignSelf: { xs: "center", md: "flex-start" },
+            }}
+          >
             <Link href="/">
               <Image
                 src={logo}
+                alt="Logo"
                 width={0}
                 height={0}
-                alt="Logo"
                 sizes="100vw"
-                style={{ width: "100%", height: "auto" }}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  maxWidth: 360,
+                }}
                 priority
               />
             </Link>
           </Box>
 
-          {/* Search */}
-          <Box sx={{ flexGrow: 1, marginY: 1 }}>
-            <Suspense fallback={<div>Loading search...</div>}>
-              <Search />
-            </Suspense>
+          {/* SEARCH (CENTRADO REAL) */}
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+            }}
+          >
+            <Box sx={{ width: "100%", maxWidth: 600 }}>
+              <Suspense fallback={<Skeleton height={40} />}>
+                <Search />
+              </Suspense>
+            </Box>
           </Box>
 
-          {/* Actions */}
-          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-            <IconButton color="primary" onClick={toggleCart}>
+          {/* ACTIONS */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1.5,
+              flexShrink: 0,
+            }}
+          >
+            <IconButton
+              onClick={() => setOpenCart(true)}
+              sx={{
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 2,
+              }}
+            >
               <Badge badgeContent={cart.items.length} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
 
-            {/* AUTH SECTION */}
-            {isAuthenticated ? (
+            <Divider orientation="vertical" flexItem />
+
+            {status === "loading" ? (
+              <Skeleton variant="rounded" width={120} height={36} />
+            ) : isAuthenticated ? (
               <HeaderUserMenu />
             ) : (
               <>
                 <Button
-                  variant="outlined"
+                  variant="text"
                   startIcon={<LoginIcon />}
                   component={Link}
                   href="/login"
                 >
-                  Iniciar sesión
+                  Ingresar
                 </Button>
 
                 <Button
@@ -97,8 +141,9 @@ export function Header({ logo, exchange }: HeaderProps) {
                   startIcon={<PersonIcon />}
                   component={Link}
                   href="/register"
+                  sx={{ borderRadius: 2 }}
                 >
-                  Crear Cuenta
+                  Crear cuenta
                 </Button>
               </>
             )}
@@ -107,7 +152,11 @@ export function Header({ logo, exchange }: HeaderProps) {
       </Container>
 
       <Navbar />
-      <CartDrawer open={openCart} onClose={toggleCart} exchange={exchange} />
+      <CartDrawer
+        open={openCart}
+        onClose={() => setOpenCart(false)}
+        exchange={exchange}
+      />
     </Box>
   );
 }

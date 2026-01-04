@@ -34,17 +34,20 @@ export function HeaderUserMenu() {
 
   return (
     <>
-      <IconButton
-        onClick={handleOpen}
-        size="small"
-        aria-controls={open ? "user-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-      >
-        <Avatar sx={{ bgcolor: "primary.main", width: 36, height: 36 }}>
-          {session.user.name?.charAt(0).toUpperCase()}
-        </Avatar>
-      </IconButton>
+      <Box>
+        <IconButton
+          onClick={handleOpen}
+          size="small"
+          aria-controls={open ? "user-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+        >
+          <Avatar sx={{ bgcolor: "primary.main", width: 36, height: 36 }}>
+            {session.user.name?.charAt(0).toUpperCase()}
+          </Avatar>
+        </IconButton>
+        Hola, {session.user.name} {session.user.lastName}
+      </Box>
 
       <Menu
         id="user-menu"
@@ -61,10 +64,8 @@ export function HeaderUserMenu() {
         }}
       >
         <Box px={2} py={1}>
-          <Typography variant="subtitle2">
-            {session.user.name}
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="subtitle1">{session.user.name}</Typography>
+          <Typography variant="subtitle2" color="text.secondary">
             {session.user.email}
           </Typography>
         </Box>
