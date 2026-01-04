@@ -1,4 +1,5 @@
-import { LogoutButton } from "@/app/components/auth/LogoutButton";
+import { Grid2 } from "@mui/material";
+import { StatCard } from "@/app/components/dashboard/StatCard";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
@@ -10,9 +11,18 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div>
-      <h1>Hola, {session.user?.email}</h1>
-      <LogoutButton />
-    </div>
+    <Grid2 container spacing={3}>
+      <Grid2 size={{ xs: 12, md: 4 }}>
+        <StatCard title="Pedidos" value="12" />
+      </Grid2>
+
+      <Grid2 size={{ xs: 12, md: 4 }}>
+        <StatCard title="Total Gastado" value="S/ 0.00" />
+      </Grid2>
+
+      <Grid2 size={{ xs: 12, md: 4 }}>
+        <StatCard title="Estado" value="Activo" />
+      </Grid2>
+    </Grid2>
   );
 }
