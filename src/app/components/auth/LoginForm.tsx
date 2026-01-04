@@ -13,7 +13,13 @@ import {
   Typography,
   Alert,
   CircularProgress,
+  IconButton,
+  InputAdornment,
+  Link as MuiLink,
 } from "@mui/material";
+
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import { loginSchema, LoginSchema } from "@/validations/auth/login.schema";
 
@@ -21,6 +27,7 @@ export const LoginForm = () => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -43,12 +50,12 @@ export const LoginForm = () => {
     setLoading(false);
 
     if (!res) {
-      setError("Error inesperado, intenta nuevamente");
+      setError("Ocurrió un error inesperado. Intenta nuevamente.");
       return;
     }
 
     if (res.error) {
-      setError("Correo electrónico o contraseña incorrectos");
+      setError("Correo o contraseña incorrectos");
       return;
     }
 
@@ -56,20 +63,13 @@ export const LoginForm = () => {
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-      sx={{
-        maxWidth: 400,
-        mx: "auto",
-        mt: 6,
-        p: 4,
-        borderRadius: 2,
-        boxShadow: 3,
-      }}
-    >
-      <Typography variant="h5" fontWeight={600} mb={3} textAlign="center">
-        Iniciar sesion
+    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+      <Typography variant="h5" fontWeight={600} mb={1}>
+        Bienvenido 👋
+      </Typography>
+
+      <Typography variant="body2" color="text.secondary" mb={3}>
+        Ingresa tus credenciales para continuar
       </Typography>
 
       {error && (
@@ -79,24 +79,53 @@ export const LoginForm = () => {
       )}
 
       <TextField
-        label="Email"
+        label="Correo electrónico"
         type="email"
         fullWidth
+        autoFocus
+        autoComplete="email"
         margin="normal"
         {...register("email")}
         error={!!errors.email}
         helperText={errors.email?.message}
+        aria-invalid={!!errors.email}
       />
 
       <TextField
-        label="Password"
-        type="password"
+        label="Contraseña"
+        type={showPassword ? "text" : "password"}
         fullWidth
+        autoComplete="current-password"
         margin="normal"
         {...register("password")}
         error={!!errors.password}
         helperText={errors.password?.message}
+        aria-invalid={!!errors.password}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => setShowPassword((prev) => !prev)}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          mt: 1,
+        }}
+      >
+        <MuiLink href="/forgot-password" underline="hover" fontSize={14}>
+          ¿Olvidaste tu contraseña?
+        </MuiLink>
+      </Box>
 
       <Button
         type="submit"
@@ -105,8 +134,20 @@ export const LoginForm = () => {
         disabled={loading}
         sx={{ mt: 3, py: 1.2 }}
       >
-        {loading ? <CircularProgress size={22} /> : "Iniciar sesion"}
+        {loading ? <CircularProgress size={22} /> : "Iniciar sesión"}
       </Button>
+
+      <Typography
+        variant="body2"
+        textAlign="center"
+        mt={3}
+        color="text.secondary"
+      >
+        ¿No tienes cuenta?{" "}
+        <MuiLink href="/register" underline="hover">
+          Crear cuenta
+        </MuiLink>
+      </Typography>
     </Box>
   );
 };

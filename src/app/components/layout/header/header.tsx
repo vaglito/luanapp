@@ -23,13 +23,15 @@ import { Search } from "../search";
 import { useCart } from "@/app/hooks/use-cart";
 import { CartDrawer } from "../../cart/CartDrawer";
 import { HeaderUserMenu } from "./HeaderUserMenu";
+import { Brands } from "@/app/types/brands.type";
 
 interface HeaderProps {
   logo: string;
   exchange: number;
+  brands: Brands[]
 }
 
-export function Header({ logo, exchange }: HeaderProps) {
+export function Header({ logo, exchange, brands }: HeaderProps) {
   const cart = useCart();
   const [openCart, setOpenCart] = useState(false);
 
@@ -151,7 +153,7 @@ export function Header({ logo, exchange }: HeaderProps) {
         </Box>
       </Container>
 
-      <Navbar />
+      <Navbar brands={brands}/>
       <CartDrawer
         open={openCart}
         onClose={() => setOpenCart(false)}
