@@ -21,7 +21,7 @@ import { Navbar } from "./navbar";
 import { Search } from "../search";
 import { useCart } from "@/app/hooks/use-cart";
 import { CartDrawer } from "../../cart/CartDrawer";
-import { LogoutButton } from "../../auth/LogoutButton";
+import { HeaderUserMenu } from "./HeaderUserMenu";
 
 interface HeaderProps {
   logo: string;
@@ -80,22 +80,7 @@ export function Header({ logo, exchange }: HeaderProps) {
 
             {/* AUTH SECTION */}
             {isAuthenticated ? (
-              <>
-                <Typography variant="body2" fontWeight={500}>
-                  Hola, {session.user.name}
-                </Typography>
-
-                <Button
-                  variant="outlined"
-                  component={Link}
-                  href="/dashboard"
-                  startIcon={<PersonIcon />}
-                >
-                  Dashboard
-                </Button>
-
-                <LogoutButton />
-              </>
+              <HeaderUserMenu />
             ) : (
               <>
                 <Button

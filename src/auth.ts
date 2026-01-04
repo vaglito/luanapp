@@ -32,7 +32,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }),
         });
 
-        if (!res.ok) return null;
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => null);
+
+          throw new Error(
+            errorData?.detail || "Correo electrónico o contraseña incorrectos"
+          );
+        }
 
         const data = await res.json();
 

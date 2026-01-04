@@ -42,12 +42,17 @@ export const LoginForm = () => {
 
     setLoading(false);
 
-    if (res?.ok) {
-      router.push("/dashboard");
-    } else {
-      setError("Correo electrónico o contraseña no válidos");
+    if (!res) {
+      setError("Error inesperado, intenta nuevamente");
       return;
     }
+
+    if (res.error) {
+      setError("Correo electrónico o contraseña incorrectos");
+      return;
+    }
+
+    router.replace("/dashboard");
   };
 
   return (

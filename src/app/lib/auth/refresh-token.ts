@@ -1,15 +1,16 @@
 import axios from "axios";
+import { JWT } from "next-auth/jwt";
 import { signOut } from "next-auth/react";
 
 interface RefreshResponse {
   access: string;
 }
 
-export async function refreshAccessToken(refreshToken: string) {
+export async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     const res = await axios.post<RefreshResponse>(
       "http://localhost:8000/api/v2.0/auth/login/refresh/",
-      { refresh: refreshToken },
+      { refresh: token.refreshToken, },
       {
         headers: {
           "Content-Type": "application/json",
@@ -18,9 +19,16 @@ export async function refreshAccessToken(refreshToken: string) {
       }
     );
 
-    return res.data.access;
+    return {
+      ...token,
+      accessToken: res.data.access,
+    };
   } catch (error) {
     await signOut({ redirect: true });
-    return null;
+    return {
+      ...token,
+      accessToken: "",
+      error: "RefreshAccessTokenError",
+    };
   }
 }
