@@ -3,41 +3,66 @@
 import Link from "next/link";
 import {
   Box,
-  Drawer,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Divider,
+  Typography,
 } from "@mui/material";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import SettingsIcon from "@mui/icons-material/Settings";
 
-const menu = [
-  { label: "Dashboard", href: "/dashboard", icon: <DashboardIcon /> },
-  { label: "Pedidos", href: "/dashboard/orders", icon: <ShoppingBagIcon /> },
-  {
-    label: "Configuración",
-    href: "/dashboard/settings",
-    icon: <SettingsIcon />,
-  },
-];
+import { useDashboardMenu } from "@/app/hooks/useDashboardMenu";
 
 export function DashboardSidebar() {
-  return (
-    <Box sx={{ width: 200, bgcolor: "white"}}>
-      <Box sx={{ p: 2, fontWeight: 700 }}>Mi Cuenta</Box>
+  const menu = useDashboardMenu();
 
-      <List>
-        {menu.map((item) => (
-          <Link key={item.href} href={item.href}>
-            <ListItemButton>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} />
-            </ListItemButton>
-          </Link>
-        ))}
-      </List>
+  return (
+    <Box
+      sx={{
+        width: 240,
+        bgcolor: "background.paper",
+        height: "100vh",
+        borderRight: "1px solid",
+        borderColor: "divider",
+      }}
+    >
+      <Box sx={{ p: 2 }}>
+        <Typography fontWeight={700}>Mi Cuenta</Typography>
+      </Box>
+
+      {menu.map((section) => (
+        <Box key={section.section}>
+          <Divider />
+
+          <Typography
+            variant="caption"
+            sx={{
+              px: 2,
+              py: 1,
+              color: "text.secondary",
+              fontWeight: 600,
+              textTransform: "uppercase",
+            }}
+          >
+            {section.section}
+          </Typography>
+
+          <List disablePadding>
+            {section.items.map((item) => (
+              <Link key={item.href} href={item.href}>
+                <ListItemButton>
+                  {item.icon && (
+                    <ListItemIcon sx={{ minWidth: 36 }}>
+                      {item.icon}
+                    </ListItemIcon>
+                  )}
+                  <ListItemText primary={item.label} />
+                </ListItemButton>
+              </Link>
+            ))}
+          </List>
+        </Box>
+      ))}
     </Box>
   );
 }
