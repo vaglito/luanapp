@@ -3,6 +3,9 @@ import Credentials from "next-auth/providers/credentials";
 import { isTokenExpired } from "./app/lib/auth/is-token-expired";
 import { refreshAccessToken } from "./app/lib/auth/refresh-token";
 
+const API_URL = process.env.API_URL
+const API_KEY = process.env.API_KEY
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: "jwt",
@@ -20,11 +23,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
-        const res = await fetch(`http://localhost:8000/api/v2.0/auth/login/`, {
+        const res = await fetch(`${API_URL}/api/v2.0/auth/login/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-api-key": "RUC9TfgQ.1gjQczBKXzHuvXD8utSVTURBiX6moaMG",
+            "x-api-key": `${API_KEY}`,
           },
           body: JSON.stringify({
             email: credentials.email,
