@@ -5,16 +5,17 @@ import { signOut } from "next-auth/react";
 interface RefreshResponse {
   access: string;
 }
-
+const API_URL = process.env.API_URL
+const API_KEY = process.env.API_KEY
 export async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     const res = await axios.post<RefreshResponse>(
-      "http://localhost:8000/api/v2.0/auth/login/refresh/",
+      `${API_URL}/api/v2.0/auth/login/refresh/`,
       { refresh: token.refreshToken, },
       {
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": "RUC9TfgQ.1gjQczBKXzHuvXD8utSVTURBiX6moaMG",
+          "x-api-key": `${API_KEY}`,
         },
       }
     );
