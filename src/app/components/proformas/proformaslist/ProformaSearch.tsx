@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  Box,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import { ProformaComponents } from "../ProformaComponents";
 import { Proforma } from "@/app/types/proformas.type";
 

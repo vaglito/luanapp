@@ -16,7 +16,7 @@ export interface Proforma {
   seller: number;
   subtotal: string;
   total: string;
-  mode: "CONTADO" | "CREDITO";
+  mode: "CONTADO" | "CREDITO" | "CREDITO 7 DIAS" | "CREDITO 15 DIAS" | "CREDITO 30 DIAS";
   createdAt: string;
   items: ProformaItem[];
 }

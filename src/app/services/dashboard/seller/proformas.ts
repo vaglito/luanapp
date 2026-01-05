@@ -3,7 +3,7 @@ import { axiosAuth } from "@/app/lib/axios";
 import { PaginatedResponse } from "@/app/types/paginatedResponse.type";
 import { Proforma } from "@/app/types/proformas.type";
 
-export async function getProformas(): Promise<PaginatedResponse<Proforma[]>> {
+export async function getProformas(): Promise<PaginatedResponse<Proforma>> {
   const session = await auth();
   try {
     const res = await fetch("http://localhost:8000/api/proformas/proforma/", {

@@ -82,8 +82,6 @@ axiosAuth.interceptors.response.use(
         throw new Error("Failed to refresh access token");
       }
 
-      processQueue(null, newAccessToken);
-
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
       return axiosAuth(originalRequest);
     } catch (err) {
