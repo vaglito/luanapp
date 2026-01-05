@@ -22,7 +22,7 @@ export function ProformaItemsTable({ items }: { items: ProformaItem[] }) {
           <TableRow key={i.id}>
             <TableCell>{i.productName}</TableCell>
             <TableCell>{i.quantity}</TableCell>
-            <TableCell>S/ {i.total}</TableCell>
+            <TableCell>$ {i.total}</TableCell>
           </TableRow>
         ))}
       </TableBody>
