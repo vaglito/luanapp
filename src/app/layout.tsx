@@ -13,7 +13,8 @@ import { fetchExchangeRate } from "./services/exchangeRate";
 import { GTMHead } from "./components/GTMhead";
 import { GTMBody } from "./components/GTMbody";
 import { Box } from "@mui/material";
-
+import { Providers } from "./providers";
+import { fetchBrands } from "./services/brands";
 
 const roboto = Roboto({
   weight: ["400"],
@@ -46,6 +47,7 @@ export default async function RootLayout({
 }>) {
   const site = await fetchSiteMetadata(1);
   const exchange = await fetchExchangeRate();
+  const brands = await fetchBrands()
 
   return (
     <html lang="es">
@@ -57,27 +59,28 @@ export default async function RootLayout({
         <GTMBody />
         <ThemeProvider theme={themeOptions}>
           <AppRouterCacheProvider options={{ key: "css" }}>
-            {/* Layout con flex para empujar el footer abajo */}
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                minHeight: "100vh",
-              }}
-            >
-              <Header logo={site.logo} exchange={exchange.exchange} />
+            <Providers>
+              {/* Layout con flex para empujar el footer abajo */}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  minHeight: "100vh",
+                }}
+              >
+                <Header logo={site.logo} exchange={exchange.exchange} brands={brands}/>
 
-              {/* Contenido principal ocupa el espacio restante */}
-              <Box component="main" sx={{ flex: 1 }}>
-                {children}
+                {/* Contenido principal ocupa el espacio restante */}
+                <Box component="main" sx={{ flex: 1 }}>
+                  {children}
+                </Box>
+
+                <Footer address={site.address || ""} />
               </Box>
-
-              <Footer address={site.address || ""} />
-            </Box>
+            </Providers>
           </AppRouterCacheProvider>
         </ThemeProvider>
       </body>
     </html>
-
   );
 }

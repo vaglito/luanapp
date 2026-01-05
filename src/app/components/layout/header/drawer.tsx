@@ -1,59 +1,43 @@
-"use client";
-import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   Box,
-  Divider,
   List,
-  ListItem,
   ListItemButton,
   ListItemText,
+  Divider,
 } from "@mui/material";
 
-interface NavLink {
-  id: number;
-  title: string;
-  path: string;
+interface Props {
+  navlinks: any[];
+  onNavigate: () => void;
 }
 
-interface DrawerMobileProps {
-  navlinks: NavLink[];
-}
-
-export function DrawerMobile({ navlinks }: DrawerMobileProps) {
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
-
+export function DrawerMobile({ navlinks, onNavigate }: Props) {
   return (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Box sx={{ marginY: 2, marginX: 1 }}>
-        <Link href="/">
-          <Image
-            src="/logo-corporacion-luana.jpg"
-            width={0}
-            height={0}
-            alt="Logo de corporacion luana mobile"
-            sizes="100vw"
-            className="h-full w-full"
-          />
-        </Link>
-      </Box>
-      <Divider />
+    <Box sx={{ p: 2 }}>
       <List>
-        {navlinks.map((links) => (
-          <Link key={links.id} href={links.path}>
-            <ListItem disablePadding>
-              <ListItemButton sx={{ textAlign: "center" }}>
-                <ListItemText primary={links.title} />
-              </ListItemButton>
-            </ListItem>
-          </Link>
+        {navlinks.map((link) => (
+          <ListItemButton
+            key={link.id}
+            component={Link}
+            href={link.path}
+            onClick={onNavigate}
+            sx={{
+              borderRadius: 2,
+              mb: 0.5,
+            }}
+          >
+            <ListItemText
+              primary={link.title}
+              primaryTypographyProps={{
+                fontWeight: 500,
+              }}
+            />
+          </ListItemButton>
         ))}
       </List>
+
+      <Divider sx={{ my: 2 }} />
     </Box>
   );
 }
