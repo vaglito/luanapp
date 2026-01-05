@@ -31,6 +31,10 @@ export function useCreateProforma() {
     setItems((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const resetProforma = () => {
+    setItems([]); // 🔥 CLAVE
+  };
+
   const subtotal = useMemo(
     () => items.reduce((acc, i) => acc + i.total, 0),
     [items]
@@ -53,6 +57,7 @@ export function useCreateProforma() {
     updateItem,
     removeItem,
     subtotal,
+    resetProforma,
     createProforma,
     loading,
   };

@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Box, Button, Stack } from "@mui/material";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 
 import { useCreateProforma } from "@/app/hooks/useCreateProforma";
 import { CustomerSection } from "./CustomerSection";
@@ -12,9 +12,17 @@ import { CreateProformaPayload } from "@/app/types/proforma-create.type";
 import { ProductAutocomplete } from "./ProductAutocomplete";
 
 export function CreateProformaForm() {
-  const { items, addItem, updateItem, removeItem, subtotal, createProforma, loading } =
-    useCreateProforma();
+  const {
+    items,
+    addItem,
+    updateItem,
+    removeItem,
+    subtotal,
+    createProforma,
+    resetProforma,
+  } = useCreateProforma();
   const router = useRouter();
+  const [autoKey, setAutoKey] = useState(0); // 👈 CLAVE
   const {
     register,
     handleSubmit,
@@ -32,9 +40,11 @@ export function CreateProformaForm() {
       items,
     };
 
-    await createProforma(payload)
-    router.refresh()
-    reset()
+    await createProforma(payload);
+    reset();
+    resetProforma()
+    setAutoKey((k) => k + 1); // 🔥 fuerza remount
+    router.refresh();
   };
 
   return (

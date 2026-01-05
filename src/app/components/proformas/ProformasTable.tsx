@@ -40,7 +40,7 @@ export function ProformaTable({ proformas, onSelect }: Props) {
             >
               <TableCell>{p.code}</TableCell>
               <TableCell>{p.customer}</TableCell>
-              <TableCell>S/ {p.total}</TableCell>
+              <TableCell>$ {p.total}</TableCell>
               <TableCell>{p.mode}</TableCell>
               <TableCell>
                 {new Date(p.createdAt).toLocaleDateString()}

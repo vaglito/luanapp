@@ -11,6 +11,6 @@ export interface CreateProformaPayload {
   customer: string;
   customerDocument: string;
   customerEmail?: string | null;
-  mode: "CONTADO" | "CREDITO";
+  mode: "CONTADO" | "CREDITO" | "CREDITO 7 DIAS" | "CREDITO 15 DIAS" | "CREDITO 30 DIAS";
   items: CreateProformaItem[];
 }

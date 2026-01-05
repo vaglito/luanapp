@@ -7,12 +7,20 @@ import { ProformaCard } from "./proformaslist/ProformaCard";
 import { ProformaTable } from "./ProformasTable";
 import { ProformaDetailDrawer } from "./ProformaDetailDrawer";
 
-export function ProformaComponents({ proformas }: { proformas: Proforma[] }) {
+export function ProformaComponents({
+  proformas,
+  exchange,
+}: {
+  proformas: Proforma[];
+  exchange: number;
+}) {
   const isMobile = useMediaQuery("(max-width:768px)");
   const [selected, setSelected] = useState<Proforma | null>(null);
 
   return (
     <Box>
+      <Box sx={{ mb: 2 }}>
+      </Box>
       {isMobile ? (
         <Grid2 container spacing={2}>
           {proformas.map((p) => (
@@ -26,6 +34,7 @@ export function ProformaComponents({ proformas }: { proformas: Proforma[] }) {
       )}
 
       <ProformaDetailDrawer
+        exchange={exchange}
         proforma={selected}
         onClose={() => setSelected(null)}
       />

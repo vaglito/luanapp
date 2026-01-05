@@ -19,6 +19,7 @@ interface Props {
 
 export function ProductAutocomplete({ onSelect }: Props) {
   const [input, setInput] = useState("");
+  const [value, setValue] = useState<Products | null>(null);
   const { results, loading } = useProductSearch(input);
 
   const handleSelect = (_: any, product: Products | null) => {
@@ -32,7 +33,7 @@ export function ProductAutocomplete({ onSelect }: Props) {
       quantity: 1,
       total: product.relay.priceSale,
     });
-
+    setValue(null);
     setInput("");
   };
 
@@ -47,11 +48,12 @@ export function ProductAutocomplete({ onSelect }: Props) {
           : "";
       }}
       // 2. Aseguramos que el componente sepa cómo comparar objetos
-      isOptionEqualToValue={(option, value) =>
-        option.relay?.productId === value.relay?.productId
+      isOptionEqualToValue={(o, v) =>
+        o.relay?.productId === v.relay?.productId
       }
       loading={loading}
       onChange={handleSelect}
+      value={value}
       inputValue={input}
       onInputChange={(_, value) => setInput(value)}
       noOptionsText="No se encontraron productos"
