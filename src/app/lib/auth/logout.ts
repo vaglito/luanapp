@@ -1,8 +1,8 @@
-import { signOut, getSession } from "next-auth/react";
+import { auth, signOut } from "@/auth";
 import { axiosAuth } from "../axios";
 
 export async function logout() {
-  const session = await getSession();
+  const session = await auth();
 
   try {
     if (session?.user.refreshToken) {
@@ -15,7 +15,6 @@ export async function logout() {
   } finally {
     await signOut({
       redirect: true,
-      callbackUrl: "/login",
     });
   }
 }
