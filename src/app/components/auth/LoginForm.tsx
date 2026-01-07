@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 import {
@@ -22,6 +21,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import { loginSchema, LoginSchema } from "@/validations/auth/login.schema";
+import { loginAction } from "@/actions/auth-actions";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -41,25 +41,18 @@ export const LoginForm = () => {
     setError(null);
     setLoading(true);
 
-    const res = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
+    const res = await loginAction(data);
 
     setLoading(false);
 
-    if (!res) {
-      setError("Ocurrió un error inesperado. Intenta nuevamente.");
-      return;
+    if (res?.error) {
+      setError(res.error);
+      setLoading(false);
+    } else {
+      // Si tuvo éxito, refrescamos y redirigimos
+      router.push("/dashboard");
+      router.refresh();
     }
-
-    if (res.error) {
-      setError("Correo o contraseña incorrectos");
-      return;
-    }
-
-    router.replace("/dashboard");
   };
 
   return (
