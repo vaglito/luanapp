@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { isTokenExpired } from "./app/lib/auth/is-token-expired";
 import { refreshAccessToken } from "./app/lib/auth/refresh-token";
+import { verifyUser } from "./app/lib/auth/verify-user";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
@@ -19,28 +20,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
-
-        const res = await fetch(`http://localhost:8000/api/v2.0/auth/login/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": "RUC9TfgQ.1gjQczBKXzHuvXD8utSVTURBiX6moaMG",
-          },
-          body: JSON.stringify({
-            email: credentials.email,
-            password: credentials.password,
-          }),
+        const data = await verifyUser({
+          email: credentials.email as string,
+          password: credentials.password as string,
         });
-
-        if (!res.ok) {
-          const errorData = await res.json().catch(() => null);
-
-          throw new Error(
-            errorData?.detail || "Correo electrónico o contraseña incorrectos"
-          );
-        }
-
-        const data = await res.json();
 
         return {
           id: data.user.id,
