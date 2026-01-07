@@ -1,11 +1,12 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import { getSession, signOut } from "next-auth/react";
+import { auth, signOut } from "@/auth";
 import { refreshAccessToken } from "./auth/refresh-token";
 
 const API_URL = process.env.API_URL
 const API_KEY = process.env.API_KEY
+
 export const axiosAuth = axios.create({
-  baseURL: `${API_URL}/api/`,
+  baseURL: `${API_URL}`,
   headers: {
     "Content-Type": "application/json",
     "x-api-key": `${API_KEY}`,
@@ -14,7 +15,7 @@ export const axiosAuth = axios.create({
 
 axiosAuth.interceptors.request.use(
   async (config) => {
-    const session = await getSession();
+    const session = await auth();
 
     if (session?.user.accessToken) {
       config.headers.Authorization = `Bearer ${session.user.accessToken}`;
@@ -70,7 +71,7 @@ axiosAuth.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      const session = await getSession();
+      const session = await auth();
 
       if (!session?.user?.refreshToken) {
         throw new Error("No refresh token available");
