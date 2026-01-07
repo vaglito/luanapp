@@ -40,7 +40,19 @@ export async function Header({ logo, exchange, brands }: any) {
           {/* LOGO */}
           <Box sx={{ flexShrink: 0 }}>
             <Link href="/">
-              <Image src={logo} alt="Logo" width={200} height={50} priority />
+              <Image
+                src={logo}
+                alt="Logo"
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  maxWidth: 360,
+                }}
+                priority
+              />
             </Link>
           </Box>
 
