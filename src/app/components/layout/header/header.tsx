@@ -1,42 +1,20 @@
-"use client";
-
-import { Suspense, useState } from "react";
+// src/components/layout/Header.tsx
+import { auth } from "@/auth"; // Tu configuración de Auth.js
+import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Box,
-  Container,
-  Button,
-  IconButton,
-  Badge,
-  Skeleton,
-  Divider,
-} from "@mui/material";
+import { Box, Container, Button, Divider, Skeleton } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonIcon from "@mui/icons-material/Person";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
-import { useSession } from "next-auth/react";
 
 import { Navbar } from "./navbar";
 import { Search } from "../search";
-import { useCart } from "@/app/hooks/use-cart";
-import { CartDrawer } from "../../cart/CartDrawer";
 import { HeaderUserMenu } from "./HeaderUserMenu";
-import { Brands } from "@/app/types/brands.type";
+import { CartIconButton } from "./CartIconButton";
 
-interface HeaderProps {
-  logo: string;
-  exchange: number;
-  brands: Brands[]
-}
-
-export function Header({ logo, exchange, brands }: HeaderProps) {
-  const cart = useCart();
-  const [openCart, setOpenCart] = useState(false);
-
-  const { status } = useSession();
-  const isAuthenticated = status === "authenticated";
+export async function Header({ logo, exchange, brands }: any) {
+  // Obtenemos la sesión en el servidor. Es mucho más rápido que useSession.
+  const session = await auth();
 
   return (
     <Box
@@ -60,30 +38,13 @@ export function Header({ logo, exchange, brands }: HeaderProps) {
           }}
         >
           {/* LOGO */}
-          <Box
-            sx={{
-              flexShrink: 0,
-              alignSelf: { xs: "center", md: "flex-start" },
-            }}
-          >
+          <Box sx={{ flexShrink: 0 }}>
             <Link href="/">
-              <Image
-                src={logo}
-                alt="Logo"
-                width={0}
-                height={0}
-                sizes="100vw"
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  maxWidth: 360,
-                }}
-                priority
-              />
+              <Image src={logo} alt="Logo" width={200} height={50} priority />
             </Link>
           </Box>
 
-          {/* SEARCH (CENTRADO REAL) */}
+          {/* SEARCH */}
           <Box
             sx={{
               flexGrow: 1,
@@ -100,35 +61,18 @@ export function Header({ logo, exchange, brands }: HeaderProps) {
           </Box>
 
           {/* ACTIONS */}
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1.5,
-              flexShrink: 0,
-            }}
-          >
-            <IconButton
-              onClick={() => setOpenCart(true)}
-              sx={{
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: 2,
-              }}
-            >
-              <Badge badgeContent={cart.items.length} color="secondary">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+            {/* El carrito necesita estado, así que es un Client Component pequeño */}
+            <CartIconButton exchange={exchange} />
 
-            <Divider orientation="vertical" flexItem />
+            <Divider orientation="vertical" flexItem sx={{ height: 24 }} />
 
-            {status === "loading" ? (
-              <Skeleton variant="rounded" width={120} height={36} />
-            ) : isAuthenticated ? (
-              <HeaderUserMenu />
+            {session ? (
+              // Si hay sesión, pasamos los datos al menú de cliente
+              <HeaderUserMenu user={session.user} />
             ) : (
-              <>
+              // Si no hay sesión, mostramos botones de navegación simples
+              <Box sx={{ display: "flex", gap: 1 }}>
                 <Button
                   variant="text"
                   startIcon={<LoginIcon />}
@@ -137,7 +81,6 @@ export function Header({ logo, exchange, brands }: HeaderProps) {
                 >
                   Ingresar
                 </Button>
-
                 <Button
                   variant="contained"
                   startIcon={<PersonIcon />}
@@ -147,18 +90,12 @@ export function Header({ logo, exchange, brands }: HeaderProps) {
                 >
                   Crear cuenta
                 </Button>
-              </>
+              </Box>
             )}
           </Box>
         </Box>
       </Container>
-
-      <Navbar brands={brands}/>
-      <CartDrawer
-        open={openCart}
-        onClose={() => setOpenCart(false)}
-        exchange={exchange}
-      />
+      <Navbar brands={brands} />
     </Box>
   );
 }
