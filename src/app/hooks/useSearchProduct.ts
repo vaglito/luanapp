@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Products } from "../types/products.type";
-import { axiosAuth } from "../lib/axios";
-import { fetchProductSearchList } from "../services/products";
 
 export function useProductSearch(query: string) {
   const [results, setResults] = useState<Products[]>([]);
@@ -19,12 +17,11 @@ export function useProductSearch(query: string) {
     const timeout = setTimeout(async () => {
       try {
         setLoading(true);
-        const res = await axiosAuth.get("products/products/search/", {
-            params: {search: query},
-            signal: controller.signal
+        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`, {
+          signal: controller.signal,
         });
-
-        setResults(res.data.results);
+        const data = await res.json();
+        setResults(data.results || []);
       } catch (err) {
         if ((err as any).name !== "CanceledError") {
           console.error(err);

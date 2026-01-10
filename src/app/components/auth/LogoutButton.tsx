@@ -6,7 +6,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 export function LogoutButton() {
   return (
-    <Button color="error" startIcon={<LogoutIcon />} onClick={logout}>
+    <Button color="error" startIcon={<LogoutIcon />} onClick={() => logout()}>
       Salir
     </Button>
   );
