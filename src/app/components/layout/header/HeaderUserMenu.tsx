@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   Avatar,
@@ -10,50 +10,30 @@ import {
   Box,
   Divider,
 } from "@mui/material";
+import { logout } from "@/app/lib/auth/logout";
+
 import LogoutIcon from "@mui/icons-material/Logout";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { logout } from "@/app/lib/auth/logout";
 
-export function HeaderUserMenu() {
-  const { data: session } = useSession();
-  const router = useRouter();
+export function HeaderUserMenu({ user }: { user: any }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  if (!session) return null;
-
-  const open = Boolean(anchorEl);
-
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => setAnchorEl(null);
-
+  const router = useRouter();
   return (
-    <>
-      <Box>
-        <IconButton
-          onClick={handleOpen}
-          size="small"
-          aria-controls={open ? "user-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-        >
-          <Avatar sx={{ bgcolor: "primary.main", width: 36, height: 36 }}>
-            {session.user.name?.charAt(0).toUpperCase()}
-          </Avatar>
-        </IconButton>
-        Hola, {session.user.name} {session.user.lastName}
-      </Box>
+    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+        Hola, {user.name}
+      </Typography>
+      <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+        <Avatar sx={{ bgcolor: "primary.main", width: 36, height: 36 }}>
+          {user.name?.charAt(0).toUpperCase()}
+        </Avatar>
+      </IconButton>
 
       <Menu
-        id="user-menu"
         anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
         PaperProps={{
           elevation: 3,
           sx: {
@@ -64,14 +44,12 @@ export function HeaderUserMenu() {
         }}
       >
         <Box px={2} py={1}>
-          <Typography variant="subtitle1">{session.user.name}</Typography>
+          <Typography variant="subtitle1">{user.name}</Typography>
           <Typography variant="subtitle2" color="text.secondary">
-            {session.user.email}
+            {user.email}
           </Typography>
         </Box>
-
         <Divider />
-
         <MenuItem onClick={() => router.push("/profile")}>
           <PersonIcon fontSize="small" sx={{ mr: 1 }} />
           Mi perfil
@@ -84,11 +62,11 @@ export function HeaderUserMenu() {
 
         <Divider />
 
-        <MenuItem onClick={logout} sx={{ color: "error.main" }}>
+        <MenuItem onClick={() => logout()} sx={{ color: "error.main" }}>
           <LogoutIcon fontSize="small" sx={{ mr: 1 }} />
           Cerrar sesión
         </MenuItem>
       </Menu>
-    </>
+    </Box>
   );
 }

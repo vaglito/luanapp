@@ -21,6 +21,7 @@ export function ProductAutocomplete({ onSelect }: Props) {
   const [input, setInput] = useState("");
   const [value, setValue] = useState<Products | null>(null);
   const { results, loading } = useProductSearch(input);
+  console.log(input)
 
   const handleSelect = (_: any, product: Products | null) => {
     if (!product) return;
