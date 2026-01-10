@@ -4,6 +4,9 @@ import { isTokenExpired } from "./app/lib/auth/is-token-expired";
 import { refreshAccessToken } from "./app/lib/auth/refresh-token";
 import { verifyUser } from "./app/lib/auth/verify-user";
 
+const API_URL = process.env.API_URL
+const API_KEY = process.env.API_KEY
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: "jwt",
