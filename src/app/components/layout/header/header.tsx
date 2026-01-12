@@ -97,7 +97,7 @@ export async function Header({ logo, exchange, brands }: any) {
                   variant="contained"
                   startIcon={<PersonIcon />}
                   component={Link}
-                  href="/register"
+                  href="/registro"
                   sx={{ borderRadius: 2 }}
                 >
                   Crear cuenta

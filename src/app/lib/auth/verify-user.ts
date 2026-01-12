@@ -13,19 +13,15 @@ export async function verifyUser({ email, password }: LoginCredentials) {
       "Content-Type": "application/json",
       "x-api-key": `${API_KEY}`,
     },
-    body: JSON.stringify({
-      email: email,
-      password: password,
-    }),
+    body: JSON.stringify({ email, password }),
   });
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => null);
 
-    throw new Error(
-      errorData?.detail || "Correo electrónico o contraseña incorrectos"
-    );
+  const data = await res.json().catch(() => null);
+
+  if (!res.ok) {
+    // 🚩 IMPORTANTE: El mensaje que lances aquí es el que buscaremos después
+    throw new Error(data?.detail || "Credenciales incorrectas");
   }
 
-  const data = await res.json();
   return data;
 }
