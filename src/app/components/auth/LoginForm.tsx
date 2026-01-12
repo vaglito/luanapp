@@ -175,7 +175,7 @@ export const LoginForm = () => {
         color="text.secondary"
       >
         ¿No tienes cuenta?{" "}
-        <MuiLink href="/register" underline="hover" sx={{ fontWeight: "bold" }}>
+        <MuiLink href="/registro" underline="hover" sx={{ fontWeight: "bold" }}>
           Crear cuenta
         </MuiLink>
       </Typography>

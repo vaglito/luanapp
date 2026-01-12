@@ -58,7 +58,7 @@ export default function VerifyEmailPage() {
             </Alert>
             <Button 
               variant="contained" 
-              onClick={() => router.push("/register")}
+              onClick={() => router.push("/registro")}
               fullWidth
             >
               Ir al Registro
