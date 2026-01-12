@@ -11,26 +11,39 @@ import {
 export async function loginAction(data: LoginSchema) {
   const validatedFields = loginSchema.safeParse(data);
 
-  if (!validatedFields.success) {
-    return { error: "Datos invalidos" };
-  }
+  if (!validatedFields.success)
+    return { error: "Formato de correo o contraseña incorrecto" };
 
   try {
-    await signIn("credentials", {
+    const result = await signIn("credentials", {
       email: data.email,
       password: data.password,
       redirect: false,
     });
+
+    if (result?.error) {
+      // Auth.js a veces devuelve el error en la URL o en el objeto result
+      return { error: decodeURIComponent(result.error) };
+    }
+
+    return { success: true };
   } catch (error) {
     if (error instanceof AuthError) {
+      // Personaliza los mensajes según el tipo de error de Auth.js / NextAuth
       switch (error.type) {
         case "CredentialsSignin":
-          return { error: "Credenciales invalidas" };
+          return { error: "El correo o la contraseña no coinciden." };
+        case "CallbackRouteError":
+          // Aquí suele venir el error de "Cuenta no activa" desde Django
+          return {
+            error: "Credenciales invalidas",
+          };
         default:
-          return { error: "Algo salio mal en el servidor" };
+          return { error: "Hubo un problema técnico. Inténtalo más tarde." };
       }
     }
-    throw error;
+    // Error genérico de red
+    return { error: "No pudimos conectar con el servidor." };
   }
 }
 
