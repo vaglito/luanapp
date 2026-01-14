@@ -1,6 +1,12 @@
 import RegisterForm from "@/app/components/auth/RegisterForm";
-import { Box, Typography, Container, Paper, Divider, Link } from "@mui/material";
-import NextLink from "next/link";
+import {
+  Box,
+  Typography,
+  Container,
+  Paper,
+  Divider,
+} from "@mui/material";
+import Link from "next/link";
 
 export default function RegisterPage() {
   return (
@@ -36,7 +42,8 @@ export default function RegisterPage() {
               Crear una cuenta
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Regístrate para gestionar tus proformas y productos de manera eficiente.
+              Regístrate para gestionar tus proformas y productos de manera
+              eficiente.
             </Typography>
           </Box>
 
@@ -50,15 +57,7 @@ export default function RegisterPage() {
 
           <Typography variant="body2">
             ¿Ya eres miembro?{" "}
-            <Link
-              component={NextLink}
-              href="/login"
-              sx={{
-                fontWeight: 600,
-                textDecoration: "none",
-                "&:hover": { textDecoration: "underline" },
-              }}
-            >
+            <Link href="/login" className="font-bold hover:underline text-[#5914A3]">
               Inicia sesión aquí
             </Link>
           </Typography>
