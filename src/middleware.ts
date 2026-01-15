@@ -1,60 +1,37 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+// middleware.ts
 import { auth } from "@/auth";
-import { ROLE_ROUTES } from "@/config/roles";
-import { getUserRoles } from "./app/lib/roles";
+import { NextResponse } from "next/server";
 
-export async function middleware(req: NextRequest) {
-  const session = await auth();
-  const { pathname } = req.nextUrl;
+export default auth((req) => {
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth; // Verifica si hay sesión
 
-  /* ---------------------------------------------------------------------- */
-  /* 1️⃣ Rutas públicas                                                     */
-  /* ---------------------------------------------------------------------- */
-  const publicRoutes = ["/login", "/register"];
+  // 1. Definir rutas
+  const isDashboardRoute = nextUrl.pathname.startsWith("/dashboard");
+  const isAuthRoute = nextUrl.pathname.startsWith("/login");
+  const isPublicRoute = nextUrl.pathname === "/"; // Home o landing
 
-  if (publicRoutes.includes(pathname)) {
-    if (session) {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
+  // 2. Lógica de redirección
+  
+  // Si intenta entrar al login estando ya logueado, mandarlo al dashboard
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return NextResponse.redirect(new URL("/dashboard", nextUrl));
     }
     return NextResponse.next();
   }
 
-  /* ---------------------------------------------------------------------- */
-  /* 2️⃣ Rutas protegidas (requieren login)                                 */
-  /* ---------------------------------------------------------------------- */
-  if (!session) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
-
-  /* ---------------------------------------------------------------------- */
-  /* 3️⃣ Protección por roles                                               */
-  /* ---------------------------------------------------------------------- */
-  const requiredRoles = Object.entries(ROLE_ROUTES).find(([route]) =>
-    pathname.startsWith(route)
-  )?.[1];
-
-  if (requiredRoles) {
-    const userRoles = getUserRoles(session);
-
-    const hasAccess = requiredRoles.some((role) =>
-      userRoles.includes(role)
-    );
-
-    if (!hasAccess) {
-      return NextResponse.redirect(
-        new URL("/unauthorized", req.url)
-      );
-    }
+  // Si intenta entrar al dashboard sin estar logueado, mandarlo al login
+  if (isDashboardRoute && !isLoggedIn) {
+    return NextResponse.redirect(new URL("/login", nextUrl));
   }
 
   return NextResponse.next();
-}
+});
 
-/* -------------------------------------------------------------------------- */
-/* MATCHER                                                                    */
-/* -------------------------------------------------------------------------- */
-
+// 3. El Matcher (Filtro)
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  // Esta expresión regular filtra qué rutas deben pasar por el middleware
+  // Evita archivos estáticos, imágenes y favicon para mejorar el rendimiento
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

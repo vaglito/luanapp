@@ -18,21 +18,22 @@ import { fetchExchangeRate } from "@/app/services/exchangeRate";
 export const revalidate = 0;
 
 interface searchParamsProps {
-  searchParams?: {
+  searchParams?: Promise<{
     query?: string;
     page?: string;
     marca?: string[];
     subcategoria?: string[];
-  };
+  }>;
 }
 
 export default async function SearchPage({ searchParams }: searchParamsProps) {
   const exchange = await fetchExchangeRate();
-  const query = searchParams?.query || "";
+  const resolvedSearchParams = (await searchParams) || {};
+  const query = resolvedSearchParams?.query || "";
 
-  const { marca, subcategoria } = searchParams ?? {};
+  const { marca, subcategoria } = resolvedSearchParams;
 
-  let currentPage = Number(searchParams?.page) || 1;
+  let currentPage = Number(resolvedSearchParams.page) || 1;
   let searchProduct: PaginatedResponse<Products> | undefined;
 
   try {
@@ -161,7 +162,7 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
             <Filter
               query={query}
               filters={[
-                 {
+                {
                   title: "Marcas",
                   fetchData: fetchBrandsSearch,
                   Component: BrandFilter,
@@ -172,7 +173,7 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
                   Component: CategoryFilter,
                 },
               ]}
-            /> 
+            />
           </Suspense>
         </Box>
         <Box
@@ -180,10 +181,12 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
             width: { xs: "100%", sm: "100%", md: "80%", lg: "80%", xl: "80%" },
           }}
         >
-          <GridProduct
-            products={searchProduct.results}
-            exchange={exchange.exchange}
-          />
+          <Suspense fallback={<div>Cargando productos...</div>}>
+            <GridProduct
+              products={searchProduct.results}
+              exchange={exchange.exchange}
+            />
+          </Suspense>
           <Suspense fallback={<div>Cargando paginación...</div>}>
             <Box sx={{ mt: 4 }}>
               <PaginationButtons
@@ -196,7 +199,6 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
           </Suspense>
         </Box>
       </Box>
-
     </Container>
   );
 }

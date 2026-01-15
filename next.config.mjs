@@ -2,15 +2,13 @@ import withMDX from '@next/mdx';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    mdxRs: true, // 👈 ESTO ES LA CLAVE
-  },
   pageExtensions: ['ts', 'tsx', 'mdx'],
   images: {
+    dangerouslyAllowLocalIP: true,
     remotePatterns: [
       { protocol: 'https', hostname: 'luanatech.pe' },
-      { protocol: 'http', hostname: 'localhost' },
-      { protocol: 'http', hostname: '127.0.0.1' },
+      { protocol: 'http', hostname: 'localhost', port: '8000', pathname: '/media/**',},
+      { protocol: 'http', hostname: '127.0.0.1', port: '8000', pathname: '/media/**', },
       { protocol: 'http', hostname: 'dev.corporacionluana.pe' },
     ],
   },

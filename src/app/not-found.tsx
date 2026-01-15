@@ -1,5 +1,6 @@
-import Link from "next/link";
-import { Container, Box, Typography, Button } from "@mui/material";
+
+import { Container, Box, Typography } from "@mui/material";
+import { ButtonNotFound } from "./components/common/Button";
 
 export const metadata = {
     title: 'Pagina no encontrada | Corporacion Luana',
@@ -7,6 +8,8 @@ export const metadata = {
 }
 
 export default function NotFound() {
+
+
   return (
     <Container>
       <Box component="section">
@@ -19,9 +22,7 @@ export default function NotFound() {
           </Typography>
         </Box>
         <Box>
-          <Link href="/">
-            <Button variant="contained">Volver atras</Button>
-          </Link>
+            <ButtonNotFound>Volver atras</ButtonNotFound>
         </Box>
       </Box>
     </Container>

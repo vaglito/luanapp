@@ -1,5 +1,4 @@
-// src/components/layout/Header.tsx
-import { auth } from "@/auth"; // Tu configuración de Auth.js
+import { auth } from "@/auth";
 import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,7 +12,6 @@ import { HeaderUserMenu } from "./HeaderUserMenu";
 import { CartIconButton } from "./CartIconButton";
 
 export async function Header({ logo, exchange, brands }: any) {
-  // Obtenemos la sesión en el servidor. Es mucho más rápido que useSession.
   const session = await auth();
 
   return (
@@ -84,24 +82,21 @@ export async function Header({ logo, exchange, brands }: any) {
               <HeaderUserMenu user={session.user} />
             ) : (
               // Si no hay sesión, mostramos botones de navegación simples
-              <Box sx={{ display: "flex", gap: 1 }}>
-                <Button
-                  variant="text"
-                  startIcon={<LoginIcon />}
-                  component={Link}
-                  href="/login"
-                >
-                  Ingresar
-                </Button>
-                <Button
-                  variant="contained"
-                  startIcon={<PersonIcon />}
-                  component={Link}
-                  href="/registro"
-                  sx={{ borderRadius: 2 }}
-                >
-                  Crear cuenta
-                </Button>
+              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                <Link href="/login">
+                  <Button variant="text" startIcon={<LoginIcon />}>
+                    Ingresar
+                  </Button>
+                </Link>
+                <Link href="/registro">
+                  <Button
+                    variant="contained"
+                    startIcon={<PersonIcon />}
+                    sx={{ borderRadius: 2 }}
+                  >
+                    Registro
+                  </Button>
+                </Link>
               </Box>
             )}
           </Box>

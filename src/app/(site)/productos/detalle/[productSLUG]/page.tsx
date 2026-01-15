@@ -1,6 +1,5 @@
-import dynamic from "next/dynamic";
 import { Metadata } from "next";
-import { Container, Box, Skeleton } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { fetchDetailProduct } from "@/app/services/products";
 import { ProductSpecifications1 } from "@/app/components/product/detail/ProductSpecifications";
 import { ProductSpecificationsContainer } from "@/app/components/product/detail/product-spec";
@@ -9,21 +8,26 @@ import { ProductDetail } from "@/app/types/products.type";
 import { ProductDetailMore } from "@/app/components/product/detail/product-detail-more";
 import { fetchExchangeRate } from "@/app/services/exchangeRate";
 import { notFound } from "next/navigation";
+import { CarouselWrapper } from "@/app/components/product/detail/CarouselWrapper"; // 👈 Importa el nuevo wrapper
 
-// --- SEO dinámico con Open Graph + Twitter ---
+export const revalidate = 0;
+
+// En Next 15, params en generateMetadata también es una Promesa
 export async function generateMetadata({
   params,
 }: {
-  params: { productSLUG: string };
+  params: Promise<{ productSLUG: string }>; // 👈 Cambiado a Promise
 }): Promise<Metadata> {
-  const product = await fetchDetailProduct(params.productSLUG);
+  const { productSLUG } = await params; // 👈 Await obligatorio
+  const product = await fetchDetailProduct(productSLUG);
+
+  if (!product) return { title: "Producto no encontrado" };
 
   const title = product.relay.productName;
   const description =
     product.resumen?.replace(/(<([^>]+)>)/gi, "").slice(0, 150) ||
-    "Compra este producto con descuento.";
+    "Compra este producto.";
   const image = product.productsimages?.[0]?.images;
-  const url = `https://corporacionluana.pe/productos/detalle/${params.productSLUG}`;
 
   return {
     title,
@@ -31,97 +35,41 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      url,
-      siteName: "Corporacion Luana",
-      images: image
-        ? [
-            {
-              url: image,
-              width: 1200,
-              height: 630,
-              alt: title,
-            },
-          ]
-        : [],
-      locale: "es_PE",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: image ? [image] : [],
+      images: image ? [{ url: image }] : [],
     },
   };
 }
-
-interface ProductDetailProps {
-  params: {
-    productSLUG: string;
-  };
-}
-
-export const revalidate = 0;
-
-const ProductImageCarousel = dynamic<{ product: ProductDetail }>( // 👈 especifica los props que recibe
-  () => import("@/app/components/product/detail/ProductImageCarousel"),
-  {
-    ssr: false,
-    loading: () => (
-      <Skeleton
-        variant="rectangular"
-        animation="wave"
-        sx={{ width: "100%", height: 500, borderRadius: "12px" }}
-      />
-    ),
-  }
-);
 
 export default async function ProductDetailPage({
   params,
-}: ProductDetailProps) {
-  const { productSLUG } = params;
-  let product: ProductDetail | null = null;
+}: {
+  params: Promise<{ productSLUG: string }>; // 👈 Cambiado a Promise para Next 15.5
+}) {
+  const { productSLUG } = await params; // 👈 Await de params
 
-  try {
-    product = await fetchDetailProduct(productSLUG);
-  } catch (error) {
-    notFound();
-  }
+  const [product, exchange] = await Promise.all([
+    fetchDetailProduct(productSLUG).catch(() => null),
+    fetchExchangeRate(),
+  ]);
 
-  if (!product) {
-    notFound();
-  }
-
-  const exchange = await fetchExchangeRate();
+  if (!product) notFound();
 
   return (
     <Container maxWidth="xl" sx={{ marginY: 4 }}>
       <Box
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", sm: "column", md: "row", lg: "row" },
+          flexDirection: { xs: "column", md: "row" },
           gap: 3,
           alignItems: "stretch",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: { xs: "100%", md: "50%", lg: "50%" },
-          }}
-        >
-          <ProductImageCarousel product={product} />
+        <Box sx={{ width: { xs: "100%", md: "50%" } }}>
+          {/* Usamos el Wrapper de Cliente aquí */}
+          <CarouselWrapper product={product} />
         </Box>
 
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: { xs: "100%", md: "50%", lg: "50%" },
-          }}
-        >
+        <Box sx={{ width: { xs: "100%", md: "50%" } }}>
           <ProductDetailDescription
             title={product.relay.productName}
             resumen={product.resumen}
@@ -134,40 +82,23 @@ export default async function ProductDetailPage({
         </Box>
       </Box>
 
-      {/* specs and pay methods */}
+      {/* ... Resto de tu código (Especificaciones, etc) ... */}
       <Box
         sx={{
           marginY: 4,
           display: "flex",
-          flexDirection: {
-            xs: "column-reverse",
-            sm: "column-reverse",
-            md: "row",
-            lg: "row",
-          },
-          backgroundColor: "#fff",
-          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+          flexDirection: { xs: "column-reverse", md: "row" },
+          bgcolor: "#fff",
+          p: 3,
           borderRadius: "12px",
-          paddingY: 3,
-          paddingX: 3,
-          height: "100%",
+          boxShadow: 1,
           gap: 4,
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            width: { xs: "100%", sm: "50%", md: "50%", lg: "50%" },
-          }}
-        >
+        <Box sx={{ width: { xs: "100%", md: "50%" } }}>
           <ProductDetailMore />
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            width: { xs: "100%", sm: "50%", md: "50%", lg: "50%" },
-          }}
-        >
+        <Box sx={{ width: { xs: "100%", md: "50%" } }}>
           {product.specs ? (
             <ProductSpecificationsContainer specifications={product.specs} />
           ) : (

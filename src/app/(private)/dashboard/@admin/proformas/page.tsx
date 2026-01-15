@@ -4,11 +4,9 @@ import { CreateProformaForm } from "@/app/components/proformas/create/CreateProf
 import { fetchExchangeRate } from "@/app/services/exchangeRate";
 import { getProformas } from "@/app/services/dashboard/seller/proformas";
 
-export const dynamic = "force-dynamic";
-
-export default async function SellerDashboard() {
+export default async function ProformaAdminPage() {
   const exchange = await fetchExchangeRate();
-  const proformas = await getProformas()
+  const proformas = await getProformas();
 
   return (
     <Box sx={{ p: { xs: 2, md: 3 } }}>

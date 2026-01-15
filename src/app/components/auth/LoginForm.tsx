@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -15,7 +15,6 @@ import {
   CircularProgress,
   IconButton,
   InputAdornment,
-  Link as MuiLink,
 } from "@mui/material";
 
 import Visibility from "@mui/icons-material/Visibility";
@@ -144,14 +143,9 @@ export const LoginForm = () => {
       />
 
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
-        <MuiLink
-          href="/forgot-password"
-          underline="hover"
-          fontSize={14}
-          sx={{ fontWeight: 500 }}
-        >
+        <Link href="/forgot-password" className="font-bold hover:underline text-[#5914A3]">
           ¿Olvidaste tu contraseña?
-        </MuiLink>
+        </Link>
       </Box>
 
       <Button
@@ -175,9 +169,9 @@ export const LoginForm = () => {
         color="text.secondary"
       >
         ¿No tienes cuenta?{" "}
-        <MuiLink href="/registro" underline="hover" sx={{ fontWeight: "bold" }}>
+        <Link href="/registro" className="font-bold text-[#5914A3] hover:underline">
           Crear cuenta
-        </MuiLink>
+        </Link>
       </Typography>
     </Box>
   );
