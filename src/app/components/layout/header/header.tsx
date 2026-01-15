@@ -82,7 +82,7 @@ export async function Header({ logo, exchange, brands }: any) {
               <HeaderUserMenu user={session.user} />
             ) : (
               // Si no hay sesión, mostramos botones de navegación simples
-              <Box sx={{ display: "flex", gap: 1 }}>
+              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                 <Link href="/login">
                   <Button variant="text" startIcon={<LoginIcon />}>
                     Ingresar
@@ -94,7 +94,7 @@ export async function Header({ logo, exchange, brands }: any) {
                     startIcon={<PersonIcon />}
                     sx={{ borderRadius: 2 }}
                   >
-                    Crear cuenta
+                    Registro
                   </Button>
                 </Link>
               </Box>
