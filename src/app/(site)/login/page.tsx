@@ -1,4 +1,5 @@
-import { Box, Container, Paper } from "@mui/material";
+import { Suspense } from "react";
+import { Box, CircularProgress, Container, Paper } from "@mui/material";
 import { LoginForm } from "@/app/components/auth/LoginForm";
 
 export default function LoginPage() {
@@ -20,7 +21,15 @@ export default function LoginPage() {
           borderRadius: 3,
         }}
       >
-        <LoginForm />
+        <Suspense
+          fallback={
+            <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
+              <CircularProgress />
+            </Box>
+          }
+        >
+          <LoginForm />
+        </Suspense>
       </Paper>
     </Container>
   );

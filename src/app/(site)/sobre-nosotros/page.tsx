@@ -1,14 +1,9 @@
+"use client";
 import { Container, Box, Grid2, Typography } from "@mui/material";
 import { Store118Card, Store209Card } from "@/app/components/ui/store-card";
 import Content from "./content.mdx";
 
-export const metadata = {
-  title: "Quiénes somos",
-  description:
-    "Empresa peruana especializada en equipos de cómputo y tecnología.",
-};
-
-export default async function Page() {
+export default function Page() {
   return (
     <Container maxWidth="xl">
       <Box sx={{ mt: 4 }}>
