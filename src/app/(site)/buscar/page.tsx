@@ -181,10 +181,12 @@ export default async function SearchPage({ searchParams }: searchParamsProps) {
             width: { xs: "100%", sm: "100%", md: "80%", lg: "80%", xl: "80%" },
           }}
         >
-          <GridProduct
-            products={searchProduct.results}
-            exchange={exchange.exchange}
-          />
+          <Suspense fallback={<div>Cargando productos...</div>}>
+            <GridProduct
+              products={searchProduct.results}
+              exchange={exchange.exchange}
+            />
+          </Suspense>
           <Suspense fallback={<div>Cargando paginación...</div>}>
             <Box sx={{ mt: 4 }}>
               <PaginationButtons
