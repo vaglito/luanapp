@@ -10,25 +10,27 @@ import { fetchCategoriesBrands } from "@/app/services/categories";
 import { fetchExchangeRate } from "@/app/services/exchangeRate";
 import { startCase } from "lodash";
 
-export const generateMetadata = ({
+export const generateMetadata = async ({
   params,
 }: {
-  params: { brandSlug: string };
+  params: Promise<{ brandSlug: string }>;
 }) => {
+  const { brandSlug } = await params;
+  const brandName = startCase(brandSlug);
   return {
-    title: `Productos ${params.brandSlug} | Corporación Luana`,
-    description: `Productos de la marca ${params.brandSlug} en Corporación Luana.`,
+    title: `Productos ${brandName} | Corporación Luana`,
+    description: `Productos de la marca ${brandName} en Corporación Luana.`,
   };
 };
 
 interface BrandDetailProps {
-  params: {
+  params: Promise<{
     brandSlug: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     page?: string;
     subcategoria?: string;
-  };
+  }>;
 }
 
 export const revalidate = 0;
@@ -37,20 +39,17 @@ export default async function BrandDetail({
   params,
   searchParams,
 }: BrandDetailProps) {
-  const exchange = await fetchExchangeRate();
-  let page = Number(searchParams?.page) || 1;
-  const marca = Array.isArray(params?.brandSlug)
-    ? params.brandSlug
-    : params?.brandSlug
-    ? [params.brandSlug]
-    : [];
-  const subcategoria = Array.isArray(searchParams?.subcategoria)
-    ? searchParams.subcategoria
-    : searchParams?.subcategoria
-    ? [searchParams.subcategoria]
-    : [];
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
 
-  const { brandSlug } = params;
+  const { brandSlug } = resolvedParams;
+  const exchange = await fetchExchangeRate();
+
+  let page = Number(resolvedSearchParams.page) || 1;
+  const marca = [brandSlug];
+
+  const rawSub = resolvedSearchParams.subcategoria;
+  const subcategoria = Array.isArray(rawSub) ? rawSub : rawSub ? [rawSub] : [];
 
   const products = await fetchProductList({
     brand: marca,
@@ -59,7 +58,7 @@ export default async function BrandDetail({
   });
 
   const totalPages = Math.ceil(products.count / 20);
-  const brandName = startCase(params.brandSlug);
+  const brandName = startCase(brandSlug);
   return (
     <Container maxWidth="xl" sx={{ marginY: 4 }}>
       <Box
