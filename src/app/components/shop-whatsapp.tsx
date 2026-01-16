@@ -1,47 +1,58 @@
 "use client";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 export function ShopWhatsApp({ title, slug }: { title: string, slug: string }) {
-  const router = usePathname();
-  const protocol = window.location.protocol;
-  const hostname = window.location.hostname;
-  const urlFull = `${protocol}//${hostname}${router}/${slug}`
+  const pathname = usePathname();
+  const [fullUrl, setFullUrl] = useState("");
 
-  const numbers = [51919443359, 51922481325, 981355117];
+  // useEffect se ejecuta solo en el cliente, evitando el error "window is not defined"
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const protocol = window.location.protocol;
+      const hostname = window.location.hostname;
+      // Si el pathname ya termina en el slug (en el detalle), no lo repetimos
+      const currentPath = pathname.endsWith(slug) ? pathname : `${pathname}/${slug}`;
+      setFullUrl(`${protocol}//${hostname}${currentPath}`);
+    }
+  }, [pathname, slug]);
+
   const addProduct = () => {
-    // Seleccionar aleatoriamente un número del array
+    // Aseguramos que los números tengan el código de país 51
+    const numbers = ["51919443359", "51922481325", "51981355117"];
     const randomNumber = numbers[Math.floor(Math.random() * numbers.length)];
 
-    // Mensaje que se enviará
-    const message = `Hola, quiero comprar 1 unidad de la computadora.\n${urlFull}`;
+    const message = `¡Hola! 👋 Estoy interesado en la computadora: *${title}*.\n\nVer aquí: ${fullUrl}`;
 
-    // Construir URL para WhatsApp
-    const whatsappUrl = `https://wa.me/${randomNumber}?text=${encodeURIComponent(
-      message
-    )}`;
-
-    // Abrir WhatsApp
+    const whatsappUrl = `https://wa.me/${randomNumber}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, "_blank");
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center" }}>
+    <Box sx={{ width: "100%", mt: 1 }}>
       <Button
         onClick={addProduct}
         variant="contained"
+        fullWidth
         startIcon={<WhatsAppIcon />}
         sx={{
-          backgroundColor: "#38d9a9",
-          color: "white",
+          py: 1.5,
+          borderRadius: 3,
+          textTransform: "none",
+          fontSize: "1rem",
+          fontWeight: "bold",
+          backgroundColor: "#25D366", // Color oficial de WhatsApp
+          boxShadow: "0 4px 14px 0 rgba(37, 211, 102, 0.39)",
           "&:hover": {
-            backgroundColor: "#20c997",
+            backgroundColor: "#1ebe57",
+            boxShadow: "0 6px 20px rgba(37, 211, 102, 0.23)",
           },
         }}
       >
-        Comprar por WhatsApp
+        Pedir por WhatsApp
       </Button>
     </Box>
   );
