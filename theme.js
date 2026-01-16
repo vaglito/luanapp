@@ -62,6 +62,9 @@ export const themeOptions = createTheme({
     subtitle2: {
       fontWeight: 400,
     },
+    body1: {
+      fontSize: '1rem'
+    },
     body2: {
       lineHeight: 1.5,
     },
