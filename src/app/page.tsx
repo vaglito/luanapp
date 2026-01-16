@@ -10,6 +10,7 @@ import { fetchNewProducts } from "./services/products";
 import { fetchExchangeRate } from "./services/exchangeRate";
 import { fetchProductList } from "./services/products";
 import { TopFooter } from "./components/layout/footer/top-footer";
+import { ComputerHome } from "./components/computer/ComputerHome";
 
 export const revalidate = 0;
 
@@ -59,23 +60,30 @@ export const generateMetadata = () => {
 };
 
 export default async function Home() {
-  const banners = await fetchBannerHome()
-  const categories = await fetchCategories()
-  const newProduct = await fetchNewProducts()
-  const exchange = await fetchExchangeRate()
+  const banners = await fetchBannerHome();
+  const categories = await fetchCategories();
+  const newProduct = await fetchNewProducts();
+  const exchange = await fetchExchangeRate();
   const productsLaptop = await fetchProductList({
-    subcategory: ["laptop-cvideo-dedicada", "laptop-c-video-integrada"]
-  })
+    subcategory: ["laptop-cvideo-dedicada", "laptop-c-video-integrada"],
+  });
   return (
     <>
       <BannerHome banners={banners} />
       <Container maxWidth="xl">
         <HomeCategory categories={categories} />
       </Container>
-       <Container maxWidth="xl">
-        <NewProducts products={newProduct.results} exchange={exchange.exchange}/>
+      <Container maxWidth="xl">
+        <NewProducts
+          products={newProduct.results}
+          exchange={exchange.exchange}
+        />
       </Container>
-      <SectionLaptop products={productsLaptop.results} exchange={exchange.exchange} />
+      <ComputerHome />
+      <SectionLaptop
+        products={productsLaptop.results}
+        exchange={exchange.exchange}
+      />
       <TopFooter />
     </>
   );
