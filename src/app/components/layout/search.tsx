@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Box, TextField } from "@mui/material";
-import { useDebouncedCallback } from "use-debounce";
+import { Box, TextField, InputAdornment, IconButton } from "@mui/material";
+import { Search as SearchIcon } from "@mui/icons-material";
 
 export function Search() {
   const searchParams = useSearchParams();
@@ -16,17 +16,17 @@ export function Search() {
     setSearchTerm(searchParams.get("query") || "");
   }, [searchParams]);
 
-  const handleSearch = useDebouncedCallback((term) => {
+  const handleSearch = () => {
     const params = new URLSearchParams();
 
     // Si hay un término de búsqueda, agrégalo
-    if (term) {
-      params.set("query", term);
+    if (searchTerm) {
+      params.set("query", searchTerm);
     }
 
     // 🔥 Elimina `marca` y `subcategoria` cuando cambia la búsqueda
     replace(`/buscar?${params.toString()}`);
-  }, 300);
+  };
 
   return (
     <Box
@@ -40,10 +40,22 @@ export function Search() {
         label="Buscar producto..."
         variant="outlined"
         value={searchTerm} // Vincula el estado al campo de búsqueda
-        onChange={(e) => {
-          const term = e.target.value;
-          setSearchTerm(term); // Actualiza el estado local
-          handleSearch(term); // Llama a la función de búsqueda
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSearch();
+          }
+        }}
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleSearch}>
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
         }}
         sx={{ width: "100%" }}
       />
