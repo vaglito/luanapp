@@ -24,34 +24,50 @@ export const Filter = async ({ query, filters }: FilterProps) => {
     <Box
       sx={{
         width: "100%",
-        maxWidth: "300",
-        mx: "auto",
         display: "flex",
         flexDirection: "column",
+        gap: 2,
       }}
     >
       {filters.map((filter, index) => {
         const data = results[index];
         const FilterComponent = filter.Component;
         return (
-          <Accordion key={filter.title} defaultExpanded>
+          <Accordion
+            key={filter.title}
+            defaultExpanded
+            disableGutters
+            elevation={0}
+            sx={{
+              bgcolor: "transparent",
+              '&:before': {
+                display: 'none',
+              },
+              borderBottom: "1px solid #e5e7eb"
+            }}
+          >
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
-              aria-controls={`panel-${index}-content`} id={`panel-${index}-header`} sx={{
-                backgroundColor: "primary.main",
-                borderTopRightRadius: "12px",
-                borderTopLeftRadius: "12px",
+              expandIcon={<ExpandMoreIcon sx={{ color: "#6b7280" }} />}
+              aria-controls={`panel-${index}-content`} id={`panel-${index}-header`}
+              sx={{
+                px: 0,
+                minHeight: 48,
+                "&.Mui-expanded": {
+                  minHeight: 48,
+                }
               }}
             >
-              <Typography variant="h6" sx={{
-                fontSize: {xs: "1rem", sm: "1.2rem"},
-                fontWeight: 600,
-                color: "white",
+              <Typography variant="subtitle1" sx={{
+                fontWeight: 700,
+                color: "#374151",
+                textTransform: "uppercase",
+                fontSize: "0.9rem",
+                letterSpacing: 0.5
               }}>{filter.title}</Typography>
             </AccordionSummary>
-           <AccordionDetails>
-            <FilterComponent query={query} data={data} />
-            </AccordionDetails> 
+            <AccordionDetails sx={{ px: 0, pt: 1, pb: 3 }}>
+              <FilterComponent query={query} data={data} />
+            </AccordionDetails>
           </Accordion>
         );
       })}
