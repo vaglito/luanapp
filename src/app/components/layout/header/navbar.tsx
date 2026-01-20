@@ -26,8 +26,9 @@ const navlinks = [
   { id: 1, title: "Inicio", path: "/" },
   { id: 2, title: "Marcas", path: "/marcas" },
   { id: 3, title: "Nuestra Empresa", path: "/sobre-nosotros" },
+  { id: 4, title: "Servicio Técnico", path: "/servicio-tecnico" },
   {
-    id: 4,
+    id: 5,
     title: "Busca tu comprobante",
     path: "https://see.corporacionluana.pe/",
     external: true,
