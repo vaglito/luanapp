@@ -3,6 +3,7 @@ import { ProductPrice } from "@/app/components/product/detail/product-price";
 import { ShopFunction } from "./shop-functions";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import { isRestrictedSubcategory } from "@/app/utils/restricted";
+import { ProductDetail } from "@/app/types/products.type"; // 🔹 Importamos el tipo
 
 interface ProductDetailDescriptionProps {
   title: string;
@@ -12,6 +13,7 @@ interface ProductDetailDescriptionProps {
   priceb: number;
   exchange: number;
   subCategories: string;
+  product: ProductDetail; // 🔹 Nueva prop
 }
 
 export function ProductDetailDescription({
@@ -22,6 +24,7 @@ export function ProductDetailDescription({
   stock,
   exchange,
   subCategories,
+  product, // 🔹 Recibir prop
 }: ProductDetailDescriptionProps) {
   const isRestricted = isRestrictedSubcategory(subCategories);
 
@@ -40,7 +43,7 @@ export function ProductDetailDescription({
         <Typography
           variant="h1"
           sx={{
-            fontWeight: 600,
+            fontWeight: 700,
             fontSize: { xs: 20, sm: 24, md: 24, lg: 28 },
             color: "#545454",
             textShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
@@ -75,7 +78,12 @@ export function ProductDetailDescription({
       ) : (
         <ProductPrice prices={prices} priceb={priceb} exchange={exchange} />
       )}
-      <ShopFunction title={title} stock={stock} subCategory={subCategories}/>
+      <ShopFunction
+        title={title}
+        stock={stock}
+        subCategory={subCategories}
+        product={product} // 🔹 Pasar el producto completo
+      />
     </Box>
   );
 }

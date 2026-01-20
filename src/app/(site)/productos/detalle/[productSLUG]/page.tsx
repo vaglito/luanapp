@@ -78,6 +78,7 @@ export default async function ProductDetailPage({
             priceb={product.relay.priceBulk}
             exchange={exchange.exchange}
             subCategories={product.relay.subcategoryCode.subcategoryweb}
+            product={product} // 🔹 Pasamos el producto completo
           />
         </Box>
       </Box>
