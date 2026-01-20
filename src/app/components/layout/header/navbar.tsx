@@ -26,8 +26,9 @@ const navlinks = [
   { id: 1, title: "Inicio", path: "/" },
   { id: 2, title: "Marcas", path: "/marcas" },
   { id: 3, title: "Nuestra Empresa", path: "/sobre-nosotros" },
+  { id: 4, title: "Servicio Técnico", path: "/servicio-tecnico" },
   {
-    id: 4,
+    id: 5,
     title: "Busca tu comprobante",
     path: "https://see.corporacionluana.pe/",
     external: true,
@@ -61,7 +62,7 @@ export function Navbar({ window }: Props) {
           borderTop: "1px solid rgba(255,255,255,0.1)",
         }}
       >
-        <Toolbar sx={{ minHeight: 56 }}>
+        <Toolbar sx={{ minHeight: { xs: 56, sm: 48 }, justifyContent: "center" }}>
           {/* MOBILE MENU ICON */}
           <IconButton
             color="inherit"
@@ -77,7 +78,7 @@ export function Navbar({ window }: Props) {
           <Box
             sx={{
               display: { xs: "none", sm: "flex" },
-              gap: 1,
+              gap: 1.5,
             }}
           >
             {navlinks.map((link) => {
@@ -91,10 +92,12 @@ export function Navbar({ window }: Props) {
                   target={link.external ? "_blank" : undefined}
                   rel={link.external ? "noopener noreferrer" : undefined}
                   sx={{
-                    color: "#fff",
-                    fontWeight: 500,
+                    color: "white",
+                    fontWeight: isActive ? 700 : 500,
                     borderRadius: 2,
                     px: 2,
+                    textTransform: "none",
+                    fontSize: "0.95rem",
                     backgroundColor: isActive
                       ? "rgba(255,255,255,0.15)"
                       : "transparent",

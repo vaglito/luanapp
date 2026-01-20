@@ -16,13 +16,32 @@ interface CartItemProps {
 export function CartItem({ product, exchange }: CartItemProps) {
   const { removeItem, updatedItemQuantity } = useCart();
 
-  const useOfferPrice = product.relay.priceBulk > 0;
-  const unitPriceUSD = useOfferPrice
-    ? product.relay.priceBulk
-    : product.relay.priceSale;
+  // Compatibilidad para Items tipo Computer que no tienen 'relay'
+  const isComputer = !product.relay;
+  // @ts-ignore
+  const computerItem = product as any;
+
+  const productName = isComputer ? computerItem.title : product.relay.productName;
+
+  let unitPriceUSD = 0;
+  let useOfferPrice = false;
+
+  if (isComputer) {
+    unitPriceUSD = computerItem.totalPrice || 0;
+  } else {
+    useOfferPrice = product.relay.priceBulk > 0;
+    unitPriceUSD = useOfferPrice ? product.relay.priceBulk : product.relay.priceSale;
+  }
+
   const unitPricePEN = convertUsdToPen(unitPriceUSD, exchange);
   const subtotalUSD = unitPriceUSD * product.quantity;
   const subtotalPEN = convertUsdToPen(subtotalUSD, exchange);
+
+  const imageSrc = isComputer
+    ? (computerItem.image || "/not-found.png")
+    : (product.productsimages?.[0]?.images || "/not-found.png");
+
+  const maxStock = isComputer ? 5 : product.relay.totalStock; // Limit stock for computers if unknown
 
   const handleChange = (delta: number) => {
     const newQty = product.quantity + delta;
@@ -34,8 +53,8 @@ export function CartItem({ product, exchange }: CartItemProps) {
       <Box sx={{ display: "flex", gap: 2 }}>
         <Box sx={{ flexShrink: 0 }}>
           <Image
-            src={product.productsimages[0]?.images}
-            alt={product.relay.productName}
+            src={imageSrc}
+            alt={productName}
             width={80}
             height={80}
             style={{ objectFit: "cover", borderRadius: 8 }}
@@ -44,7 +63,7 @@ export function CartItem({ product, exchange }: CartItemProps) {
 
         <Box sx={{ flexGrow: 1 }}>
           <Typography variant="subtitle1" fontWeight={600}>
-            {product.relay.productName}
+            {productName}
           </Typography>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
@@ -68,7 +87,7 @@ export function CartItem({ product, exchange }: CartItemProps) {
             <IconButton
               onClick={() => handleChange(1)}
               size="small"
-              disabled={product.quantity >= product.relay.totalStock}
+              disabled={product.quantity >= maxStock}
             >
               <AddIcon fontSize="small" />
             </IconButton>
@@ -79,7 +98,7 @@ export function CartItem({ product, exchange }: CartItemProps) {
             <strong>{unitPricePEN.toFixed(2)}</strong>
           </Typography>
 
-          {useOfferPrice && (
+          {useOfferPrice && !isComputer && (
             <Typography variant="caption" color="success.main">
               Oferta activa (antes ${product.relay.priceSale.toFixed(2)})
             </Typography>

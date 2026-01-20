@@ -13,15 +13,17 @@ export async function ComputerSerieContainer({
 
   if (!computers || computers.count == 0) {
     return (
-      <Box>
-        <Typography>No hay computadoras</Typography>
+      <Box sx={{ py: 4, textAlign: "center" }}>
+        <Typography sx={{ color: "#9ca3af", fontStyle: "italic" }}>
+          No hay computadoras disponibles en esta serie por el momento.
+        </Typography>
       </Box>
     );
   }
 
   return (
     <Box>
-      <ComputerContainer computers={computers} exchange={exchange}/>
+      <ComputerContainer computers={computers} exchange={exchange} />
     </Box>
   );
 }
