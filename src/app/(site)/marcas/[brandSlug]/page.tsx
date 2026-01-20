@@ -75,9 +75,9 @@ export default async function BrandDetail({
               Actualmente no tenemos stock disponible para esta marca.
               Por favor revisa otras opciones en nuestro catálogo.
             </Typography>
-            <Link href="/" passHref style={{ textDecoration: 'none' }}>
+            <Link href="/marcas" passHref style={{ textDecoration: 'none' }}>
               <Button variant="contained" size="large" sx={{ bgcolor: "#A3147F", borderRadius: 50, px: 4, "&:hover": { bgcolor: "#800e63" } }}>
-                Volver al Inicio
+                Volver a las marcas
               </Button>
             </Link>
           </Paper>

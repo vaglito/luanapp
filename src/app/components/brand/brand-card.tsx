@@ -1,59 +1,93 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 import { Brands } from "@/app/types/brands.type";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export const BrandCard = ({ brand }: { brand: Brands }) => {
   return (
-    <Link href={`/marcas/${brand.relay.brands}`}>
-      <Box
+    <Link
+      href={`/marcas/${brand.relay.brands}`}
+      style={{ textDecoration: "none" }}
+    >
+      <Paper
+        elevation={0}
         sx={{
-          p: 3,
+          p: 2,
           display: "flex",
           flexDirection: "column",
-          width: "100%",
+          alignItems: "center",
           height: "100%",
           backgroundColor: "white",
           borderRadius: 3,
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-          transition: "box-shadow 0.3s ease-in-out",
+          border: "1px solid #f0f0f0",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          position: "relative",
+          overflow: "hidden",
           "&:hover": {
-            boxShadow: "0px 0px 20px rgb(203, 182, 214)",
+            transform: "translateY(-5px)",
+            boxShadow: "0 12px 24px -10px rgba(0, 0, 0, 0.15)",
+            borderColor: "transparent",
+            "& .brand-action": {
+              opacity: 1,
+              transform: "translateY(0)",
+            },
           },
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Box
+          sx={{
+            position: "relative",
+            width: "100%",
+            height: 120,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            mb: 2,
+            overflow: "hidden",
+            borderRadius: 2,
+            backgroundColor: "white",
+          }}
+        >
           <Image
             src={brand.image}
             alt={`Marca ${brand.relay.brandName}`}
-            width={250}
-            height={100}
-            style={{ objectFit: "cover", borderRadius: 3 }}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            style={{ objectFit: "contain", padding: "16px" }}
           />
         </Box>
         <Typography
+          variant="subtitle1"
           sx={{
-            lineHeight: 1.2,
-            fontWeight: 600,
-            color: "#545454",
-            fontSize: { xs: "0.85rem", sm: "1rem" },
-            textAlignLast: "center",
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            textAlign: "justify",
-            overflow: "hidden",
-            WebkitLineClamp: 3,
-            textOverflow: "ellipsis",
-            transition: "color 0.2s",
-            "&:hover": {
-              color: "primary.main",
-            },
+            fontWeight: 700,
+            color: "#2d3436",
+            textAlign: "center",
+            mb: 1,
           }}
         >
           {brand.relay.brandName}
         </Typography>
-      </Box>
+
+        {/* Hover Action Indicator */}
+        <Box
+          className="brand-action"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "primary.main",
+            fontSize: "0.8rem",
+            fontWeight: 600,
+            opacity: 0,
+            transform: "translateY(10px)",
+            transition: "all 0.3s ease",
+          }}
+        >
+          Ver productos <ArrowForwardIcon sx={{ fontSize: 16, ml: 0.5 }} />
+        </Box>
+      </Paper>
     </Link>
   );
 };
