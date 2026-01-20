@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Container, Box, Typography } from "@mui/material";
+import { Container, Box, Typography, Paper, Button } from "@mui/material";
 import { PaginationButtons } from "@/app/components/PaginationButtons";
 import { fetchProductList } from "@/app/services/products";
 import { GridProduct } from "@/app/components/product/grid-product";
@@ -9,6 +9,8 @@ import { CategoryFilterSkeleton } from "@/app/components/ui/skeleton/categoryfil
 import { fetchCategoriesBrands } from "@/app/services/categories";
 import { fetchExchangeRate } from "@/app/services/exchangeRate";
 import { startCase } from "lodash";
+import SearchOffIcon from "@mui/icons-material/SearchOff";
+import Link from "next/link";
 
 export const generateMetadata = async ({
   params,
@@ -57,61 +59,85 @@ export default async function BrandDetail({
     page,
   });
 
-  const totalPages = Math.ceil(products.count / 20);
   const brandName = startCase(brandSlug);
+
+  // Handle No Results or Empty Data
+  if (!products || products.results.length === 0) {
+    if (!products || products.count === 0) {
+      return (
+        <Container maxWidth="xl" sx={{ mt: 8, mb: 8 }}>
+          <Paper elevation={0} sx={{ p: 6, textAlign: "center", borderRadius: 4, bgcolor: "#fff", border: "1px dashed #e5e7eb" }}>
+            <SearchOffIcon sx={{ fontSize: 80, color: "#d1d5db", mb: 2 }} />
+            <Typography variant="h4" color="#545454" fontWeight={700} gutterBottom>
+              No hay productos disponibles de {brandName}
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 600, mx: "auto", mb: 4 }}>
+              Actualmente no tenemos stock disponible para esta marca.
+              Por favor revisa otras opciones en nuestro catálogo.
+            </Typography>
+            <Link href="/" passHref style={{ textDecoration: 'none' }}>
+              <Button variant="contained" size="large" sx={{ bgcolor: "#A3147F", borderRadius: 50, px: 4, "&:hover": { bgcolor: "#800e63" } }}>
+                Volver al Inicio
+              </Button>
+            </Link>
+          </Paper>
+        </Container>
+      )
+    }
+  }
+
+  const totalPages = Math.ceil(products.count / 20);
+  if (page > totalPages && totalPages > 0) page = totalPages;
+
   return (
-    <Container maxWidth="xl" sx={{ marginY: 4 }}>
-      <Box
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      {/* Header Results Info */}
+      <Paper
+        elevation={0}
         sx={{
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
           alignItems: { xs: "flex-start", md: "center" },
           justifyContent: "space-between",
           gap: 2,
-          color: "#545454",
-          p: 2,
-          mb: 3,
-          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-          textShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-          borderRadius: "12px",
+          p: { xs: 3, md: 4 },
+          mb: 4,
+          borderRadius: 3,
+          bgcolor: "white",
+          border: "1px solid #e5e7eb",
+          boxShadow: "0px 4px 6px -1px rgba(0,0,0,0.05)",
+          background: "linear-gradient(to right, #ffffff 50%, #fdf4ff 100%)"
         }}
       >
-        <Typography
-          variant="h5"
-          sx={{ fontSize: { xs: "1.2rem", md: "1.5rem" }, fontWeight: 600 }}
-        >
-          Productos {brandName}
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{ fontSize: { xs: "0.95rem", md: "1rem" } }}
-        >
-          {products.count} productos encontrados
-        </Typography>
-      </Box>
+        <Box>
+          <Typography variant="overline" sx={{ color: "#A3147F", fontWeight: 700, letterSpacing: 1 }}>
+            Marca Exclusiva
+          </Typography>
+          <Typography variant="h3" sx={{ fontWeight: 800, color: "#333", fontSize: { xs: "1.75rem", md: "2.5rem" }, lineHeight: 1.2 }}>
+            {brandName}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+            Explora {products.count} productos disponibles
+          </Typography>
+        </Box>
+      </Paper>
+
       {/* products */}
-      <Box
-        sx={{
-          display: "flex",
-          marginY: 4,
-          flexDirection: {
-            xs: "column",
-            sm: "column",
-            md: "row",
-            lg: "row",
-            xl: "row",
-          },
-          gap: { xs: 1, sm: 1, md: 2, lg: 4, xl: 4 },
-        }}
-      >
+      <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, gap: 4 }}>
         <Box
           sx={{
-            width: { xs: "100%", sm: "100%", md: "20%", lg: "20%", xl: "20%" },
-            backgroundColor: "#fff",
-            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-            borderRadius: "12px",
+            width: { xs: "100%", lg: "280px" },
+            flexShrink: 0,
+            bgcolor: "#fff",
+            p: 3,
+            borderRadius: 3,
+            border: "1px solid #e5e7eb",
+            height: "fit-content",
+            position: { lg: "sticky" },
+            top: { lg: 100 },
           }}
         >
+          <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: "#545454" }}>Filtros</Typography>
           <Suspense fallback={<CategoryFilterSkeleton />}>
             <Filter
               query={brandSlug}
@@ -125,17 +151,13 @@ export default async function BrandDetail({
             />
           </Suspense>
         </Box>
-        <Box
-          sx={{
-            width: { xs: "100%", sm: "100%", md: "80%", lg: "80%", xl: "80%" },
-          }}
-        >
+        <Box sx={{ flexGrow: 1 }}>
           <GridProduct
             products={products.results}
             exchange={exchange.exchange}
           />
           <Suspense fallback={<div>Cargando paginación...</div>}>
-            <Box sx={{ mt: 4 }}>
+            <Box sx={{ mt: 8, display: "flex", justifyContent: "center" }}>
               <PaginationButtons
                 totalPages={totalPages}
                 currentPage={page}
