@@ -174,7 +174,7 @@ export default function TechnicalServicePage() {
                             variant="outlined"
                             size="large"
                             color="secondary"
-                            href="https://wa.me/51919443359?text=Hola,%20necesito%20soporte%20remoto%20con%20AnyDesk."
+                            href="https://wa.me/51902719360?text=Hola,%20necesito%20soporte%20remoto%20con%20AnyDesk."
                             target="_blank"
                             sx={{
                                 py: 1.5,
@@ -251,7 +251,7 @@ export default function TechnicalServicePage() {
                         <Button
                             variant="contained"
                             startIcon={<WhatsAppIcon />}
-                            href="https://wa.me/51919443359?text=Hola,%20necesito%20soporte%20técnico."
+                            href="https://wa.me/51902719360?text=Hola,%20necesito%20soporte%20técnico."
                             target="_blank"
                             size="large"
                             sx={{
