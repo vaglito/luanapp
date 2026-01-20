@@ -22,16 +22,16 @@ export function ComputerCard({
       elevation={0}
       sx={{
         width: "100%",
-        borderRadius: 4,
-        marginY: 4,
-        border: "1px solid #f0f0f0",
-        transition: "all 0.3s ease",
-        overflow: "hidden",
+        borderRadius: 3,
+        marginY: 2,
+        bgcolor: "white",
+        border: "1px solid #e5e7eb",
+        transition: "box-shadow 0.3s ease-in-out",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
-        height: "100%",
         "&:hover": {
-          boxShadow: "0px 10px 20px rgba(0,0,0,0.08)",
+          boxShadow: "0px 0px 20px rgb(203, 182, 214)",
           transform: "translateY(-4px)",
         },
       }}
@@ -39,19 +39,23 @@ export function ComputerCard({
       {/* Contenedor de Imagen con Link */}
       <Link
         href={`${pathname}/${computer.slug}`}
-        style={{ textDecoration: "none" }}
+        style={{ textDecoration: "none", flexGrow: 1, display: "flex", flexDirection: "column" }}
       >
         <Box
           sx={{
             position: "relative",
             overflow: "hidden",
-            bgcolor: "#f9f9f9",
+            bgcolor: "#f8fafc",
             aspectRatio: "1 / 1",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            p: 2,
             "& img": {
               transition: "transform 0.5s ease-in-out",
             },
             "&:hover img": {
-              transform: "scale(1.08)",
+              transform: "scale(1.05)",
             },
           }}
         >
@@ -59,46 +63,47 @@ export function ComputerCard({
             src={computer.image || "/not-found.png"}
             alt={computer.title}
             fill
-            sizes="(max-width: 500px) 100vw, (max-width: 500px) 50vw, 33vw"
+            style={{ objectFit: "contain", padding: "12px" }}
+            sizes="(max-width: 640px) 80vw, (max-width: 1024px) 40vw, 25vw"
           />
-          {/* Badge de disponibilidad opcional */}
+          {/* Badge de disponibilidad */}
           <Chip
-            label="Disponible"
+            label="DISPONIBLE"
             size="small"
-            color="success"
             sx={{
               position: "absolute",
               top: 12,
               left: 12,
-              fontWeight: "bold",
+              fontWeight: 700,
               fontSize: "0.7rem",
+              bgcolor: "#22c55e",
+              color: "white",
             }}
           />
         </Box>
 
-        <Box sx={{ p: 2, flexGrow: 1 }}>
-          {/* Título con límite de líneas */}
+        <Box sx={{ p: 2.5, flexGrow: 1, display: "flex", flexDirection: "column" }}>
+          {/* Título */}
           <Typography
             variant="subtitle1"
             sx={{
-              fontSize: { xs: 15, md: 17 },
-              color: "#1a1a1a",
-              fontWeight: 800,
-              textAlign: "left",
-              lineHeight: 1.2,
-              mb: 1.5,
+              fontSize: { xs: 16, md: 17 },
+              color: "#545454",
+              fontWeight: 700,
+              lineHeight: 1.3,
+              mb: 2,
               display: "-webkit-box",
               WebkitLineClamp: 2,
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
-              height: "2.8rem", // Mantiene la altura constante entre cards
+              height: "2.6em",
             }}
           >
             {computer.title}
           </Typography>
 
-          {/* Especificaciones Técnicas Estilizadas */}
-          <Stack spacing={0.5} sx={{ mb: 2 }}>
+          {/* Especificaciones Técnicas */}
+          <Stack spacing={0.8} sx={{ mb: 2, flexGrow: 1 }}>
             {Object.entries(computer.specifications)
               .slice(0, 4)
               .map(([key, value]) => (
@@ -108,59 +113,61 @@ export function ComputerCard({
                     display: "flex",
                     alignItems: "center",
                     gap: 1,
-                    bgcolor: "#f0f4f8",
+                    bgcolor: "#f1f5f9",
                     borderRadius: 1.5,
                     px: 1,
                     py: 0.5,
                   }}
                 >
-                  <BoltIcon sx={{ fontSize: 14, color: "primary.main" }} />
+                  <BoltIcon sx={{ fontSize: 16, color: "#A3147F" }} />
                   <Typography
                     sx={{
-                      fontSize: "0.75rem",
-                      fontWeight: 600,
-                      color: "text.secondary",
+                      fontSize: "0.8rem",
+                      color: "#64748b",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
                     }}
                   >
-                    <span style={{ textTransform: "capitalize" }}>{key}</span>:{" "}
+                    <span style={{ fontWeight: 600, color: "#475569", textTransform: "capitalize" }}>
+                      {key}:
+                    </span>{" "}
                     {value as string}
                   </Typography>
                 </Box>
               ))}
           </Stack>
-        </Box>
-      </Link>
 
-      {/* Acciones y Precio */}
-      <Box sx={{ px: 2, pb: 2, mt: "auto" }}>
-        <Divider sx={{ mb: 2 }} />
+          <Divider sx={{ my: 2 }} />
 
-        <Box
-          sx={{
-            mb: 2,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Box>
+          {/* Precio */}
+          <Box sx={{ mb: 1 }}>
             <Typography
               variant="caption"
-              color="text.secondary"
-              sx={{ display: "block" }}
+              sx={{ display: "block", color: "#64748b", mb: 0.5 }}
             >
               Precio Online
             </Typography>
             <Typography
               variant="h6"
-              sx={{ fontWeight: 900, color: "#A3147F", lineHeight: 1 }}
+              sx={{
+                fontWeight: 900,
+                color: "#A3147F",
+                fontSize: "1.4rem",
+                lineHeight: 1,
+              }}
             >
-              S/{pricePen} - (${computer.totalPrice})
+              S/{pricePen}
+              <Typography component="span" sx={{ fontSize: "0.9rem", color: "#94a3b8", ml: 1, fontWeight: 400 }}>
+                (${computer.totalPrice})
+              </Typography>
             </Typography>
           </Box>
-          {/* Aquí podrías poner el precio en Soles si lo tienes */}
         </Box>
+      </Link>
 
+      {/* Botón de Acción */}
+      <Box sx={{ px: 2.5, pb: 2.5 }}>
         <ShopWhatsApp title={computer.title} slug={computer.slug} />
       </Box>
     </Paper>
