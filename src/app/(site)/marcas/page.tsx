@@ -1,22 +1,24 @@
-import { Container, Box, Typography, Grid2 } from "@mui/material";
-import { fetchBrands } from "@/app/services/brands";
-import { GridBrand } from "@/app/components/brand/grid-brand";
+import { Suspense } from "react";
+import { Container, Box } from "@mui/material";
+import { BrandResults } from "@/app/components/brand/brand-results";
+import { BrandListSkeleton } from "@/app/components/ui/skeleton/search-skeletons";
 
 export const metadata = {
   title: "Marcas | Corporacion Luana",
   description: "Listado de marcas",
 };
 
-export default async function BrandPage() {
-  const brands = await fetchBrands();
-
+export default function BrandPage() {
   return (
     <Container maxWidth="xl">
       <Box>
         <Box marginY={4}>
-          <GridBrand brands={brands} />
+          <Suspense fallback={<BrandListSkeleton />}>
+            <BrandResults />
+          </Suspense>
         </Box>
       </Box>
     </Container>
   );
 }
+

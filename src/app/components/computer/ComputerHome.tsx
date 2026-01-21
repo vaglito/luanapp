@@ -15,23 +15,34 @@ export async function ComputerHome() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              mb: 4,
+              textAlign: "center",
             }}
           >
             <Typography
               variant="h3"
-              color="#545454"
-              sx={{ fontWeight: "bold" }}
+              component="h2"
+              sx={{
+                fontWeight: 800,
+                mb: 1,
+                background: "linear-gradient(45deg, #1a237e 30%, #534bae 90%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                fontSize: { xs: "2rem", md: "3rem" },
+              }}
             >
-              Computadoras
+              Computadoras Ensambladas
             </Typography>
             <Box>
               <Typography
-                color="#545454"
+                variant="subtitle1"
+                color="text.secondary"
                 sx={{
-                  fontSize: 18,
+                  maxWidth: "600px",
+                  fontSize: { xs: "1rem", md: "1.1rem" },
                 }}
               >
-                Encuentra configuraciones acorde a tu preferencia y trabajo.
+                Encuentra configuraciones optimizadas para tu trabajo, estudio o gaming.
               </Typography>
             </Box>
           </Box>
