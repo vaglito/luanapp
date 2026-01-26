@@ -5,18 +5,43 @@ import { SliderCategory } from "./categoryList/slider-category";
 export const HomeCategory = ({ categories }: { categories: Categories[] }) => {
   return (
     <Box
+      component="section"
       sx={{
-        marginTop: 4,
-        marginBottom: 4,
+        position: "relative",
+        py: { xs: 6, md: 10 },
       }}
     >
       <Box
         sx={{
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "10%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "120%",
+            height: "60%",
+          }}
+        />
+      </Box>
+
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 1,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          mb: 4,
+          mb: { xs: 4, md: 6 },
           textAlign: "center",
+          px: 2,
         }}
       >
         <Typography
@@ -24,11 +49,13 @@ export const HomeCategory = ({ categories }: { categories: Categories[] }) => {
           component="h2"
           sx={{
             fontWeight: 800,
-            mb: 1,
-            background: "linear-gradient(45deg, #1a237e 30%, #534bae 90%)",
+            mb: 2,
+            background: "linear-gradient(135deg, #1a237e 0%, #5914A3 50%, #A3147F 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            fontSize: { xs: "2rem", md: "3rem" },
+            fontSize: { xs: "1.75rem", sm: "2.5rem", md: "3.5rem" },
+            lineHeight: 1.2,
+            letterSpacing: "-0.02em",
           }}
         >
           Categorías Destacadas
@@ -37,15 +64,17 @@ export const HomeCategory = ({ categories }: { categories: Categories[] }) => {
           variant="subtitle1"
           color="text.secondary"
           sx={{
-            maxWidth: "600px",
-            fontSize: { xs: "1rem", md: "1.1rem" },
+            maxWidth: "700px",
+            fontSize: { xs: "0.95rem", sm: "1.05rem", md: "1.2rem" },
+            lineHeight: 1.6,
+            opacity: 0.8,
           }}
         >
-          Explora nuestra amplia gama de categorías y encuentra exactamente lo que
-          buscas.
+          Explora nuestra colección y encuentra lo que necesitas en tecnología
         </Typography>
       </Box>
-      <Box sx={{ marginY: 4 }}>
+
+      <Box sx={{ position: "relative", zIndex: 2, width: "100%" }}>
         <SliderCategory categories={categories} />
       </Box>
     </Box>

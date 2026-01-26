@@ -19,55 +19,91 @@ export const SliderCategory = ({ categories }: SliderCategoryProps) => {
     <Box sx={{ position: "relative", width: "100%" }}>
       <IconButton
         className="category-prev"
-        color="primary"
         sx={{
+          display: { xs: "none", md: "flex" },
           position: "absolute",
           top: "50%",
-          left: { xs: -10, sm: -20, md: -30, lg: -40, xl: -50 },
+          left: { xs: 0, sm: -10, md: -20 },
           transform: "translateY(-50%)",
-          backgroundColor: "white",
-          boxShadow: 1,
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          backdropFilter: "blur(12px)",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
           zIndex: 10,
-          "&:hover": { backgroundColor: "white" },
-          width: { xs: 30, sm: 36, md: 40 },
-          height: { xs: 30, sm: 36, md: 40 },
+          width: { md: 48 },
+          height: { md: 48 },
+          color: "primary.main",
+          border: "1px solid rgba(255,255,255,0.8)",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          "&:hover": {
+            backgroundColor: "#fff",
+            color: "#5914A3",
+            transform: "translateY(-50%) scale(1.1)",
+            boxShadow: "0 8px 25px rgba(89, 20, 163, 0.25)",
+          },
+          "&.swiper-button-disabled": {
+            opacity: 0,
+            cursor: "default",
+          }
         }}
       >
-        <ArrowBackIosNewIcon sx={{ fontSize: { xs: 14, sm: 16, md: 18 } }} />
+        <ArrowBackIosNewIcon sx={{ fontSize: 24 }} />
       </IconButton>
 
       <IconButton
         className="category-next"
-        color="primary"
         sx={{
+          display: { xs: "none", md: "flex" },
           position: "absolute",
           top: "50%",
-          right: { xs: -10, sm: -20, md: -30, lg: -40, xl: -50 },
+          right: { xs: 0, sm: -10, md: -20 },
           transform: "translateY(-50%)",
-          backgroundColor: "white",
-          boxShadow: 1,
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          backdropFilter: "blur(12px)",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
           zIndex: 10,
-          "&:hover": { backgroundColor: "white" },
-          width: { xs: 30, sm: 36, md: 40 },
-          height: { xs: 30, sm: 36, md: 40 },
+          width: { md: 48 },
+          height: { md: 48 },
+          color: "primary.main",
+          border: "1px solid rgba(255,255,255,0.8)",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          "&:hover": {
+            backgroundColor: "#fff",
+            color: "#5914A3",
+            transform: "translateY(-50%) scale(1.1)",
+            boxShadow: "0 8px 25px rgba(89, 20, 163, 0.25)",
+          },
+          "&.swiper-button-disabled": {
+            opacity: 0,
+            cursor: "default",
+          }
         }}
       >
-        <ArrowForwardIosIcon sx={{ fontSize: { xs: 14, sm: 16, md: 18 } }} />
+        <ArrowForwardIosIcon sx={{ fontSize: 24 }} />
       </IconButton>
 
       {/* Swiper */}
       <Swiper
         modules={[Navigation]}
         slidesPerView={2}
-        spaceBetween={20}
+        spaceBetween={15}
         navigation={{
           prevEl: ".category-prev",
           nextEl: ".category-next",
         }}
+        style={{
+          paddingTop: "30px",
+          paddingBottom: "60px",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+        }}
         breakpoints={{
-          640: {
-            slidesPerView: 3,
+          320: {
+            slidesPerView: 2,
             spaceBetween: 10,
+          },
+          500: {
+            slidesPerView: 3,
+            spaceBetween: 15,
           },
           768: {
             slidesPerView: 4,
@@ -84,7 +120,7 @@ export const SliderCategory = ({ categories }: SliderCategoryProps) => {
         }}
       >
         {categories.map((category) => (
-          <SwiperSlide key={category.id}>
+          <SwiperSlide key={category.id} style={{ display: 'flex', justifyContent: 'center' }}>
             <CardCategory category={category} />
           </SwiperSlide>
         ))}
