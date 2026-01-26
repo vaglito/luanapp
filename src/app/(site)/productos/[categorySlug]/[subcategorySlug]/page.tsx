@@ -4,9 +4,9 @@ import { Container, Typography, Box, Paper } from "@mui/material";
 import {
   ProductListSkeleton,
   FiltersSkeleton,
-} from "@/app/components/ui/skeleton/search-skeletons";
-import { SubCategoryProductList } from "@/app/components/product/subcategory/subcategory-product-list";
-import { SubCategoryFilterList } from "@/app/components/product/subcategory/subcategory-filter-list";
+} from "@/components/ui/skeleton/search-skeletons";
+import { SubCategoryProductList } from "@/components/product/subcategory/subcategory-product-list";
+import { SubCategoryFilterList } from "@/components/product/subcategory/subcategory-filter-list";
 
 export const revalidate = 0;
 

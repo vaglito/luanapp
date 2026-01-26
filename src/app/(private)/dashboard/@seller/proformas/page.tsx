@@ -1,8 +1,8 @@
 import { Box, Grid2, Paper, Typography, Divider } from "@mui/material";
-import { ProformasWithSearch } from "@/app/components/proformas/proformaslist/ProformaSearch";
-import { CreateProformaForm } from "@/app/components/proformas/create/CreateProformaForm";
-import { fetchExchangeRate } from "@/app/services/exchangeRate";
-import { getProformas } from "@/app/services/dashboard/seller/proformas";
+import { ProformasWithSearch } from "@/components/proformas/proformaslist/ProformaSearch";
+import { CreateProformaForm } from "@/components/proformas/create/CreateProformaForm";
+import { fetchExchangeRate } from "@/services/exchangeRate";
+import { getProformas } from "@/services/dashboard/seller/proformas";
 
 export default async function ProformaSellerPage() {
   const exchange = await fetchExchangeRate();
@@ -70,3 +70,4 @@ export default async function ProformaSellerPage() {
     </Box>
   );
 }
+

@@ -1,7 +1,7 @@
 "use server";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
-import apiClient from "@/app/services/apiClient";
+import apiClient from "@/services/apiClient";
 import { LoginSchema, loginSchema } from "@/validations/auth/login.schema";
 import {
   registerSchema,
@@ -84,3 +84,4 @@ export async function VerifyEmailAction(tokenUUID: string) {
     return { error: message };
   }
 }
+

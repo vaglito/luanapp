@@ -1,6 +1,6 @@
 import { Container, Box, Typography, Paper, Alert } from "@mui/material";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
-import { ComplaintsForm } from "@/app/components/complaints/complaints-form";
+import { ComplaintsForm } from "@/components/complaints/complaints-form";
 
 export const metadata = {
   title: "Libro de Reclamaciones | Corporación Luana",
@@ -71,3 +71,4 @@ export default function LibroReclamacionesPage() {
     </Container>
   );
 }
+

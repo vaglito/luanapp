@@ -14,10 +14,10 @@ import {
   TableRow,
   Grid2,
 } from "@mui/material";
-import { fetchComputerDetail } from "@/app/services/computer";
-import { ShopWhatsApp } from "@/app/components/shop-whatsapp";
-import { fetchExchangeRate } from "@/app/services/exchangeRate";
-import { convertUsdToPen } from "@/app/lib/currency";
+import { fetchComputerDetail } from "@/services/computer";
+import { ShopWhatsApp } from "@/components/shop-whatsapp";
+import { fetchExchangeRate } from "@/services/exchangeRate";
+import { convertUsdToPen } from "@/lib/currency";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import PaymentsIcon from "@mui/icons-material/Payments";

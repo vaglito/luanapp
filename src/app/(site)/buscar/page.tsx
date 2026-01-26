@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 import { Box, Container, Typography, Paper } from "@mui/material";
-import { ProductResultList } from "@/app/components/product/search/product-result-list";
-import { FilterList } from "@/app/components/product/search/filter-list";
+import { ProductResultList } from "@/components/product/search/product-result-list";
+import { FilterList } from "@/components/product/search/filter-list";
 import {
   ProductListSkeleton,
   FiltersSkeleton,
-} from "@/app/components/ui/skeleton/search-skeletons";
+} from "@/components/ui/skeleton/search-skeletons";
 
 export const revalidate = 0;
 
@@ -118,3 +118,4 @@ export default async function SearchPage({ searchParams }: SearchParamsProps) {
     </Container>
   );
 }
+

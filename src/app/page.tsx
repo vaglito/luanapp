@@ -1,16 +1,16 @@
 import { Container } from "@mui/material";
 // Components
-import { NewProducts } from "./components/ui/new-products";
-import { SectionLaptop } from "./components/ui/category-product";
-import { HomeCategory } from "./components/ui/home-category";
-import { BannerHome } from "./components/ui/banner/BannerHome";
-import { fetchBannerHome } from "./services/siteInfo";
-import { fetchCategories } from "./services/categories";
-import { fetchNewProducts } from "./services/products";
-import { fetchExchangeRate } from "./services/exchangeRate";
-import { fetchProductList } from "./services/products";
-import { TopFooter } from "./components/layout/footer/top-footer";
-import { ComputerHome } from "./components/computer/ComputerHome";
+import { NewProducts } from "@/components/ui/new-products";
+import { SectionLaptop } from "@/components/ui/category-product";
+import { HomeCategory } from "@/components/ui/home-category";
+import { BannerHome } from "@/components/ui/banner/BannerHome";
+import { fetchBannerHome } from "@/services/siteInfo";
+import { fetchCategories } from "@/services/categories";
+import { fetchNewProducts } from "@/services/products";
+import { fetchExchangeRate } from "@/services/exchangeRate";
+import { fetchProductList } from "@/services/products";
+import { TopFooter } from "@/components/layout/footer/top-footer";
+import { ComputerHome } from "@/components/computer/ComputerHome";
 
 export const revalidate = 0;
 
@@ -88,3 +88,4 @@ export default async function Home() {
     </>
   );
 }
+

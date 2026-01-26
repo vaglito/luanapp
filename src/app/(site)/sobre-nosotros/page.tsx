@@ -1,6 +1,6 @@
 "use client";
 import { Container, Box, Grid2, Typography } from "@mui/material";
-import { Store118Card, Store209Card } from "@/app/components/ui/store-card";
+import { Store118Card, Store209Card } from "@/components/ui/store-card";
 import Content from "./content.mdx";
 
 export default function Page() {
@@ -64,3 +64,4 @@ export default function Page() {
     </Container>
   );
 }
+

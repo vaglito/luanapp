@@ -4,7 +4,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import StoreIcon from "@mui/icons-material/Store";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
-import { DashboardMenuSection } from "@/app/types/dashboard-menu";
+import { DashboardMenuSection } from "@/types/dashboard-menu";
 
 export const DASHBOARD_MENU: DashboardMenuSection[] = [
   {
@@ -53,3 +53,4 @@ export const DASHBOARD_MENU: DashboardMenuSection[] = [
     ],
   },
 ];
+

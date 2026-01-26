@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { DashboardSidebar } from "@/app/components/dashboard/DashboardSidebar";
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -38,3 +38,4 @@ export default async function DashboardLayout({
     </Box>
   );
 }
+
