@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { Roboto } from "next/font/google";
-import { Header } from "./components/layout/header/header";
-import { Footer } from "./components/layout/footer/footer";
+import { Header } from "@/components/layout/header/header";
+import { Footer } from "@/components/layout/footer/footer";
 import { ThemeProvider } from "@mui/material/styles";
 import { themeOptions } from "../../theme";
 import "swiper/css";
 import "./globals.css";
-import { fetchSiteMetadata } from "./services/siteInfo";
+import { fetchSiteMetadata } from "@/services/siteInfo";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { fetchExchangeRate } from "./services/exchangeRate";
-import { GTMHead } from "./components/GTMhead";
-import { GTMBody } from "./components/GTMbody";
+import { fetchExchangeRate } from "@/services/exchangeRate";
+import { GTMHead } from "@/components/GTMhead";
+import { GTMBody } from "@/components/GTMbody";
 import { Box } from "@mui/material";
 import { Providers } from "./providers";
-import { fetchBrands } from "./services/brands";
+import { fetchBrands } from "@/services/brands";
 
 const roboto = Roboto({
   weight: ["400"],
@@ -84,3 +84,4 @@ export default async function RootLayout({
     </html>
   );
 }
+

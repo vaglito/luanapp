@@ -1,5 +1,5 @@
 import { Grid2 } from "@mui/material";
-import { StatCard } from "@/app/components/dashboard/StatCard";
+import { StatCard } from "@/components/dashboard/StatCard";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
@@ -27,3 +27,4 @@ export default async function DashboardPage() {
     </Grid2>
   );
 }
+

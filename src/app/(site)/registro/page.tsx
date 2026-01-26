@@ -1,4 +1,4 @@
-import RegisterForm from "@/app/components/auth/RegisterForm";
+import RegisterForm from "@/components/auth/RegisterForm";
 import {
   Box,
   Typography,
@@ -66,3 +66,4 @@ export default function RegisterPage() {
     </Box>
   );
 }
+

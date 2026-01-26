@@ -1,5 +1,5 @@
 import { Container, Box, Typography, Paper, Grid } from "@mui/material";
-import { TermWarranty } from "@/app/components/product/detail/term-warranty";
+import { TermWarranty } from "@/components/product/detail/term-warranty";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import Link from "next/link";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -91,3 +91,4 @@ export default function WarrantyPage() {
         </Container>
     );
 }
+

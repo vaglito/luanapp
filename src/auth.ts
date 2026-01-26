@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { isTokenExpired } from "./app/lib/auth/is-token-expired";
-import { refreshAccessToken } from "./app/lib/auth/refresh-token";
-import { verifyUser } from "./app/lib/auth/verify-user";
+import { isTokenExpired } from "@/lib/auth/is-token-expired";
+import { refreshAccessToken } from "@/lib/auth/refresh-token";
+import { verifyUser } from "@/lib/auth/verify-user";
 
 const API_URL = process.env.API_URL
 const API_KEY = process.env.API_KEY

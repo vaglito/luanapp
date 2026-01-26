@@ -1,14 +1,14 @@
 import { Metadata } from "next";
 import { Container, Box } from "@mui/material";
-import { fetchDetailProduct } from "@/app/services/products";
-import { ProductSpecifications1 } from "@/app/components/product/detail/ProductSpecifications";
-import { ProductSpecificationsContainer } from "@/app/components/product/detail/product-spec";
-import { ProductDetailDescription } from "@/app/components/product/detail/product-detail-description";
-import { ProductDetail } from "@/app/types/products.type";
-import { ProductDetailMore } from "@/app/components/product/detail/product-detail-more";
-import { fetchExchangeRate } from "@/app/services/exchangeRate";
+import { fetchDetailProduct } from "@/services/products";
+import { ProductSpecifications1 } from "@/components/product/detail/ProductSpecifications";
+import { ProductSpecificationsContainer } from "@/components/product/detail/product-spec";
+import { ProductDetailDescription } from "@/components/product/detail/product-detail-description";
+import { ProductDetail } from "@/types/products.type";
+import { ProductDetailMore } from "@/components/product/detail/product-detail-more";
+import { fetchExchangeRate } from "@/services/exchangeRate";
 import { notFound } from "next/navigation";
-import { CarouselWrapper } from "@/app/components/product/detail/CarouselWrapper"; // 👈 Importa el nuevo wrapper
+import { CarouselWrapper } from "@/components/product/detail/CarouselWrapper"; // 👈 Importa el nuevo wrapper
 
 export const revalidate = 0;
 

@@ -1,12 +1,12 @@
 import { Suspense } from "react";
 import { Container, Box, Typography, Paper } from "@mui/material";
 import { startCase } from "lodash";
-import { BrandProductList } from "@/app/components/brand/brand-product-list";
-import { BrandFilterList } from "@/app/components/brand/brand-filter-list";
+import { BrandProductList } from "@/components/brand/brand-product-list";
+import { BrandFilterList } from "@/components/brand/brand-filter-list";
 import {
   ProductListSkeleton,
   FiltersSkeleton,
-} from "@/app/components/ui/skeleton/search-skeletons";
+} from "@/components/ui/skeleton/search-skeletons";
 
 export const generateMetadata = async ({
   params,

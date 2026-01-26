@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Box, CircularProgress, Container, Paper } from "@mui/material";
-import { LoginForm } from "@/app/components/auth/LoginForm";
+import { LoginForm } from "@/components/auth/LoginForm";
 
 export default function LoginPage() {
   return (
@@ -34,3 +34,4 @@ export default function LoginPage() {
     </Container>
   );
 }
+
