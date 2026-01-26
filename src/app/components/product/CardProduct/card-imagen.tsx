@@ -92,21 +92,31 @@ export function CardImage({ product }: CardImageProps) {
         )}
 
         {/* Botón de carrito */}
-        <Tooltip title="Agregar al carrito" placement="top">
+        <Tooltip title="Agregar al carrito" placement="left">
           <IconButton
-            aria-label="add"
-            color="primary"
+            aria-label="add to cart"
             sx={{
               position: "absolute",
-              top: "50%",
-              right: "8px",
-              transform: "translateY(-50%)",
+              bottom: "12px",
+              right: "12px",
+              bgcolor: "white",
+              color: "primary.main",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+              transform: hover ? "scale(1) translateY(0)" : "scale(0.8) translateY(10px)",
               opacity: hover ? 1 : 0,
-              transition: "opacity 0.3s ease",
+              transition: "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+              "&:hover": {
+                bgcolor: "primary.main",
+                color: "white",
+                boxShadow: "0 8px 16px rgba(89, 20, 163, 0.3)",
+                transform: "scale(1.1)",
+              },
+              width: 44,
+              height: 44,
             }}
             onClick={handleAddToCart}
           >
-            <AddShoppingCartIcon />
+            <AddShoppingCartIcon fontSize="small" />
           </IconButton>
         </Tooltip>
       </Box>

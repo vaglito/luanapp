@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { fetchExchangeRate } from "@/app/services/exchangeRate";
 import { convertUsdToPen } from "@/app/lib/currency";
 
+
 export const PriceCard = ({
   priceSale,
   priceBulk,
@@ -12,7 +13,6 @@ export const PriceCard = ({
   exchange: number;
 }) => {
   const hasOffer = priceBulk > 0;
-  const discountPercentage = hasOffer ? ((priceSale - priceBulk) / priceSale) * 100 : 0;
 
   const priceSalePen = convertUsdToPen(priceBulk || priceSale, exchange);
   const priceOriginalPen = convertUsdToPen(priceSale, exchange);
@@ -22,60 +22,59 @@ export const PriceCard = ({
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        mt: 1,
-        gap: 3,
-        justifyContent: "center",
+        alignItems: "flex-start", // Aligned left
+        mt: 0.5,
+        gap: 0.5,
       }}
     >
       {hasOffer ? (
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
           <Box
             sx={{
               display: "flex",
               flexDirection: "row",
               gap: 1,
-              justifyContent: "center",
+              alignItems: "baseline",
             }}
           >
             <Typography
-              variant="body2"
+              variant="caption"
               sx={{
-                color: "gray",
+                color: "text.secondary",
                 textDecoration: "line-through",
-                fontSize: 18,
+                fontSize: "0.85rem",
               }}
             >
               S/{priceOriginalPen}
             </Typography>
             <Typography
-              variant="body2"
+              variant="caption"
               sx={{
-                color: "gray",
+                color: "text.secondary",
                 textDecoration: "line-through",
-                fontSize: 18,
+                fontSize: "0.85rem",
               }}
             >
               ${priceSale}
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+          <Box sx={{ display: "flex", flexDirection: "row", gap: 1, alignItems: "baseline" }}>
             <Typography
-              variant="subtitle1"
+              variant="h6"
               sx={{
                 color: "error.main",
-                fontWeight: 600,
-                fontSize: { xs: 18, sm: 18, md: 22, lg: 24 },
+                fontWeight: 700,
+                fontSize: { xs: "1.1rem", md: "1.25rem" },
               }}
             >
               S/{priceSalePen}
             </Typography>
             <Typography
-              variant="subtitle1"
+              variant="subtitle2"
               sx={{
                 color: "error.main",
                 fontWeight: 600,
-                fontSize: { xs: 18, sm: 18, md: 22, lg: 24 },
+                fontSize: { xs: "0.9rem", md: "1rem" },
               }}
             >
               (${priceBulk})
@@ -89,12 +88,13 @@ export const PriceCard = ({
             gap: 1,
             flexDirection: "row",
             color: "primary.main",
+            alignItems: "baseline",
           }}
         >
           <Typography
             sx={{
-              fontWeight: 600,
-              fontSize: { xs: 18, sm: 18, md: 22, lg: 24 },
+              fontWeight: 700,
+              fontSize: { xs: "1.1rem", md: "1.25rem" },
             }}
           >
             S/{priceOriginalPen}
@@ -102,7 +102,8 @@ export const PriceCard = ({
           <Typography
             sx={{
               fontWeight: 600,
-              fontSize: { xs: 18, sm: 18, md: 22, lg: 24 },
+              fontSize: { xs: "0.9rem", md: "1rem" },
+              color: "text.secondary",
             }}
           >
             (${priceSale})
@@ -112,3 +113,4 @@ export const PriceCard = ({
     </Box>
   );
 };
+
