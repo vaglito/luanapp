@@ -26,6 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const site = await fetchSiteMetadata(1);
 
   return {
+    metadataBase: new URL(process.env.API_URL || "http://localhost:3000"),
     title: `${site.siteName} | ${site.slogan}`,
     description: site.metaDescription,
     keywords: ["computadoras", "accesorios", "envío rápido"],
@@ -68,7 +69,7 @@ export default async function RootLayout({
                   minHeight: "100vh",
                 }}
               >
-                <Header logo={site.logo} exchange={exchange.exchange} brands={brands}/>
+                <Header logo={site.logo} exchange={exchange.exchange} brands={brands} />
 
                 {/* Contenido principal ocupa el espacio restante */}
                 <Box component="main" sx={{ flex: 1 }}>

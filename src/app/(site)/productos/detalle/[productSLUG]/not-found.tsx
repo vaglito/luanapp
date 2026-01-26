@@ -33,15 +33,15 @@ export default function NotFound() {
 
         {/* Botón de acción */}
         <Box>
-          <Button
-            component={Link}
-            href="/"
-            variant="contained"
-            color="primary"
-            size="large"
-          >
-            Volver al catálogo
-          </Button>
+          <Link href="/" passHref>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              Volver al catálogo
+            </Button>
+          </Link>
         </Box>
       </Box>
     </Container>
