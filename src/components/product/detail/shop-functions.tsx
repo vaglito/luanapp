@@ -11,6 +11,7 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { showToast } from "nextjs-toast-notify";
 import { useCart } from "@/hooks/use-cart"; // 🔹 Importar hook del carrito
 import { ProductDetail } from "@/types/products.type"; // 🔹 Importar tipo ProductDetail
+import { SELLERS } from "@/config/sellers";
 
 export function ShopFunction({
   title,
@@ -42,7 +43,7 @@ export function ShopFunction({
     process.env.NEXT_PUBLIC_RESTRICTED_SUBCATEGORIES?.split(",") || [];
   const isRestricted = restrictedSubcategories.includes(subCategory);
 
-  const numbers = [51919443359, 51922481325, 981355117];
+
 
   const addProductToCart = () => { // 🔹 Nueva función para agregar al carrito
     if (isRestricted) {
@@ -76,19 +77,21 @@ export function ShopFunction({
       return;
     }
 
-    const randomNumber = numbers[Math.floor(Math.random() * numbers.length)];
+    // Seleccionar vendedor al azar
+    const randomSeller = SELLERS[Math.floor(Math.random() * SELLERS.length)];
     const message = `Hola, quiero comprar ${counter} unidad(es) del producto.\n${title}`;
-    const whatsappUrl = `https://wa.me/${randomNumber}?text=${encodeURIComponent(
+    const whatsappUrl = `https://wa.me/${randomSeller.phone}?text=${encodeURIComponent(
       message
     )}`;
 
     window.open(whatsappUrl, "_blank");
 
-    showToast.success("✅ Redirigiendo a WhatsApp para completar la compra", {
+    showToast.success(`✅ Contactando con ${randomSeller.name}`, {
       duration: 3000,
       position: "top-right",
     });
   };
+
 
   let content;
 
