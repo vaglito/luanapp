@@ -15,6 +15,7 @@ import { GTMBody } from "@/components/GTMbody";
 import { Box } from "@mui/material";
 import { Providers } from "./providers";
 import { fetchBrands } from "@/services/brands";
+import { WhatsAppBubble } from "@/components/ui/whatsapp-bubble";
 
 const roboto = Roboto({
   weight: ["400"],
@@ -76,6 +77,7 @@ export default async function RootLayout({
                   {children}
                 </Box>
 
+                <WhatsAppBubble />
                 <Footer address={site.address || ""} />
               </Box>
             </Providers>
