@@ -2,14 +2,17 @@
 import { Container, Paper } from "@mui/material";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 
+
 interface PageProps {
-    params: {
+    params: Promise<{
         uid: string;
         token: string;
-    };
+    }>;
 }
 
-export default function ResetPasswordPage({ params }: PageProps) {
+export default async function ResetPasswordPage(props: PageProps) {
+    const params = await props.params;
+
     return (
         <Container
             maxWidth="sm"

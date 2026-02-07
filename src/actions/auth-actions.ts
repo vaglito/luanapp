@@ -119,7 +119,7 @@ export async function ResetPasswordAction(uid: string, token: string, newPasswor
     if (error.response?.data) {
       const errorData = error.response.data;
       if (errorData.detail) return { error: errorData.detail };
-      if (errorData.token) return { error: "El enlace es inválido o ha expirado." };
+      if (errorData.token) return { error: errorData.token[0] || "El enlace es inválido o ha expirado." };
       if (errorData.uid) return { error: "Enlace inválido." };
       if (errorData.new_password) return { error: errorData.new_password[0] };
     }
