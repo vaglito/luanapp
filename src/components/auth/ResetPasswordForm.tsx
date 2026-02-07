@@ -50,6 +50,10 @@ export const ResetPasswordForm = ({ uid, token }: ResetPasswordFormProps) => {
         resolver: zodResolver(resetPasswordSchema),
     });
 
+
+    const [success, setSuccess] = useState(false);
+    // ... potentially other state
+
     const onSubmit = async (data: ResetPasswordSchema) => {
         setLoading(true);
         setError(null);
@@ -58,14 +62,17 @@ export const ResetPasswordForm = ({ uid, token }: ResetPasswordFormProps) => {
 
             if (response.error) {
                 setError(response.error);
+                setLoading(false);
             } else {
-                router.push("/login?passwordReset=true");
-                router.refresh();
+                setSuccess(true);
+                // Wait for 2 seconds before redirecting
+                setTimeout(() => {
+                    router.push("/login?passwordReset=true");
+                }, 2000);
             }
         } catch (err) {
             console.error(err)
             setError("Ocurrió un error al restablecer la contraseña.");
-        } finally {
             setLoading(false);
         }
     };
@@ -79,9 +86,16 @@ export const ResetPasswordForm = ({ uid, token }: ResetPasswordFormProps) => {
                 Ingresa tu nueva contraseña a continuación.
             </Typography>
 
+
             {error && (
                 <Alert severity="error" sx={{ mb: 2 }}>
                     {error}
+                </Alert>
+            )}
+
+            {success && (
+                <Alert severity="success" sx={{ mb: 2 }}>
+                    Contraseña restablecida con éxito. Redirigiendo al login...
                 </Alert>
             )}
 

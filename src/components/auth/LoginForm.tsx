@@ -41,6 +41,9 @@ export const LoginForm = () => {
     if (searchParams.get("verified") === "true") {
       setInfoMessage("Correo verificado con éxito. Ya puedes iniciar sesión.");
     }
+    if (searchParams.get("passwordReset") === "true") {
+      setInfoMessage("Tu contraseña ha sido restablecida con éxito. Inicia sesión con tu nueva contraseña.");
+    }
   }, [searchParams]);
 
   const {
