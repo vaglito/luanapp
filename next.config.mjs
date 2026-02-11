@@ -7,9 +7,9 @@ const nextConfig = {
     dangerouslyAllowLocalIP: true,
     remotePatterns: [
       { protocol: 'https', hostname: 'luanatech.pe' },
-      { protocol: 'http', hostname: 'localhost', port: '8000', pathname: '/media/**',},
+      { protocol: 'http', hostname: 'localhost', port: '8000', pathname: '/media/**', },
       { protocol: 'http', hostname: '127.0.0.1', port: '8000', pathname: '/media/**', },
-      { protocol: 'http', hostname: 'dev.corporacionluana.pe' },
+      { protocol: 'https', hostname: 'media.corporacionluana.pe' },
     ],
   },
 };
