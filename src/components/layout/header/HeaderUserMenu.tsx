@@ -16,7 +16,9 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 
-export function HeaderUserMenu({ user }: { user: any }) {
+import { User } from "next-auth";
+
+export function HeaderUserMenu({ user }: { user: User }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const router = useRouter();
   return (

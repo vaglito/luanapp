@@ -1,8 +1,10 @@
 import { Box, TextField, MenuItem } from "@mui/material";
 
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+
 interface Props {
-  register: any;
-  errors: any;
+  register: UseFormRegister<any>; // O el tipo específico de tu formulario si es global
+  errors: FieldErrors;
 }
 
 export function CustomerSection({ register, errors }: Props) {
@@ -12,7 +14,7 @@ export function CustomerSection({ register, errors }: Props) {
         label="Cliente"
         {...register("customer")}
         error={!!errors.customer}
-        helperText={errors.customer?.message}
+        helperText={errors.customer?.message as string}
       />
 
       <TextField label="Documento" {...register("customerDocument")} />
