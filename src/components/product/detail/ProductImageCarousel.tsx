@@ -55,7 +55,7 @@ export default function ProductImageCarousel({ product }: { product: ProductDeta
                 }}
               >
                 <Image
-                  src={image.images}
+                  src={image.images || "/not-found.png"}
                   alt={product.relay.productName}
                   width={600}
                   height={500}
@@ -102,7 +102,7 @@ export default function ProductImageCarousel({ product }: { product: ProductDeta
                   }
                 }}>
                   <Image
-                    src={image.images}
+                    src={image.images || "/not-found.png"}
                     alt={`Thumbnail ${index}`}
                     fill
                     sizes="150px"
