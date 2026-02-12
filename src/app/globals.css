@@ -2,11 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --font-orbitron: 'Orbitron', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+}
+
 body {
   min-height: 100vh;
-  /* Premium Subtle Gradient: White to extremely light violet-grey */
-  background: linear-gradient(135deg, #ffffff 0%, #f9faff 50%, #f4f5fa 100%);
-  background-attachment: fixed; /* Parallax-like feel */
-  background-size: cover;
+  font-family: var(--font-inter);
+  /* Fondo con patrón sutil tecnológico */
+  background-color: #f3f4f6;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(89, 20, 163, 0.03) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(0, 229, 255, 0.03) 0px, transparent 50%);
   color: #111827;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-orbitron);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
