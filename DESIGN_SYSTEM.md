@@ -1,68 +1,76 @@
 # Sistema de Diseño - Corporación Luana
 
-Este documento define las reglas de diseño y estándares visuales para asegurar una experiencia de usuario (UX) premium, consistente y moderna en la aplicación `luanapp`.
+Este documento define las reglas de diseño y estándares visuales para asegurar una experiencia de usuario (UX) **Gamer / Tech Premium**, consistente y moderna en la aplicación `luanapp`.
 
 ## 1. Filosofía de Diseño
-El diseño debe evocar tecnología, confianza y modernidad. Utilizamos un enfoque **"Glassmorphism Sutil"** combinado con **"Minimalismo Colorido"**.
+El diseño fusiona la elegancia del comercio electrónico con una estética **"Tech / Gamer Sutil"**.
 
-- **Premium**: Espacios amplios, tipografía clara, bordes sutiles.
-- **Dinámico**: Animaciones suaves al pasar el mouse (hover), transiciones fluidas.
-- **Nitidez**: Sombras suaves en lugar de bordes duros negros.
+- **Tech Premium**: Uso de fuentes futuristas (`Orbitron`) combinadas con legibilidad moderna (`Inter`).
+- **Glassmorphism**: Superposiciones translúcidas con desenfoque (`backdrop-filter`) para jerarquía y profundidad.
+- **Atmósfera**: Fondos claros (`#F3F4F6`) con patrones de "circuito" o gradientes radiales muy sutiles.
 
 ## 2. Paleta de Colores
 
-### Colores Principales (Brand)
-Estos colores definen la identidad de la marca.
-
-- **Primary (Morado Luana)**: `#5914A3`
-  - Uso: Botones primarios, enlaces activos, iconos destacados.
+### Brand Colors
+- **Primary (Luana Purple)**: `#5914A3`
+  - Uso: Acciones principales, Buy Box, Bordes activos.
 - **Secondary (Magenta)**: `#A3147F`
-  - Uso: Botones de acción secundaria, acentos, badges.
+  - Uso: Descuentos, Ofertas, Badges de "Nuevo".
+- **Tech Accent (Neon Cyan)**: `#00E5FF`
+  - Uso: Destellos, Sombras Glow, Iconos informativos.
 
-### Gradientes (Premium UI)
-Utilizar para títulos y fondos destacados para dar profundidad.
+### Neutros & Fondos
+- **Fondo General**: `#F3F4F6` con patrón radial sutil.
+- **Surface (Tarjetas/Glass)**: `rgba(255, 255, 255, 0.8)` a `0.95`.
+- **Texto Principal**: `#111827` (Casi negro).
+- **Texto Secundario**: `#4B5563` (Gris frío).
 
-- **Hero Text Gradient**: `linear-gradient(45deg, #1a237e 30%, #534bae 90%)`
-  - Uso: Títulos principales (H1) en páginas de aterrizaje.
-- **Card Background Gradient** (Sutil): `linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%)`
-  - Uso: Fondos de secciones para romper la monotonía del blanco puro.
+## 3. Tipografía
+Combinación de **Orbitron** (Carácter) e **Inter** (Lectura).
 
-### Neutros
-- **Texto Principal**: `#111827` (Gris muy oscuro, casi negro)
-- **Texto Secundario**: `#545454` or `#6B7280` (Gris medio)
-- **Bordes**: `#E5E7EB` o `#f0f0f0`
-- **Fondo General**: `#F9FAFB` (Gris muy claro)
+### Orbitron (Tech Font)
+Usada para elementos de alto impacto visual y números.
+- **H2 - H6**: Títulos de secciones, Cards, Widgets.
+- **Precios**: Para destacar el valor numérico.
+- **Botones**: En secciones de marketing o CTA agresivos ("VER DETALLES").
 
-## 3. Componentes y Estilos
+### Inter (Body Font)
+Usada para lectura prolongada y UI general.
+- **Body**: Descripciones, especificaciones técnicas, menús.
+- **H1 (Título de Producto)**: *Excepción estratégica* para máxima legibilidad en títulos largos.
+- **Botones (General)**: Navegación, acciones secundarias.
 
-### Tarjetas (Cards)
-El elemento fundamental de la interfaz.
+## 4. Componentes y Estilos
 
-- **Fondo**: `white` (Blanco puro)
-- **Borde**: `1px solid #f0f0f0` (Sutil)
-- **Radio de Borde (Border Radius)**: `12px` o `24px` (Preferiblemente `3` en escala MUI system).
-- **Sombra (Shadow) - Reposo**: Ninguna o muy sutil `none` / `elevation={0}`.
-- **Sombra - Hover**: `0 12px 24px -10px rgba(0, 0, 0, 0.15)`
-- **Interacción**: `transform: translateY(-5px)` en hover.
+### Tarjetas (Cards) - Estilo Glass
+- **Border Radius**: `16px`.
+- **Fondo**: `rgba(255, 255, 255, 0.95)`.
+- **Efecto**: `backdrop-filter: blur(10px)`.
+- **Hover**:
+  - `transform: translateY(-8px)`
+  - **Neon Glow**: `box-shadow: 0 0 20px rgba(0, 229, 255, 0.25)`
 
-### Botones
-- **Redondeo**: `50px` (Pill shape) para acciones principales.
-- **Tamaño**: Amplio padding horizontal (`px: 4`) para facilitar el clic.
+### Botones (Buttons)
+- **Border Radius**: `12px` (Soft Square).
+- **Estilo Global**: Limpio, `text-transform: none`, fuente `Inter`.
+- **Estilo Gamer (Product Detail)**:
+  - `text-transform: uppercase`.
+  - `font-family: Orbitron`.
+  - `letter-spacing: 0.05em`.
+  - **Primary**: Fondo sólido `#5914A3` con sombra suave.
+  - **Glow**: Sombra de color coincidente al hacer hover.
 
-## 4. Tipografía
-La fuente principal es **Roboto**.
-
-- **H1 (Títulos de Página)**: Bold (`700`), tamaño responsivo (`2.5rem` mobile, `3.5rem` desktop).
-- **H2 (Subtítulos)**: Semi-bold (`600`).
-- **Cuerpo**: Legible, alto de línea cómodo (`1.5`).
+### Product Detail (Buy Box)
+Jerarquía optimizada para conversión:
+1.  **Título** (Inter ExtraBold)
+2.  **Precio** (Orbitron, Grande) & **Actions** (Buy Box)
+3.  **Descripción** (Inter, Secundaria)
 
 ## 5. Reglas de Comportamiento (UX)
 
-1.  **Feedback Inmediato**: Todos los elementos interactivos deben reaccionar al `hover`.
-2.  **Transiciones**: Usar `transition: all 0.3s ease` para suavizar cambios de estado.
-3.  **Estados de Carga**: Usar Skeletons pulsantes en lugar de spinners simples cuando sea posible.
-4.  **Empty States**: Nunca dejar una lista vacía en blanco; mostrar un mensaje amigable e instrucciones (ej. "No se encontraron resultados").
+1.  **Feedback Visual**: Glows de neón sutiles al interactuar.
+2.  **Imágenes**: `object-fit: contain` siempre. Sin bordes redondeados en las imágenes de producto para mantener nitidez.
+3.  **Jerarquía**: La información de compra (Precio/Stock) siempre visible o priorizada en la parte superior.
 
 ---
-
-_Actualizado: 21 de Enero, 2026_
+_Actualizado: 12 de Febrero, 2026_
