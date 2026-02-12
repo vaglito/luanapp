@@ -147,8 +147,11 @@ export const CardProduct = ({
           startIcon={<VisibilityIcon />}
           sx={{
             borderRadius: "12px",
-            textTransform: "none",
-            fontSize: "0.9rem",
+            textTransform: "uppercase",
+            fontFamily: "var(--font-orbitron)",
+            fontWeight: 700,
+            fontSize: "0.85rem",
+            letterSpacing: "0.05em",
             py: 1.2,
             boxShadow: "none",
             "&:hover": {
