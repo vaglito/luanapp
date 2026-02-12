@@ -4,11 +4,9 @@ import { Banner } from "@/types/banner.type";
 
 export const BannerHome = ({ banners }: { banners: Banner[] }) => {
   return (
-    <Container maxWidth="xl">
-      <Box>
-        <SliderBanner banners={banners} />
-      </Box>
-    </Container>
+    <Box sx={{ width: "100%", p: 0, m: 0 }}>
+      <SliderBanner banners={banners} />
+    </Box>
   );
 };
 
