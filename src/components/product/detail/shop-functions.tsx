@@ -104,7 +104,7 @@ export function ShopFunction({
   }
 
   return (
-    <Box sx={{ marginTop: 4 }}>
+    <Box sx={{ marginTop: 2 }}>
       {/* Badges */}
       <Stack direction="row" spacing={1} sx={{ mb: 3 }}>
         <Chip
@@ -135,16 +135,18 @@ export function ShopFunction({
           }}
         >
           <Typography sx={{ fontWeight: 600, color: "#545454" }}>Cantidad:</Typography>
-          <Box sx={{ display: "flex", alignItems: "center", border: "1px solid #E0E0E0", borderRadius: 2 }}>
+          <Box sx={{ display: "flex", alignItems: "center", border: "1px solid #E0E0E0", borderRadius: "12px", overflow: "hidden" }}>
             <Button
               onClick={decrement}
               disabled={counter <= 1}
               sx={{
-                minWidth: 40,
-                color: "#545454",
+                minWidth: 45,
+                height: 45,
+                color: "text.secondary",
                 fontWeight: "bold",
                 fontSize: "1.2rem",
-                "&:hover": { bgcolor: "#F5F5F5" },
+                borderRadius: 0,
+                "&:hover": { bgcolor: "rgba(0,0,0,0.05)" },
               }}
             >
               -
@@ -153,10 +155,11 @@ export function ShopFunction({
             <Typography
               sx={{
                 fontSize: "1.1rem",
+                fontFamily: "var(--font-orbitron)",
                 fontWeight: "bold",
-                padding: "0 15px",
+                minWidth: 40,
                 textAlign: "center",
-                color: "#333"
+                color: "text.primary"
               }}
             >
               {counter}
@@ -166,11 +169,13 @@ export function ShopFunction({
               onClick={increment}
               disabled={counter >= stock}
               sx={{
-                minWidth: 40,
-                color: "#5914A3",
+                minWidth: 45,
+                height: 45,
+                color: "primary.main",
                 fontWeight: "bold",
                 fontSize: "1.2rem",
-                "&:hover": { bgcolor: "#F5F5F5" },
+                borderRadius: 0,
+                "&:hover": { bgcolor: "rgba(89, 20, 163, 0.1)" },
               }}
             >
               +
@@ -186,15 +191,22 @@ export function ShopFunction({
             disabled={stock === 0 || isRestricted}
             sx={{
               flex: 1,
-              backgroundColor: "#5914A3", // Primary
+              backgroundColor: "primary.main",
               color: "white",
-              fontWeight: "bold",
+              fontWeight: 700,
+              fontFamily: "var(--font-orbitron)", // Tech Font
               py: 1.5,
-              borderRadius: 2,
-              textTransform: "none",
-              fontSize: "1rem",
+              borderRadius: "12px",
+              textTransform: "uppercase",
+              fontSize: "0.9rem",
+              letterSpacing: "0.05em",
               boxShadow: "0 4px 14px 0 rgba(89, 20, 163, 0.39)",
-              "&:hover": { backgroundColor: "#450b82", boxShadow: "0 6px 20px 0 rgba(89, 20, 163, 0.23)" },
+              transition: "all 0.3s ease",
+              "&:hover": {
+                backgroundColor: "primary.dark",
+                boxShadow: "0 0 20px rgba(89, 20, 163, 0.6)", // Purple Glow
+                transform: "translateY(-2px)",
+              },
             }}
           >
             Agregar al Carrito
@@ -209,14 +221,17 @@ export function ShopFunction({
               flex: 1,
               borderColor: "#25D366",
               color: "#25D366",
-              fontWeight: "bold",
+              fontWeight: 700,
+              fontFamily: "var(--font-orbitron)", // Tech Font
               py: 1.5,
-              borderRadius: 2,
-              textTransform: "none",
-              fontSize: "1rem",
+              borderRadius: "12px",
+              textTransform: "uppercase",
+              fontSize: "0.9rem",
+              letterSpacing: "0.05em",
               "&:hover": {
                 borderColor: "#1ebe57",
-                backgroundColor: "rgba(37, 211, 102, 0.08)",
+                backgroundColor: "rgba(37, 211, 102, 0.1)",
+                boxShadow: "0 0 15px rgba(37, 211, 102, 0.4)", // Green Glow
               },
             }}
           >
