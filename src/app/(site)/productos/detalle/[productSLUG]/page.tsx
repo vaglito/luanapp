@@ -9,6 +9,7 @@ import { ProductDetailMore } from "@/components/product/detail/product-detail-mo
 import { fetchExchangeRate } from "@/services/exchangeRate";
 import { notFound } from "next/navigation";
 import { CarouselWrapper } from "@/components/product/detail/CarouselWrapper"; // 👈 Importa el nuevo wrapper
+import { ProductViewTracker } from "@/components/product/product-view-tracker";
 
 export const revalidate = 0;
 
@@ -56,6 +57,7 @@ export default async function ProductDetailPage({
 
   return (
     <Container maxWidth="xl" sx={{ marginY: 4 }}>
+      <ProductViewTracker slug={productSLUG} />
       <Box
         sx={{
           display: "flex",
