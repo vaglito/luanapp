@@ -76,35 +76,39 @@ export const themeOptions = createTheme({
             fontWeight: 500,
         },
         button: {
-            fontFamily: orbitron.style.fontFamily, // Botones tech
-            fontWeight: 700,
-            letterSpacing: "0.05em",
-            textTransform: "uppercase",
+            fontFamily: inter.style.fontFamily, // Clean font
+            fontWeight: 600,
+            letterSpacing: "0.02em",
+            textTransform: "none", // Normal case
         },
     },
     shape: {
-        borderRadius: 16, // Bordes más suaves pero modernos
+        borderRadius: 16,
     },
     components: {
         MuiButton: {
             styleOverrides: {
                 root: {
-                    borderRadius: 0, // Botones afilados estilo Cyberpunk si se prefiere, o 50px.
-                    // Vamos con un estilo híbrido: bordes semiredondeados o "clip"
-                    clipPath: "polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)",
-                    transition: "all 0.3s ease",
+                    borderRadius: "12px", // Modern rounded
+                    textTransform: "none",
+                    boxShadow: "none",
+                    transition: "all 0.2s ease",
                     "&:hover": {
-                        transform: "translateY(-2px)",
-                        boxShadow: "0 0 15px rgba(0, 229, 255, 0.6)", // Glow Cyan
+                        transform: "translateY(-1px)",
+                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", // Subtle shadow
                     },
                 },
                 containedPrimary: {
-                    background: "linear-gradient(135deg, #6200EA 0%, #7C4DFF 100%)",
+                    background: "#5914A3", // Solid Color
+                    "&:hover": {
+                        background: "#4a0f8c",
+                    }
                 },
                 outlined: {
-                    borderWidth: "2px",
+                    borderWidth: "1px", // Standard border
                     "&:hover": {
-                        borderWidth: "2px",
+                        borderWidth: "1px",
+                        backgroundColor: "rgba(89, 20, 163, 0.04)",
                     },
                 },
             },
