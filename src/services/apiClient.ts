@@ -13,9 +13,24 @@ const apiClient = axios.create({
   timeout: 10000,
 });
 
+import { showToast } from "nextjs-toast-notify";
+
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
+    const message = error.response?.data?.message || "Error de conexión";
+
+    // Solo mostrar alerta si estamos en el cliente (Navegador)
+    if (typeof window !== "undefined") {
+      if (error.response?.status === 401) {
+        showToast.error("Sesión expirada. Por favor inicia sesión nuevamente.");
+      } else if (error.response?.status === 403) {
+        showToast.error("No tienes permisos para realizar esta acción.");
+      } else if (error.response?.status >= 500) {
+        showToast.error("Error del servidor. Intenta más tarde.");
+      }
+    }
+
     console.error("API error:", error.response?.data || error.message);
     return Promise.reject(error);
   }

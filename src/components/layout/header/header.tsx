@@ -12,7 +12,15 @@ import { HeaderUserMenu } from "./HeaderUserMenu";
 import { CartIconButton } from "./CartIconButton";
 import { ScrollHideWrapper } from "./ScrollHideWrapper";
 
-export async function Header({ logo, exchange, brands }: any) {
+import { Brands } from "@/types/brands.type";
+
+interface HeaderProps {
+  logo: string;
+  exchange: number;
+  brands: Brands[];
+}
+
+export async function Header({ logo, exchange, brands }: HeaderProps) {
   const session = await auth();
 
   return (
