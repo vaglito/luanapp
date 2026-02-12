@@ -31,7 +31,7 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
           <Box sx={{ display: "flex", gap: 2 }}>
             <Typography
               sx={{
-                fontFamily: "var(--font-orbitron)",
+                fontFamily: "var(--font-inter)",
                 fontWeight: 700,
                 fontSize: { xs: 24, sm: 24, md: 27, lg: 38 },
                 color: "error.main",
@@ -42,6 +42,7 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
             </Typography>
             <Typography
               sx={{
+                fontFamily: "var(--font-inter)",
                 fontWeight: "semibold",
                 fontSize: { xs: 24, sm: 24, md: 27, lg: 38 },
                 color: "gray",
@@ -53,7 +54,7 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
           <Box sx={{ display: "flex", gap: 2 }}>
             <Typography
               sx={{
-                fontFamily: "var(--font-orbitron)",
+                fontFamily: "var(--font-inter)",
                 textDecoration: "line-through",
                 color: "text.secondary",
                 fontSize: { xs: 19, sm: 20, md: 24, lg: 27 },
@@ -63,6 +64,7 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
             </Typography>
             <Typography
               sx={{
+                fontFamily: "var(--font-inter)",
                 textDecoration: "line-through",
                 color: "gray",
                 fontSize: { xs: 19, sm: 20, md: 24, lg: 27 },
@@ -87,7 +89,7 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
         >
           <Typography
             sx={{
-              fontFamily: "var(--font-orbitron)",
+              fontFamily: "var(--font-inter)",
               fontWeight: 700,
               fontSize: { xs: 26, sm: 26, md: 27, lg: 38 },
               color: "primary.main",
@@ -97,6 +99,7 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
           </Typography>
           <Typography
             sx={{
+              fontFamily: "var(--font-inter)",
               fontWeight: "semibold",
               fontSize: { xs: 24, sm: 24, md: 27, lg: 38 },
               color: "gray",
@@ -111,6 +114,7 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
         <Typography
           sx={{
             fontSize: { xs: 15, sm: 16, md: 17, lg: 17 },
+            fontFamily: "var(--font-inter)",
             color: "#545454",
             marginTop: 0.1,
             fontWeight: "semibold",
