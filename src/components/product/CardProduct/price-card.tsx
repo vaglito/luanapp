@@ -1,5 +1,4 @@
 import { Box, Typography } from "@mui/material";
-import { fetchExchangeRate } from "@/services/exchangeRate";
 import { convertUsdToPen } from "@/lib/currency";
 
 
