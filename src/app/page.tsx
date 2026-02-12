@@ -11,6 +11,7 @@ import { fetchExchangeRate } from "@/services/exchangeRate";
 import { fetchProductList } from "@/services/products";
 import { TopFooter } from "@/components/layout/footer/top-footer";
 import { ComputerHome } from "@/components/computer/ComputerHome";
+import { PopularProducts } from "@/components/ui/popular-products";
 
 export const revalidate = 360;
 
@@ -78,6 +79,7 @@ export default async function Home() {
           products={newProduct.results}
           exchange={exchange.exchange}
         />
+        <PopularProducts exchange={exchange.exchange} />
       </Container>
       <ComputerHome />
       <SectionLaptop
