@@ -22,9 +22,11 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
+import { User } from "next-auth";
+
 const SIDEBAR_WIDTH = 280;
 
-export const DashboardSidebar = ({ user }: { user: any }) => {
+export const DashboardSidebar = ({ user }: { user: User }) => {
   const pathname = usePathname();
 
   const menuConfig = [
@@ -102,9 +104,9 @@ export const DashboardSidebar = ({ user }: { user: any }) => {
                           <ListItemIcon sx={{ color: isActive ? "white" : "inherit", minWidth: 40 }}>
                             {item.icon}
                           </ListItemIcon>
-                          <ListItemText 
-                            primary={item.label} 
-                            primaryTypographyProps={{ fontSize: "0.85rem", fontWeight: isActive ? 600 : 500 }} 
+                          <ListItemText
+                            primary={item.label}
+                            primaryTypographyProps={{ fontSize: "0.85rem", fontWeight: isActive ? 600 : 500 }}
                           />
                         </ListItemButton>
                       </Link>

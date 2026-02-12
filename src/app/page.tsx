@@ -12,7 +12,7 @@ import { fetchProductList } from "@/services/products";
 import { TopFooter } from "@/components/layout/footer/top-footer";
 import { ComputerHome } from "@/components/computer/ComputerHome";
 
-export const revalidate = 0;
+export const revalidate = 360;
 
 export const generateMetadata = () => {
   const image = "../social.jpg";
