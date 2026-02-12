@@ -77,7 +77,14 @@ export const SectionLaptop = ({
               textTransform: "uppercase",
             }}
           >
-            Busca tu <span style={{ color: "#A3147F" }}>Laptop Ideal</span>
+            Busca tu <Typography variant="h2" component={"span"} sx={{
+              fontSize: { xs: "2rem", md: "3rem" },
+              fontWeight: 800,
+              color: "info.main",
+              letterSpacing: "-0.02em",
+              mb: 2,
+              textTransform: "uppercase",
+            }}>Laptop Ideal</Typography>
           </Typography>
 
           <Typography
