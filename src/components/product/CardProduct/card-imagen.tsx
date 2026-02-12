@@ -63,7 +63,7 @@ export function CardImage({ product }: CardImageProps) {
           }}
         >
           <Image
-            src={product.productsimages[0]?.images}
+            src={product.productsimages[0]?.images || "/not-found.png"}
             alt={product.relay.productName}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -82,7 +82,7 @@ export function CardImage({ product }: CardImageProps) {
             }}
           >
             <Image
-              src={product.productsimages[1]?.images}
+              src={product.productsimages[1]?.images || "/not-found.png"}
               alt={product.relay.productName}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
