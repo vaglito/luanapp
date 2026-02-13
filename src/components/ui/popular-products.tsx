@@ -1,7 +1,7 @@
-import { Typography, Box } from "@mui/material";
-import { SliderProduct } from "../product/slider-product";
-import { CardProduct } from "../product/card-product";
+import { Typography, Box, Container, Grid } from "@mui/material";
 import { fetchPopularProducts } from "@/services/products";
+import { FeaturedProduct } from "../product/featured-product";
+import { PopularProductsCarousel } from "./popular-products-carousel";
 
 export const PopularProducts = async ({ exchange }: { exchange: number }) => {
     const products = await fetchPopularProducts();
@@ -10,48 +10,72 @@ export const PopularProducts = async ({ exchange }: { exchange: number }) => {
         return null;
     }
 
+    // Top 1 Product
+    const featuredProduct = products[0];
+    // Next 14 Products (2-15)
+    const otherProducts = products.slice(1, 20);
+
     return (
         <Box component="section" sx={{ my: 8 }}>
-            <Box
-                sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    mb: 4,
-                    textAlign: "center",
-                }}
-            >
-                <Typography
-                    variant="h3"
-                    component="h2"
+            <Container maxWidth="xl">
+                <Box
                     sx={{
-                        fontWeight: 800,
-                        mb: 1,
-                        background: "linear-gradient(45deg, #FF6B6B 30%, #FF8E53 90%)", // Gradiente diferente para diferenciar
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        fontSize: { xs: "2rem", md: "3rem" },
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        mb: 6,
+                        textAlign: "center",
                     }}
                 >
-                    Lo Más Popular
-                </Typography>
-                <Typography
-                    variant="subtitle1"
-                    color="text.secondary"
-                    sx={{
-                        maxWidth: "600px",
-                        fontSize: { xs: "1rem", md: "1.1rem" },
-                    }}
-                >
-                    Los productos favoritos de nuestra comunidad.
-                </Typography>
-            </Box>
+                    <Typography
+                        variant="h3"
+                        component="h2"
+                        sx={{
+                            fontFamily: "var(--font-orbitron)",
+                            fontWeight: 800,
+                            mb: 2,
+                            background: "linear-gradient(45deg, #FFD700 0%, #FDB931 50%, #A0522D 100%)", // Gold-Like Gradient for Ranking
+                            WebkitBackgroundClip: "text",
+                            WebkitTextFillColor: "transparent",
+                            fontSize: { xs: "2rem", md: "3rem" },
+                            textTransform: "uppercase",
+                            letterSpacing: "0.05em"
+                        }}
+                    >
+                        Lo Más Buscado
+                    </Typography>
+                    <Typography
+                        variant="subtitle1"
+                        color="text.secondary"
+                        sx={{
+                            maxWidth: "600px",
+                            fontFamily: "var(--font-inter)",
+                            fontSize: { xs: "1rem", md: "1.1rem" },
+                        }}
+                    >
+                        Descubre lo que todos están buscando.
+                    </Typography>
+                </Box>
 
-            <SliderProduct
-                products={products}
-                Component={CardProduct}
-                exchange={exchange}
-            />
+                {/* Stack Layout: Row 1 = Featured, Row 2 = Carousel */}
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
+
+                    {/* Row 1: Featured Product (Horizontal #1) */}
+                    <Box sx={{ width: "100%" }}>
+                        <FeaturedProduct product={featuredProduct} exchange={exchange} />
+                    </Box>
+
+                    {/* Row 2: Carousel of Other Products (#2-5) */}
+                    <Box sx={{ width: "100%" }}>
+                        <PopularProductsCarousel
+                            products={otherProducts}
+                            exchange={exchange}
+                            startRank={2}
+                        />
+                    </Box>
+
+                </Box>
+            </Container>
         </Box>
     );
 };
