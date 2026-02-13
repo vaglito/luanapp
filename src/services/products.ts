@@ -2,7 +2,7 @@ import apiClient from "./apiClient";
 import { Products, ProductDetail } from "../types/products.type";
 import { PaginatedResponse } from "../types/paginatedResponse.type";
 
-import { notFound, redirect  } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { AxiosError } from "axios";
 
 export async function fetchNewProducts(): Promise<PaginatedResponse<Products>> {
@@ -94,5 +94,40 @@ export async function fetchProductSearchList(
     return response.data;
   } catch (error) {
     throw new Error("Failed to fetch serach products");
+  }
+}
+
+// --- Statistics ---
+
+export async function registerProductView(slug: string): Promise<void> {
+  if (!slug) return;
+  try {
+    if (typeof window !== "undefined") {
+      // Client-side: Call Next.js Proxy
+      await fetch(`/api/stats/view/${slug}`, { method: "POST" });
+    } else {
+      // Server-side: Call Django Backend directly
+      await apiClient.post(`/api/products/products/stats/view/${slug}/`);
+    }
+  } catch (error) {
+    console.error(`Failed to register product view for slug: ${slug}`, error);
+  }
+}
+
+export async function fetchPopularProducts(): Promise<Products[]> {
+  try {
+    const response = await apiClient.get("/api/products/products/stats/popular/");
+    // Si la respuesta es paginada (tiene results), retornamos results.
+    // Si es un array directo, retornamos la data.
+    if (response.data?.results) {
+      return response.data.results;
+    }
+    if (Array.isArray(response.data)) {
+      return response.data;
+    }
+    return [];
+  } catch (error) {
+    console.error("Failed to fetch popular products", error);
+    return [];
   }
 }

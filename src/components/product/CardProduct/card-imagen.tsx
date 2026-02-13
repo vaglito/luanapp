@@ -38,16 +38,21 @@ export function CardImage({ product }: CardImageProps) {
   return (
     <Link
       href={`/productos/detalle/${product.slug}`}
-      style={{ display: "block", textDecoration: "none", color: "inherit" }}
+      style={{ display: "flex", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", textDecoration: "none", color: "inherit" }}
     >
       <Box
         sx={{
           position: "relative",
           width: "100%",
-          aspectRatio: "1 / 1",
+          height: "100%", // Fill height
+          // Remove strict aspect ratio here to let it fill the 260px container
+          // aspectRatio: "1 / 1", 
           overflow: "hidden",
           cursor: "pointer",
-          borderRadius: 3,
+          borderRadius: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
@@ -55,19 +60,20 @@ export function CardImage({ product }: CardImageProps) {
         {/* Imagen principal */}
         <Box
           sx={{
-            position: "absolute",
-            inset: 0,
+            position: "relative", // Changed from absolute to relative/static if we want it to sizing naturally? No, stick to fill pattern.
+            width: "100%",
+            height: "100%",
             transition: hasSecondImage ? "opacity 0.5s ease" : "none",
             opacity: hasSecondImage && hover ? 0 : 1,
-            borderRadius: 3,
+            borderRadius: 0,
           }}
         >
           <Image
-            src={product.productsimages[0]?.images}
+            src={product.productsimages[0]?.images || "/not-found.png"}
             alt={product.relay.productName}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            style={{ objectFit: "cover", borderRadius: 3 }}
+            style={{ objectFit: "contain", borderRadius: 0 }}
           />
         </Box>
 
@@ -82,11 +88,11 @@ export function CardImage({ product }: CardImageProps) {
             }}
           >
             <Image
-              src={product.productsimages[1]?.images}
+              src={product.productsimages[1]?.images || "/not-found.png"}
               alt={product.relay.productName}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "contain" }}
             />
           </Box>
         )}

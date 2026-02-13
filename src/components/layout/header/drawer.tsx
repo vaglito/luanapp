@@ -7,8 +7,14 @@ import {
   Divider,
 } from "@mui/material";
 
+interface NavLink {
+  id: number;
+  title: string;
+  path: string;
+}
+
 interface Props {
-  navlinks: any[];
+  navlinks: NavLink[];
   onNavigate: () => void;
 }
 

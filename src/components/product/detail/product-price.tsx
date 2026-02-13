@@ -18,7 +18,7 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
   const priceOriginalPen = convertUsdToPen(prices, exchange);
 
   return (
-    <Box sx={{ marginTop: 3 }}>
+    <Box sx={{ marginTop: 1, mb: 2 }}>
       {hasOffer ? (
         <Box
           sx={{
@@ -31,15 +31,18 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
           <Box sx={{ display: "flex", gap: 2 }}>
             <Typography
               sx={{
-                fontWeight: "bold",
+                fontFamily: "var(--font-inter)",
+                fontWeight: 700,
                 fontSize: { xs: 24, sm: 24, md: 27, lg: 38 },
                 color: "error.main",
+                letterSpacing: "0.02em",
               }}
             >
               S/{priceSalePen}
             </Typography>
             <Typography
               sx={{
+                fontFamily: "var(--font-inter)",
                 fontWeight: "semibold",
                 fontSize: { xs: 24, sm: 24, md: 27, lg: 38 },
                 color: "gray",
@@ -51,8 +54,9 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
           <Box sx={{ display: "flex", gap: 2 }}>
             <Typography
               sx={{
+                fontFamily: "var(--font-inter)",
                 textDecoration: "line-through",
-                color: "gray",
+                color: "text.secondary",
                 fontSize: { xs: 19, sm: 20, md: 24, lg: 27 },
               }}
             >
@@ -60,6 +64,7 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
             </Typography>
             <Typography
               sx={{
+                fontFamily: "var(--font-inter)",
                 textDecoration: "line-through",
                 color: "gray",
                 fontSize: { xs: 19, sm: 20, md: 24, lg: 27 },
@@ -84,15 +89,17 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
         >
           <Typography
             sx={{
-              fontWeight: "bold",
+              fontFamily: "var(--font-inter)",
+              fontWeight: 700,
               fontSize: { xs: 26, sm: 26, md: 27, lg: 38 },
-              color: "#A3147F",
+              color: "primary.main",
             }}
           >
             S/{priceOriginalPen}
           </Typography>
           <Typography
             sx={{
+              fontFamily: "var(--font-inter)",
               fontWeight: "semibold",
               fontSize: { xs: 24, sm: 24, md: 27, lg: 38 },
               color: "gray",
@@ -107,6 +114,7 @@ export function ProductPrice({ prices, priceb, exchange }: ProductPriceProps) {
         <Typography
           sx={{
             fontSize: { xs: 15, sm: 16, md: 17, lg: 17 },
+            fontFamily: "var(--font-inter)",
             color: "#545454",
             marginTop: 0.1,
             fontWeight: "semibold",

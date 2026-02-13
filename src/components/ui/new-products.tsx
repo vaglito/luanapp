@@ -1,4 +1,4 @@
-"use client"
+
 import { Typography, Box } from "@mui/material";
 import { SliderProduct } from "../product/slider-product";
 import { Products } from "@/types/products.type";

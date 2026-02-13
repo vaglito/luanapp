@@ -47,24 +47,25 @@ export async function loginAction(data: LoginSchema) {
   }
 }
 
-export async function RegisterUser(data: RegisterInput) {
-  const result = registerSchema.safeParse(data);
+import axios from "axios";
 
-  if (!result.success) {
-    return { error: "Datos del formulario invalidos" };
-  }
+// ... previous code ...
+
+export async function RegisterUser(data: RegisterInput) {
+  // ... validation ...
 
   try {
     const response = await apiClient.post("/api/v2.0/auth/user/create/", data);
 
     return response.data;
-  } catch (error: any) {
-    // Si es un 400, devolvemos el objeto de errores de la API
-    if (error.response?.status === 400) {
-      return {
-        serverErrors: error.response.data, // Ej: { documentNumber: ["Ya existe"], phone: ["Ya existe"] }
-        error: "Hay errores en los datos ingresados",
-      };
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 400) {
+        return {
+          serverErrors: error.response.data,
+          error: "Hay errores en los datos ingresados",
+        };
+      }
     }
     return { error: "Error de conexión con el servidor" };
   }
@@ -72,20 +73,19 @@ export async function RegisterUser(data: RegisterInput) {
 
 export async function VerifyEmailAction(tokenUUID: string) {
   try {
-    // El token se envía en el body: { "token": "uuid-aqui" }
     const response = await apiClient.post("/api/v2.0/auth/verify-email/", {
       token: tokenUUID,
     });
 
     return { success: true, detail: response.data.detail };
-  } catch (error: any) {
-    const message =
-      error.response?.data?.detail || "Error al verificar el token.";
+  } catch (error: unknown) {
+    let message = "Error al verificar el token.";
+    if (axios.isAxiosError(error)) {
+      message = error.response?.data?.detail || message;
+    }
     return { error: message };
   }
 }
-
-
 
 export async function ForgotPasswordAction(email: string) {
   try {
@@ -93,16 +93,15 @@ export async function ForgotPasswordAction(email: string) {
       email,
     });
     return { success: true, detail: response.data.detail };
-  } catch (error: any) {
-    if (error.response?.data?.detail) {
-      return { error: error.response.data.detail };
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.data?.detail) {
+        return { error: error.response.data.detail };
+      }
+      if (error.response?.data?.email) {
+        return { error: error.response.data.email[0] }
+      }
     }
-
-    // Handle specific field errors if any (though usually it's just detail for this endpoint)
-    if (error.response?.data?.email) {
-      return { error: error.response.data.email[0] }
-    }
-
     return { error: "Ocurrió un error al procesar tu solicitud." };
   }
 }
@@ -115,8 +114,8 @@ export async function ResetPasswordAction(uid: string, token: string, newPasswor
       new_password: newPassword,
     });
     return { success: true, detail: response.data.detail };
-  } catch (error: any) {
-    if (error.response?.data) {
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response?.data) {
       const errorData = error.response.data;
       if (errorData.detail) return { error: errorData.detail };
       if (errorData.token) return { error: errorData.token[0] || "El enlace es inválido o ha expirado." };

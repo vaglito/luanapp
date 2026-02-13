@@ -11,8 +11,14 @@ import { fetchExchangeRate } from "@/services/exchangeRate";
 import { fetchProductList } from "@/services/products";
 import { TopFooter } from "@/components/layout/footer/top-footer";
 import { ComputerHome } from "@/components/computer/ComputerHome";
+import { PopularProducts } from "@/components/ui/popular-products";
+import { TrustBar } from "@/components/ui/trust-bar";
+import { SecondaryBanner } from "@/components/ui/banner/secondary-banner";
+import { TikTokExperience } from "@/components/ui/tiktok-experience";
+import PromoDialog from "@/components/promo-dialog";
+import { Box } from "@mui/material";
 
-export const revalidate = 0;
+export const revalidate = 360;
 
 export const generateMetadata = () => {
   const image = "../social.jpg";
@@ -70,21 +76,34 @@ export default async function Home() {
   return (
     <>
       <BannerHome banners={banners} />
+      <TrustBar />
       <Container maxWidth="xl">
         <HomeCategory categories={categories} />
-      </Container>
-      <Container maxWidth="xl">
+
+        <Box sx={{ mb: 6 }}>
+          <SecondaryBanner
+            title="Zona Gamer"
+            subtitle="Potencia máxima para tus partidas. Encuentra las mejores laptops y periféricos con RGB."
+            ctaText="Ver Equipos Gamer"
+            ctaLink="/buscar"
+            gradient="linear-gradient(135deg, #5914A3 0%, #A3147F 100%)" // Luana Brand Colors
+          />
+        </Box>
+
         <NewProducts
           products={newProduct.results}
           exchange={exchange.exchange}
         />
+        <PopularProducts exchange={exchange.exchange} />
       </Container>
       <ComputerHome />
       <SectionLaptop
         products={productsLaptop.results}
         exchange={exchange.exchange}
       />
-      <TopFooter />
+
+      <TikTokExperience />
+      <PromoDialog />
     </>
   );
 }

@@ -31,59 +31,78 @@ export function ProductDetailDescription({
   return (
     <Box
       sx={{
-        backgroundColor: "#fff",
-        boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-        borderRadius: "12px",
-        paddingY: 3,
+        backgroundColor: "rgba(255, 255, 255, 0.95)", // Glassmorphism
+        backdropFilter: "blur(12px)",
+        boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.07)",
+        border: "1px solid rgba(255, 255, 255, 0.5)",
+        borderRadius: "16px",
+        paddingY: 4,
         paddingX: 4,
         height: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <Box>
         <Typography
           variant="h1"
           sx={{
-            fontWeight: 700,
-            fontSize: { xs: 20, sm: 24, md: 24, lg: 28 },
-            color: "#545454",
-            textShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+            fontFamily: "var(--font-inter)", // Changed to Inter per user request
+            fontWeight: 700, // Extra bold for title impact
+            fontSize: { xs: 22, sm: 26, md: 28, lg: 28 },
+            color: "text.primary",
             textAlign: "justify",
+            mb: 1, // Reduced margin
           }}
         >
           {title}
         </Typography>
       </Box>
+
+      {/* BUY BOX AREA - High Priority */}
+      <Box sx={{ mb: 3 }}>
+        {isRestricted ? (
+          <Typography
+            sx={{
+              color: "error.main",
+              fontWeight: 600,
+              fontSize: { xs: 18 },
+              mt: 1,
+            }}
+          >
+            <ReportProblemIcon /> Precio no disponible
+          </Typography>
+        ) : (
+          <ProductPrice prices={prices} priceb={priceb} exchange={exchange} />
+        )}
+
+        <ShopFunction
+          title={title}
+          stock={stock}
+          subCategory={subCategories}
+          product={product}
+        />
+      </Box>
+
+      {/* DESCRIPTION AREA - Secondary Priority */}
       <Box
         sx={{
           marginTop: 2,
-          fontSize: { xs: 15, sm: 16, md: 17, lg: 17 },
-          color: "#545454",
+          paddingTop: 2,
+          borderTop: "1px solid rgba(0,0,0,0.05)",
+          fontSize: { xs: 15, sm: 16, md: 16, lg: 16 },
+          fontFamily: "var(--font-inter)",
+          color: "text.secondary",
           textAlign: "justify",
-          textShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
+          lineHeight: 1.6,
+          "& p": { mb: 1.5 },
         }}
       >
+        <Typography variant="h6" sx={{ fontFamily: "var(--font-orbitron)", mb: 1, fontSize: "1.1rem" }}>
+          Resumen
+        </Typography>
         <Box dangerouslySetInnerHTML={{ __html: resumen }} />
       </Box>
-      {isRestricted ? (
-        <Typography
-          sx={{
-            color: "error.main",
-            fontWeight: 600,
-            fontSize: { xs: 18 },
-            mt: 1,
-          }}
-        >
-          <ReportProblemIcon /> Precio no disponible
-        </Typography>
-      ) : (
-        <ProductPrice prices={prices} priceb={priceb} exchange={exchange} />
-      )}
-      <ShopFunction
-        title={title}
-        stock={stock}
-        subCategory={subCategories}
-        product={product} // 🔹 Pasar el producto completo
-      />
     </Box>
   );
 }

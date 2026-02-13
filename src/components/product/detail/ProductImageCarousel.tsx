@@ -22,14 +22,17 @@ export default function ProductImageCarousel({ product }: { product: ProductDeta
   return (
     <Box
       sx={{
-        backgroundColor: "#fff",
-        boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-        borderRadius: "12px",
+        backgroundColor: "rgba(255, 255, 255, 0.95)",
+        backdropFilter: "blur(12px)",
+        border: "1px solid rgba(255, 255, 255, 0.5)",
+        borderRadius: "16px",
         padding: 3,
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        // Subtle Glow
+        boxShadow: "0 4px 20px rgba(98, 0, 234, 0.05)",
       }}
     >
       {/* Main Slider */}
@@ -55,7 +58,7 @@ export default function ProductImageCarousel({ product }: { product: ProductDeta
                 }}
               >
                 <Image
-                  src={image.images}
+                  src={image.images || "/not-found.png"}
                   alt={product.relay.productName}
                   width={600}
                   height={500}
@@ -65,7 +68,7 @@ export default function ProductImageCarousel({ product }: { product: ProductDeta
                     height: "auto",
                     maxHeight: "500px",
                     objectFit: "contain",
-                    borderRadius: "8px",
+                    borderRadius: "0px",
                   }}
                 />
               </Box>
@@ -88,13 +91,13 @@ export default function ProductImageCarousel({ product }: { product: ProductDeta
             style={{ width: "100%", height: "100%" }}
           >
             {images.map((image, index) => (
-              <SwiperSlide key={index} style={{ opacity: 0.6, cursor: "pointer", borderRadius: "8px", overflow: "hidden" }}>
+              <SwiperSlide key={index} style={{ opacity: 0.6, cursor: "pointer", borderRadius: "0px", overflow: "hidden" }}>
                 <Box sx={{
                   width: "100%",
                   height: "100%",
                   position: "relative",
                   border: "1px solid #e0e0e0",
-                  borderRadius: "8px",
+                  borderRadius: "0px",
                   "&.swiper-slide-thumb-active": {
                     opacity: 1,
                     borderColor: "primary.main",
@@ -102,7 +105,7 @@ export default function ProductImageCarousel({ product }: { product: ProductDeta
                   }
                 }}>
                   <Image
-                    src={image.images}
+                    src={image.images || "/not-found.png"}
                     alt={`Thumbnail ${index}`}
                     fill
                     sizes="150px"

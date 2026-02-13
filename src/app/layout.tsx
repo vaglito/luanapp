@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
-import { Roboto } from "next/font/google";
+import { Roboto, Orbitron, Inter } from "next/font/google";
 import { Header } from "@/components/layout/header/header";
 import { Footer } from "@/components/layout/footer/footer";
 import { ThemeProvider } from "@mui/material/styles";
@@ -17,9 +17,15 @@ import { Providers } from "./providers";
 import { fetchBrands } from "@/services/brands";
 import { WhatsAppBubble } from "@/components/ui/whatsapp-bubble";
 
-const roboto = Roboto({
-  weight: ["400"],
+const orbitron = Orbitron({
   subsets: ["latin"],
+  variable: "--font-orbitron",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -57,7 +63,7 @@ export default async function RootLayout({
         <GoogleAnalytics gaId="G-XELJ23CNWC" />
         <GTMHead />
       </head>
-      <body className={`${roboto.className} antialiased`}>
+      <body className={`${inter.className} ${orbitron.variable} antialiased`}>
         <GTMBody />
         <ThemeProvider theme={themeOptions}>
           <AppRouterCacheProvider options={{ key: "css" }}>
