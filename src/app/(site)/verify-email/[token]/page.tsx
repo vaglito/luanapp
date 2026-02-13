@@ -20,14 +20,14 @@ export default function VerifyEmailPage() {
 
   const handleVerification = async (tokenStr: string) => {
     const res = await VerifyEmailAction(tokenStr);
-    
+
     if (res.success) {
       setStatus("success");
       setMessage(res.detail);
       setTimeout(() => router.push("/login"), 5000);
     } else {
       setStatus("error");
-      setMessage(res.error);
+      setMessage(res.error || "Error desconocido al verificar el email.");
     }
   };
 
@@ -56,8 +56,8 @@ export default function VerifyEmailPage() {
             <Alert severity="error" variant="outlined">
               {message}
             </Alert>
-            <Button 
-              variant="contained" 
+            <Button
+              variant="contained"
               onClick={() => router.push("/registro")}
               fullWidth
             >
