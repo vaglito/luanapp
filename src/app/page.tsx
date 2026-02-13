@@ -14,6 +14,7 @@ import { ComputerHome } from "@/components/computer/ComputerHome";
 import { PopularProducts } from "@/components/ui/popular-products";
 import { TrustBar } from "@/components/ui/trust-bar";
 import { SecondaryBanner } from "@/components/ui/banner/secondary-banner";
+import { TikTokExperience } from "@/components/ui/tiktok-experience";
 import { Box } from "@mui/material";
 
 export const revalidate = 360;
@@ -99,7 +100,9 @@ export default async function Home() {
         products={productsLaptop.results}
         exchange={exchange.exchange}
       />
-      <TopFooter />
+
+      <TikTokExperience />
+
     </>
   );
 }
