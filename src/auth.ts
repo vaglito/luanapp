@@ -33,6 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           name: data.user.name,
           lastName: data.user.lastName,
           email: data.user.email,
+          documentNumber: data.user.documentNumber,
 
           isSuperuser: data.user.isSuperuser,
           isStaff: data.user.isStaff,
@@ -59,6 +60,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           name: user.name,
           lastName: user.lastName,
           email: user.email,
+          documentNumber: user.documentNumber,
 
           isSuperuser: user.isSuperuser,
           isStaff: user.isStaff,
@@ -88,6 +90,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.name = token.name;
       session.user.lastName = token.lastName;
       session.user.email = token.email;
+      session.user.documentNumber = token.documentNumber;
       session.user.isSuperuser = token.isSuperuser;
       session.user.isStaff = token.isStaff;
       session.user.isAdmin = token.isAdmin;
