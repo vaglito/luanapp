@@ -55,6 +55,12 @@ export default async function InvoicesPage({
     redirect("/login");
   }
 
+  // Defense-in-depth: only customers, admins and superusers can see invoices
+  const { isCustomer, isAdmin, isSuperuser } = session.user;
+  if (!isCustomer && !isAdmin && !isSuperuser) {
+    redirect("/dashboard");
+  }
+
   const resolvedParams = await searchParams;
   const pageParam = resolvedParams?.page;
   const currentPage = typeof pageParam === "string" ? parseInt(pageParam, 10) : 1;

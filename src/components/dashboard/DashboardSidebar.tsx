@@ -213,7 +213,7 @@ export const DashboardSidebar = ({ user }: { user: User }) => {
               noWrap
               display="block"
             >
-              {user?.isAdmin ? "Admin" : "Staff"}
+              {user?.isAdmin ? "Administrador" : user?.isSuperuser ? "Superadmin" : user?.isSeller ? "Vendedor" : user?.isTechnician ? "Técnico" : user?.isEditor ? "Editor" : user?.isCustomer ? "Cliente" : "Staff"}
             </Typography>
           </Box>
         </Box>
