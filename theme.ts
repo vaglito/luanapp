@@ -42,33 +42,33 @@ export const themeOptions = createTheme({
     typography: {
         fontFamily: inter.style.fontFamily,
         h1: {
-            fontFamily: orbitron.style.fontFamily,
+            fontFamily: inter.style.fontFamily,
             fontWeight: 800,
             fontSize: "2.5rem",
             textTransform: "uppercase",
             letterSpacing: "0.05em",
         },
         h2: {
-            fontFamily: orbitron.style.fontFamily,
+            fontFamily: inter.style.fontFamily,
             fontWeight: 700,
             fontSize: "2rem",
             letterSpacing: "0.02em",
         },
         h3: {
-            fontFamily: orbitron.style.fontFamily,
+            fontFamily: inter.style.fontFamily,
             fontWeight: 700,
             fontSize: "1.75rem",
         },
         h4: {
-            fontFamily: orbitron.style.fontFamily,
+            fontFamily: inter.style.fontFamily,
             fontWeight: 600,
         },
         h5: {
-            fontFamily: orbitron.style.fontFamily,
+            fontFamily: inter.style.fontFamily,
             fontWeight: 600,
         },
         h6: {
-            fontFamily: orbitron.style.fontFamily,
+            fontFamily: inter.style.fontFamily,
             fontWeight: 600,
             letterSpacing: "0.02em",
         },

@@ -5,14 +5,18 @@ import {
   CardContent,
   Grid2,
   Chip,
-  Tooltip,
-  IconButton,
   Alert,
+  Divider,
+  Button
 } from "@mui/material";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import CodeIcon from "@mui/icons-material/Code";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import InvoicesPagination from "./components/InvoicesPagination";
+import InvoicesSearch from "./components/InvoicesSearch";
 
 interface InvoiceData {
   unico: string;
@@ -41,11 +45,27 @@ interface InvoicesResponse {
   };
 }
 
-export default async function InvoicesPage() {
+export default async function InvoicesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const session = await auth();
   if (!session) {
     redirect("/login");
   }
+
+  const resolvedParams = await searchParams;
+  const pageParam = resolvedParams?.page;
+  const currentPage = typeof pageParam === "string" ? parseInt(pageParam, 10) : 1;
+  const pageSize = 9; // Display 9 items per page (3x3 grid)
+
+  // Additional search filters
+  const secuencial = typeof resolvedParams?.SECUENCIAL === "string" ? resolvedParams.SECUENCIAL : undefined;
+  const ptoemi = typeof resolvedParams?.PTOEMI === "string" ? resolvedParams.PTOEMI : undefined;
+  const cod = typeof resolvedParams?.COD === "string" ? resolvedParams.COD : undefined;
+  const fecha1 = typeof resolvedParams?.fecha1 === "string" ? resolvedParams.fecha1 : undefined;
+  const fecha2 = typeof resolvedParams?.fecha2 === "string" ? resolvedParams.fecha2 : undefined;
 
   const documentNumber = session.user.documentNumber;
   console.log(documentNumber);
@@ -57,9 +77,20 @@ export default async function InvoicesPage() {
   } else {
     try {
       const EDOC_URL = process.env.API_URL_EDIC || "http://localhost:8001";
-      // We will search by RUC which represents the user document
+      // We search by RUC and include pagination using page and size
+      const searchQuery = new URLSearchParams({
+        ruc: documentNumber,
+        page: String(currentPage),
+        size: String(pageSize),
+      });
+      if (secuencial) searchQuery.set("SECUENCIAL", secuencial);
+      if (ptoemi) searchQuery.set("PTOEMI", ptoemi);
+      if (cod) searchQuery.set("COD", cod);
+      if (fecha1) searchQuery.set("fecha1", fecha1);
+      if (fecha2) searchQuery.set("fecha2", fecha2);
+
       const res = await fetch(
-        `${EDOC_URL}/api/documents/search?ruc=${documentNumber}&size=50`,
+        `${EDOC_URL}/api/documents/search?${searchQuery.toString()}`,
         {
           cache: "no-store",
         },
@@ -81,108 +112,130 @@ export default async function InvoicesPage() {
     }
   }
 
-  const EDOC_URL = process.env.API_URL_EDIC || "http://localhost:8001";
+  const totalPages = invoicesData?.meta?.pages || 0;
 
   return (
-    <Box>
-      <Typography variant="h4" fontWeight="bold" sx={{ mb: 3 }}>
-        Mis Facturas
-      </Typography>
+    <Box sx={{ maxWidth: 1200, mx: "auto", p: { xs: 2, md: 4 } }}>
+      <Box sx={{ mb: 4, display: "flex", alignItems: "center", gap: 2 }}>
+        <ReceiptLongIcon sx={{ fontSize: 40, color: "primary.main" }} />
+        <Box>
+          <Typography variant="h4" fontWeight="800" color="text.primary">
+            Mis Facturas
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Gestiona y descarga tus comprobantes electrónicos emitidos.
+          </Typography>
+        </Box>
+      </Box>
+
+      {/* Search component */}
+      <InvoicesSearch />
 
       {errorMsg ? (
-        <Alert severity="error">{errorMsg}</Alert>
+        <Alert severity="error" sx={{ borderRadius: 2 }}>{errorMsg}</Alert>
       ) : invoicesData?.data?.length === 0 ? (
-        <Alert severity="info">
-          No tiene facturas registradas en el sistema.
+        <Alert severity="info" sx={{ borderRadius: 2 }}>
+          No se encontraron comprobantes electrónicos registrados a su documento ({documentNumber}).
         </Alert>
       ) : (
-        <Grid2 container spacing={3}>
-          {invoicesData?.data.map((invoice) => (
-            <Grid2 size={{ xs: 12, md: 6, lg: 4 }} key={invoice.unico}>
-              <Card
-                sx={{
-                  borderRadius: 3,
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-                }}
-              >
-                <CardContent>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                      mb: 2,
-                    }}
-                  >
-                    <Box>
-                      <Typography variant="subtitle2" color="text.secondary">
-                        {invoice.tipoDoc.descripcion}
-                      </Typography>
-                      <Typography variant="h6" fontWeight="bold">
-                        {invoice.estab}-{invoice.ptoemi}-{invoice.secuencial}
-                      </Typography>
+        <>
+          <Grid2 container spacing={3}>
+            {invoicesData?.data.map((invoice) => (
+              <Grid2 size={{ xs: 12, md: 6, lg: 4 }} key={invoice.unico}>
+                <Card
+                  sx={{
+                    borderRadius: 4,
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
+                    transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+                    border: "1px solid",
+                    borderColor: "divider",
+                    "&:hover": {
+                      transform: "translateY(-4px)",
+                      boxShadow: "0 12px 28px rgba(0,0,0,0.12)",
+                      borderColor: "primary.light",
+                    },
+                  }}
+                >
+                  <CardContent sx={{ p: 3 }}>
+                    {/* Header: Document Type and Total Amount */}
+                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 2 }}>
+                      <Box>
+                        <Chip
+                          label={invoice.tipoDoc.descripcion}
+                          size="small"
+                          color={invoice.tipoDoc.cod === "01" ? "primary" : "default"}
+                          sx={{ fontWeight: "bold", mb: 1, textTransform: "uppercase", fontSize: "0.7rem", letterSpacing: 0.5 }}
+                        />
+                        <Typography variant="h6" fontWeight="bold" sx={{ letterSpacing: 0.5 }}>
+                          {invoice.estab}-{invoice.ptoemi}-{invoice.secuencial}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ textAlign: "right" }}>
+                        <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: -0.5 }}>
+                          Total Facturado
+                        </Typography>
+                        <Typography variant="h6" fontWeight="900" color="success.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          S/ {invoice.total.toFixed(2)}
+                        </Typography>
+                      </Box>
                     </Box>
-                    <Chip
-                      label={`S/ ${invoice.total.toFixed(2)}`}
-                      color="primary"
-                      sx={{ fontWeight: "bold" }}
-                    />
-                  </Box>
 
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 1,
-                      mb: 3,
-                    }}
-                  >
-                    <Typography variant="body2">
-                      <strong>Fecha:</strong>{" "}
-                      {new Date(
-                        invoice.fecha + "T00:00:00",
-                      ).toLocaleDateString()}
-                    </Typography>
-                    <Typography variant="body2">
-                      <strong>RUC/DNI:</strong> {invoice.ruc}
-                    </Typography>
-                  </Box>
+                    <Divider sx={{ my: 2, borderStyle: "dashed" }} />
 
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 2,
-                      borderTop: "1px solid",
-                      borderColor: "divider",
-                      pt: 2,
-                    }}
-                  >
-                    <Tooltip title="Descargar PDF">
-                      <IconButton
+                    {/* Body: Date and Document Info */}
+                    <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 3 }}>
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 1, color: "text.secondary" }}>
+                        <CalendarTodayIcon fontSize="small" />
+                        <Typography variant="body2" fontWeight="500">
+                          Emitido el {new Date(invoice.fecha + "T00:00:00").toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </Typography>
+                      </Box>
+
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 1, color: "text.secondary" }}>
+                        <ReceiptLongIcon fontSize="small" />
+                        <Typography variant="body2" fontWeight="500">
+                          RUC: {invoice.ruc}
+                        </Typography>
+                      </Box>
+                    </Box>
+
+                    {/* Footer: Action Buttons */}
+                    <Box sx={{ display: "flex", gap: 1.5 }}>
+                      <Button
                         component="a"
-                        href={`${EDOC_URL}/api/documents/${invoice.unico}/download/pdf`}
+                        href={`https://see.corporacionluana.pe/download.php?val=${invoice.unico}&ty=p&dat=${invoice.tipoDoc.cod}`}
                         target="_blank"
+                        variant="contained"
                         color="error"
+                        fullWidth
+                        startIcon={<PictureAsPdfIcon />}
+                        disableElevation
+                        sx={{ borderRadius: 2, textTransform: "none", fontWeight: "bold" }}
                       >
-                        <PictureAsPdfIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Descargar XML">
-                      <IconButton
+                        PDF
+                      </Button>
+                      <Button
                         component="a"
-                        href={`${EDOC_URL}/api/documents/${invoice.unico}/download/xml`}
+                        href={`https://see.corporacionluana.pe/download.php?val=${invoice.unico}&ty=x&dat=${invoice.tipoDoc.cod}`}
                         target="_blank"
+                        variant="outlined"
                         color="primary"
+                        fullWidth
+                        startIcon={<CodeIcon />}
+                        sx={{ borderRadius: 2, textTransform: "none", fontWeight: "bold", borderWidth: 1.5, "&:hover": { borderWidth: 1.5 } }}
                       >
-                        <CodeIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid2>
-          ))}
-        </Grid2>
+                        XML
+                      </Button>
+                    </Box>
+
+                  </CardContent>
+                </Card>
+              </Grid2>
+            ))}
+          </Grid2>
+
+          <InvoicesPagination totalPages={totalPages} currentPage={currentPage} />
+        </>
       )}
     </Box>
   );
