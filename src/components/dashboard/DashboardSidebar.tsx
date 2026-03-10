@@ -41,6 +41,12 @@ export const DashboardSidebar = ({ user }: { user: User }) => {
           visible: true,
         },
         {
+          label: "Mi Perfil",
+          icon: <PeopleIcon />, // Using PeopleIcon here as PersonIcon was not imported yet, saving a new import line, both are suitable.
+          path: "/dashboard/profile",
+          visible: true,
+        },
+        {
           label: "Mis Facturas",
           icon: <ReceiptIcon />,
           path: "/dashboard/invoices",
