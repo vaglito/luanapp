@@ -1,0 +1,46 @@
+name: Deploy Luanapp to Ubuntu Server
+
+on:
+  push:
+    branches:
+      - main # Ejecuta el workflow cuando se hace un push a la rama 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Aseguramos que el entorno interactivo se cargue (necesario para nvm, pnpm y pm2)
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            
+            # Cargar configuraciones del usuario para tener los binarios en el PATH
+            if [ -f ~/.bashrc ]; then
+              source ~/.bashrc
+            fi
+            
+            # Navegar al directorio de la app
+            cd /home/luana/luanapp
+            
+            # Obtener los últimos cambios de la rama main
+            git fetch origin main
+            git reset --hard origin/main
+            
+            # Instalar las dependencias de producción
+            pnpm install
+            
+            # Compilar el proyecto Next.js
+            pnpm run build
+            
+            # Iniciar o reiniciar la aplicación usando el ecosystem de pm2
+            pm2 startOrReload ecosystem.config.js --env production
+            
+            # Guardar la lista actual de PM2 para que levante automático en caso de reinicio del server
+            pm2 save
