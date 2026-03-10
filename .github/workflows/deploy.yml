@@ -2,8 +2,8 @@ name: Deploy Luanapp to Ubuntu Server
 
 on:
   push:
-    branches:
-      - main # Ejecuta el workflow cuando se hace un push a la rama 'main'
+    tags:
+      - '*' # Ejecuta el workflow cuando se crea y pushea un nuevo tag (ej: v1.0.0)
 
 jobs:
   deploy:
