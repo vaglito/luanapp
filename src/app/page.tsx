@@ -83,7 +83,7 @@ export default async function Home() {
         <Box sx={{ mb: 6 }}>
           <SecondaryBanner
             title="Zona Gamer"
-            subtitle="Potencia máxima para tus partidas. Encuentra las mejores laptops y periféricos con RGB."
+            subtitle="Potencia máxima para tus partidas. Encuentra las mejores laptops y periféricos con RGB"
             ctaText="Ver Equipos Gamer"
             ctaLink="/buscar"
             gradient="linear-gradient(135deg, #5914A3 0%, #A3147F 100%)" // Luana Brand Colors
