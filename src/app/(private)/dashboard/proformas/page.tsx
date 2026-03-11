@@ -1,10 +1,22 @@
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 import { Box, Grid2, Paper, Typography, Divider } from "@mui/material";
 import { ProformasWithSearch } from "@/components/proformas/proformaslist/ProformaSearch";
 import { CreateProformaForm } from "@/components/proformas/create/CreateProformaForm";
 import { fetchExchangeRate } from "@/services/exchangeRate";
 import { getProformas } from "@/services/dashboard/seller/proformas";
 
-export default async function ProformaSellerPage() {
+export default async function ProformasPage() {
+  const session = await auth();
+  if (!session || !session.user) {
+    redirect("/login");
+  }
+
+  // Defense-in-depth: Solamente admin y seller pueden entrar
+  if (!session.user.isAdmin && !session.user.isSeller && !session.user.isSuperuser) {
+    redirect("/dashboard");
+  }
+
   const exchange = await fetchExchangeRate();
   const proformas = await getProformas();
 
@@ -70,4 +82,3 @@ export default async function ProformaSellerPage() {
     </Box>
   );
 }
-
