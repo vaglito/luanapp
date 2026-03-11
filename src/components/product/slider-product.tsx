@@ -28,14 +28,19 @@ export const SliderProduct = ({
         sx={{
           position: "absolute",
           top: "50%",
-          left: -50,
-          background: "white",
+          left: { xs: 0, sm: -20, md: -50 }, // Overlaps on mobile, pulls out on desktop
+          transform: "translateY(-50%)",
+          bgcolor: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(8px)",
           zIndex: 10,
-          boxShadow: 1,
-          "&:hover": { background: "white" },
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          width: { xs: 36, md: 40 },
+          height: { xs: 36, md: 40 },
+          border: "1px solid rgba(0,0,0,0.05)",
+          "&:hover": { bgcolor: "white", transform: "translateY(-50%) scale(1.1)" },
         }}
       >
-        <ArrowBackIosNewIcon fontSize="small" />
+        <ArrowBackIosNewIcon fontSize="small" sx={{ ml: 0.5 }} />
       </IconButton>
 
       {/* Botón siguiente */}
@@ -45,11 +50,16 @@ export const SliderProduct = ({
         sx={{
           position: "absolute",
           top: "50%",
-          right: -50,
-          background: "white",
+          right: { xs: 0, sm: -20, md: -50 }, // Overlaps on mobile, pulls out on desktop
+          transform: "translateY(-50%)",
+          bgcolor: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(8px)",
           zIndex: 10,
-          boxShadow: 1,
-          "&:hover": { background: "white" },
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          width: { xs: 36, md: 40 },
+          height: { xs: 36, md: 40 },
+          border: "1px solid rgba(0,0,0,0.05)",
+          "&:hover": { bgcolor: "white", transform: "translateY(-50%) scale(1.1)" },
         }}
       >
         <ArrowForwardIosIcon fontSize="small" />
@@ -66,7 +76,7 @@ export const SliderProduct = ({
           prevEl: ".custom-prev",
           nextEl: ".custom-next",
         }}
-        slidesPerView={2}
+        slidesPerView={1}
         spaceBetween={20}
         breakpoints={{
           640: { slidesPerView: 2, spaceBetween: 20 },

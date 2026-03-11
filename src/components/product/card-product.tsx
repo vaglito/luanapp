@@ -47,7 +47,7 @@ export const CardProduct = ({
       }}
     >
       {/* 1. Image Section */}
-      <Box sx={{ p: 0, position: "relative", height: 260, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "transparent", borderBottom: "none" }}>
+      <Box sx={{ p: 0, position: "relative", height: { xs: 200, sm: 220, md: 260 }, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "transparent", borderBottom: "none" }}>
         <CardImage product={product} />
 
         {/* Brand Badge */}
@@ -76,7 +76,7 @@ export const CardProduct = ({
 
       {/* 2. Content Section */}
       <Link href={`/productos/detalle/${product.slug}`} style={{ textDecoration: 'none', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <Box sx={{ p: 2.5, flexGrow: 1, display: "flex", flexDirection: "column" }}>
+        <Box sx={{ p: { xs: 1.5, sm: 2.5 }, flexGrow: 1, display: "flex", flexDirection: "column" }}>
 
           {/* Product Code */}
           <Typography variant="caption" color="primary.main" sx={{ fontSize: "0.7rem", fontWeight: 600, mb: 0.5, opacity: 0.8 }}>
@@ -91,12 +91,12 @@ export const CardProduct = ({
               lineHeight: 1.4,
               fontWeight: 600,
               color: "text.primary",
-              fontSize: "0.95rem",
+              fontSize: { xs: "0.85rem", sm: "0.95rem" },
               display: "-webkit-box",
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
               WebkitLineClamp: 2,
-              height: "2.8em", // Fixed height for alignment
+              height: { xs: "2.6em", sm: "2.8em" }, // Fixed height for alignment
               mb: 2,
               transition: "color 0.2s",
               "&:hover": { color: "primary.main" },
@@ -135,7 +135,7 @@ export const CardProduct = ({
       </Link>
 
       {/* 3. Action Button (Animated) */}
-      <Box sx={{ p: 2, pt: 0 }}>
+      <Box sx={{ px: { xs: 1.5, sm: 2 }, pb: { xs: 1.5, sm: 2 }, pt: 0 }}>
         <Button
           fullWidth
           variant="contained" // Default material contained
@@ -147,10 +147,10 @@ export const CardProduct = ({
           startIcon={<VisibilityIcon />}
           sx={{
             borderRadius: "12px",
-            textTransform: "uppercase",
+            textTransform: "none",
             fontFamily: "var(--font-orbitron)",
             fontWeight: 700,
-            fontSize: "0.85rem",
+            fontSize: { xs: "0.75rem", sm: "0.85rem" },
             letterSpacing: "0.05em",
             py: 1.2,
             boxShadow: "none",
@@ -159,7 +159,7 @@ export const CardProduct = ({
             }
           }}
         >
-          Ver Detalles
+          Ver Detalle
         </Button>
       </Box>
     </Box>

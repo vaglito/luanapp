@@ -174,10 +174,11 @@ export const CardRanking = ({ product, rank, exchange }: CardRankingProps) => {
                             endIcon={<ArrowForwardIcon />}
                             sx={{
                                 fontWeight: 700,
+                                textTransform: "none",
                                 "&:hover": { bgcolor: "transparent", textDecoration: "underline" }
                             }}
                         >
-                            Ver Detalles
+                            Ver Detalle
                         </Button>
                     </Link>
                 </Box>
