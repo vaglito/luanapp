@@ -2,16 +2,7 @@
 
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
-
-const API_URL = process.env.API_URL;
-const API_KEY = process.env.API_KEY;
-
-export interface ProfileUpdateData {
-    name: string;
-    lastName: string;
-    phone?: string;
-    birthdate?: string;
-}
+import { updateUserProfile, ProfileUpdateData } from "@/services/user-service";
 
 export async function updateProfile(data: ProfileUpdateData) {
     try {
@@ -21,34 +12,15 @@ export async function updateProfile(data: ProfileUpdateData) {
             return { success: false, error: "No autorizado. Inicie sesión nuevamente." };
         }
 
-        // El endpoint backend (corpluana/sauth) fue actualizado a RetrieveUpdateAPIView
-        const res = await fetch(`${API_URL}/api/v2.0/user/me/`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                "x-api-key": `${API_KEY}`,
-                "Authorization": `Bearer ${session.user.accessToken}`,
-            },
-            body: JSON.stringify({
-                name: data.name,
-                last_name: data.lastName,
-                phone: data.phone,
-                birthdate: data.birthdate,
-            }),
+        const result = await updateUserProfile(session.user.accessToken, {
+            name: data.name,
+            lastName: data.lastName,
+            phone: data.phone,
+            birthdate: data.birthdate,
         });
 
-        const responseData = await res.json().catch(() => null);
-
-        if (!res.ok) {
-            // Manejar errores de validación del DRF
-            let errorMessage = "Error al actualizar el perfil";
-            if (responseData && typeof responseData === "object") {
-                const errors = Object.values(responseData).flat();
-                if (errors.length > 0 && typeof errors[0] === "string") {
-                    errorMessage = errors[0];
-                }
-            }
-            return { success: false, error: errorMessage };
+        if (!result.success) {
+            return { success: false, error: result.error };
         }
 
         revalidatePath("/dashboard/profile");

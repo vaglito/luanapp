@@ -2,14 +2,12 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { Box, Typography } from "@mui/material";
 import ProfileForm from "./components/ProfileForm";
-
-const API_URL = process.env.API_URL;
-const API_KEY = process.env.API_KEY;
+import { getUserProfile } from "@/services/user-service";
 
 export default async function ProfilePage() {
     const session = await auth();
 
-    if (!session || !session.user) {
+    if (!session || !session.user || !session.user.accessToken) {
         redirect("/login");
     }
 
@@ -18,22 +16,9 @@ export default async function ProfilePage() {
     let backendProfile = null;
 
     try {
-        const res = await fetch(`${API_URL}/api/v2.0/user/me/`, {
-            headers: {
-                "x-api-key": `${API_KEY}`,
-                "Authorization": `Bearer ${session.user.accessToken}`,
-            },
-            // Using no-store to ensure we always get the latest profile data
-            cache: "no-store",
-        });
-
-        if (res.ok) {
-            backendProfile = await res.json();
-        } else {
-            console.error("Failed to fetch fresh backend profile", res.status);
-        }
+        backendProfile = await getUserProfile(session.user.accessToken);
     } catch (error) {
-        console.error("Error fetching backend profile", error);
+        console.error("Error fetching backend profile:", error);
     }
 
     return (

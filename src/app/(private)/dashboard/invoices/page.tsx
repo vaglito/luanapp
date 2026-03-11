@@ -17,33 +17,7 @@ import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import InvoicesPagination from "./components/InvoicesPagination";
 import InvoicesSearch from "./components/InvoicesSearch";
-
-interface InvoiceData {
-  unico: string;
-  cod: string;
-  ruc: string;
-  fecha: string;
-  estab: string;
-  ptoemi: string;
-  total: number;
-  secuencial: string;
-  tipoDoc: {
-    cod: string;
-    descripcion: string;
-  };
-}
-
-interface InvoicesResponse {
-  success: boolean;
-  message: string;
-  data: InvoiceData[];
-  meta: {
-    total: number;
-    page: number;
-    size: number;
-    pages: number;
-  };
-}
+import { searchInvoices, InvoicesResponse } from "@/services/invoice-service";
 
 export default async function InvoicesPage({
   searchParams,
@@ -82,35 +56,16 @@ export default async function InvoicesPage({
     errorMsg = "No se encontró el número de documento asociado a este usuario.";
   } else {
     try {
-      const EDOC_URL = process.env.API_URL_EDIC || "http://localhost:8001";
-      // We search by RUC and include pagination using page and size
-      const searchQuery = new URLSearchParams({
+      invoicesData = await searchInvoices({
         ruc: documentNumber,
-        page: String(currentPage),
-        size: String(pageSize),
+        page: currentPage,
+        size: pageSize,
+        secuencial,
+        ptoemi,
+        cod,
+        fecha1,
+        fecha2
       });
-      if (secuencial) searchQuery.set("SECUENCIAL", secuencial);
-      if (ptoemi) searchQuery.set("PTOEMI", ptoemi);
-      if (cod) searchQuery.set("COD", cod);
-      if (fecha1) searchQuery.set("fecha1", fecha1);
-      if (fecha2) searchQuery.set("fecha2", fecha2);
-
-      const res = await fetch(
-        `${EDOC_URL}/api/documents/search?${searchQuery.toString()}`,
-        {
-          cache: "no-store",
-        },
-      );
-
-      if (!res.ok) {
-        const errorBody = await res.text();
-        console.error(
-          `Invoice API error: ${res.status} ${res.statusText}`,
-          errorBody,
-        );
-        throw new Error(`Error al obtener las facturas (HTTP ${res.status})`);
-      }
-      invoicesData = await res.json();
     } catch (error) {
       console.error(error);
       errorMsg =
