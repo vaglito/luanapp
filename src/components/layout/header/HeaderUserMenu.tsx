@@ -52,7 +52,7 @@ export function HeaderUserMenu({ user }: { user: User }) {
           </Typography>
         </Box>
         <Divider />
-        <MenuItem onClick={() => router.push("/profile")}>
+        <MenuItem onClick={() => router.push("/dashboard/profile")}>
           <PersonIcon fontSize="small" sx={{ mr: 1 }} />
           Mi perfil
         </MenuItem>
