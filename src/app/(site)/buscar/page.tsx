@@ -39,7 +39,7 @@ export default async function SearchPage({ searchParams }: SearchParamsProps) {
     : undefined;
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4, px: { xs: 0, sm: 2 } }}>
       {/* Header Results Info */}
       <Paper
         elevation={0}
@@ -50,11 +50,13 @@ export default async function SearchPage({ searchParams }: SearchParamsProps) {
           justifyContent: "space-between",
           gap: 2,
           p: 3,
+          px: { xs: 2, sm: 3 },
           mb: 4,
           borderRadius: 3,
           bgcolor: "white",
           border: "1px solid #e5e7eb",
           boxShadow: "0px 4px 6px -1px rgba(0,0,0,0.05)",
+          mx: { xs: 2, sm: 0 },
         }}
       >
         <Box>
@@ -82,11 +84,13 @@ export default async function SearchPage({ searchParams }: SearchParamsProps) {
         }}
       >
         {/* Sidebar Filters */}
-        <MobileFilterWrapper>
-          <Suspense fallback={<FiltersSkeleton />}>
-            <FilterList query={query} />
-          </Suspense>
-        </MobileFilterWrapper>
+        <Box sx={{ px: { xs: 2, lg: 0 }, width: { xs: "100%", lg: "auto" } }}>
+          <MobileFilterWrapper>
+            <Suspense fallback={<FiltersSkeleton />}>
+              <FilterList query={query} />
+            </Suspense>
+          </MobileFilterWrapper>
+        </Box>
 
         {/* Product Grid */}
         <Suspense fallback={<ProductListSkeleton />}>

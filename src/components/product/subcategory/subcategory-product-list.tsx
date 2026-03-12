@@ -37,7 +37,7 @@ export const SubCategoryProductList = async ({
             const isEmpty = !productsData || productsData.count === 0;
             if (isEmpty) {
                 return (
-                    <Container maxWidth="xl" sx={{ mt: 8, mb: 8 }}>
+                    <Container maxWidth="xl" sx={{ mt: 8, mb: 8, px: { xs: 2, sm: 2 } }}>
                         <Paper
                             elevation={0}
                             sx={{
@@ -89,7 +89,7 @@ export const SubCategoryProductList = async ({
 
         return (
             <Box sx={{ flexGrow: 1 }}>
-                <Box sx={{ mb: 2 }}>
+                <Box sx={{ mb: 2, px: { xs: 2, sm: 0 } }}>
                     {/* Optional count display, mirroring search page styling */}
                     <Typography variant="body2" color="text.secondary">
                         Mostrando {productsData.results.length} de {productsData.count} productos
@@ -111,7 +111,7 @@ export const SubCategoryProductList = async ({
         );
     } catch (error) {
         return (
-            <Container maxWidth="xl" sx={{ mt: 8, mb: 8 }}>
+            <Container maxWidth="xl" sx={{ mt: 8, mb: 8, px: { xs: 2, sm: 2 } }}>
                 <Paper
                     elevation={0}
                     sx={{
