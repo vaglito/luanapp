@@ -77,7 +77,7 @@ export default async function Home() {
     <>
       <BannerHome banners={banners} />
       <TrustBar />
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ px: { xs: 0, sm: 2 } }}>
         <HomeCategory categories={categories} />
 
         <Box sx={{ mb: 6 }}>

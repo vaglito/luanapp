@@ -13,7 +13,7 @@ export const NewProducts = ({
 }) => {
   return (
     <Box sx={{ marginTop: 4 }}>
-      <Box>
+      <Box sx={{ px: { xs: 2, sm: 0 } }}>
         <Box
           sx={{
             display: "flex",

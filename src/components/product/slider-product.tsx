@@ -28,7 +28,7 @@ export const SliderProduct = ({
         sx={{
           position: "absolute",
           top: "50%",
-          left: { xs: 0, sm: -20, md: -50 }, // Overlaps on mobile, pulls out on desktop
+          left: { xs: 8, sm: -20, md: -50 }, // Overlaps on mobile, pulls out on desktop
           transform: "translateY(-50%)",
           bgcolor: "rgba(255, 255, 255, 0.8)",
           backdropFilter: "blur(8px)",
@@ -50,7 +50,7 @@ export const SliderProduct = ({
         sx={{
           position: "absolute",
           top: "50%",
-          right: { xs: 0, sm: -20, md: -50 }, // Overlaps on mobile, pulls out on desktop
+          right: { xs: 8, sm: -20, md: -50 }, // Overlaps on mobile, pulls out on desktop
           transform: "translateY(-50%)",
           bgcolor: "rgba(255, 255, 255, 0.8)",
           backdropFilter: "blur(8px)",
@@ -87,7 +87,7 @@ export const SliderProduct = ({
       >
         {products.map((product) => (
           <SwiperSlide key={product.id}>
-            <Box sx={{ paddingY: 4, paddingX: { xs: 1, sm: 1, md: 2, lg: 2 } }}>
+            <Box sx={{ paddingY: 4, paddingX: { xs: 0, sm: 1, md: 2, lg: 2 } }}>
               <Component product={product} exchange={exchange} />
             </Box>
           </SwiperSlide>

@@ -21,7 +21,7 @@ export const PopularProductsCarousel = ({
     startRank
 }: PopularProductsCarouselProps) => {
     return (
-        <Box sx={{ position: "relative", mx: -2, px: 2 }}> {/* Negative margin to allow buttons to sit outside container if needed, or just standard */}
+        <Box sx={{ position: "relative", mx: { xs: 0, md: -2 }, px: { xs: 0, md: 2 } }}>
 
             {/* Navigation Buttons */}
             <IconButton
@@ -29,7 +29,7 @@ export const PopularProductsCarousel = ({
                 sx={{
                     position: "absolute",
                     top: "50%",
-                    left: 0,
+                    left: { xs: 8, md: 0 },
                     transform: "translateY(-50%)",
                     bgcolor: "rgba(255, 255, 255, 0.8)",
                     backdropFilter: "blur(8px)",
@@ -50,7 +50,7 @@ export const PopularProductsCarousel = ({
                 sx={{
                     position: "absolute",
                     top: "50%",
-                    right: 0,
+                    right: { xs: 8, md: 0 },
                     transform: "translateY(-50%)",
                     bgcolor: "rgba(255, 255, 255, 0.8)",
                     backdropFilter: "blur(8px)",

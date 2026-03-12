@@ -17,7 +17,7 @@ export const PopularProducts = async ({ exchange }: { exchange: number }) => {
 
     return (
         <Box component="section" sx={{ my: { xs: 4, md: 8 } }}>
-            <Container maxWidth="xl">
+            <Container maxWidth="xl" sx={{ px: { xs: 0, sm: 2 } }}>
                 <Box
                     sx={{
                         display: "flex",
@@ -25,6 +25,7 @@ export const PopularProducts = async ({ exchange }: { exchange: number }) => {
                         alignItems: "center",
                         mb: { xs: 3, md: 6 },
                         textAlign: "center",
+                        px: { xs: 2, sm: 0 },
                     }}
                 >
                     <Typography

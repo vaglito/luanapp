@@ -47,7 +47,7 @@ export const CardProduct = ({
       }}
     >
       {/* 1. Image Section */}
-      <Box sx={{ p: 0, position: "relative", height: { xs: 200, sm: 220, md: 260 }, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "transparent", borderBottom: "none" }}>
+      <Box sx={{ p: 0, position: "relative", height: { xs: 280, sm: 220, md: 260 }, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "transparent", borderBottom: "none" }}>
         <CardImage product={product} />
 
         {/* Brand Badge */}
