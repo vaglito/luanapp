@@ -27,7 +27,12 @@ import { User } from "next-auth";
 
 const SIDEBAR_WIDTH = 280;
 
-export const DashboardSidebar = ({ user }: { user: User }) => {
+interface DashboardSidebarProps {
+  user: User;
+  onCloseMobile?: () => void;
+}
+
+export const DashboardSidebar = ({ user, onCloseMobile }: DashboardSidebarProps) => {
   const pathname = usePathname();
 
   const menuConfig = [
@@ -106,15 +111,10 @@ export const DashboardSidebar = ({ user }: { user: User }) => {
     <Box
       component="nav"
       sx={{
-        width: SIDEBAR_WIDTH,
-        flexShrink: 0,
-        height: "100vh",
-        position: "sticky", // Se queda fijo mientras haces scroll en el contenido
-        top: 0,
+        width: "100%",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
-        borderRight: "1px solid",
-        borderColor: "divider",
         bgcolor: "background.paper",
       }}
     >
@@ -144,6 +144,7 @@ export const DashboardSidebar = ({ user }: { user: User }) => {
                     <ListItem key={item.path} disablePadding sx={{ mb: 0.5 }}>
                       <Link
                         href={item.path}
+                        onClick={() => onCloseMobile?.()}
                         style={{
                           textDecoration: "none",
                           width: "100%",

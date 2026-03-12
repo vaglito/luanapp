@@ -22,7 +22,7 @@ export default async function ProfilePage() {
     }
 
     return (
-        <Box sx={{ maxWidth: 900, mx: "auto", p: { xs: 2, md: 4 } }}>
+        <Box sx={{ maxWidth: 900, mx: "auto" }}>
             <Box sx={{ mb: 4 }}>
                 <Typography variant="h4" fontWeight="800" color="text.primary">
                     Mi Perfil

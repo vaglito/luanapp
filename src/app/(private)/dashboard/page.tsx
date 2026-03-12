@@ -28,7 +28,7 @@ export default async function DashboardPage() {
 
   if (isSeller) {
     return (
-      <Box sx={{ p: { xs: 2, md: 3 } }}>
+      <Box>
         <Typography variant="h4" fontWeight="bold" sx={{ mb: 3 }}>Panel de Ventas</Typography>
         <Grid2 container spacing={3}>
           <Grid2 size={{ xs: 12, md: 4 }}><StatCard title="Proformas Hoy" value="8" /></Grid2>

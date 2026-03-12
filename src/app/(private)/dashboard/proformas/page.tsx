@@ -21,7 +21,7 @@ export default async function ProformasPage() {
   const proformas = await getProformas();
 
   return (
-    <Box sx={{ p: { xs: 2, md: 3 } }}>
+    <Box>
       {/* Header */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="h5" fontWeight={700}>

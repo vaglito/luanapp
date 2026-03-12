@@ -76,7 +76,7 @@ export default async function InvoicesPage({
   const totalPages = invoicesData?.meta?.pages || 0;
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: "auto", p: { xs: 2, md: 4 } }}>
+    <Box sx={{ maxWidth: 1200, mx: "auto" }}>
       <Box sx={{ mb: 4, display: "flex", alignItems: "center", gap: 2 }}>
         <ReceiptLongIcon sx={{ fontSize: 40, color: "primary.main" }} />
         <Box>
