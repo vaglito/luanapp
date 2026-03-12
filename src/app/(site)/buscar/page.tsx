@@ -6,6 +6,7 @@ import {
   ProductListSkeleton,
   FiltersSkeleton,
 } from "@/components/ui/skeleton/search-skeletons";
+import { MobileFilterWrapper } from "@/components/product/search/mobile-filter-wrapper";
 
 export const revalidate = 0;
 
@@ -81,29 +82,11 @@ export default async function SearchPage({ searchParams }: SearchParamsProps) {
         }}
       >
         {/* Sidebar Filters */}
-        <Box
-          sx={{
-            width: { xs: "100%", lg: "280px" },
-            flexShrink: 0,
-            bgcolor: "#fff",
-            p: 3,
-            borderRadius: 3,
-            border: "1px solid #e5e7eb",
-            height: "fit-content",
-            position: { lg: "sticky" },
-            top: { lg: 100 },
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: 700, mb: 2, color: "#545454" }}
-          >
-            Filtros
-          </Typography>
+        <MobileFilterWrapper>
           <Suspense fallback={<FiltersSkeleton />}>
             <FilterList query={query} />
           </Suspense>
-        </Box>
+        </MobileFilterWrapper>
 
         {/* Product Grid */}
         <Suspense fallback={<ProductListSkeleton />}>
