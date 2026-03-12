@@ -59,19 +59,19 @@ export const FeaturedProduct = ({ product, exchange }: FeaturedProductProps) => 
                         color: "#5914A3",
                         fontWeight: 800,
                         fontFamily: "var(--font-orbitron)",
-                        fontSize: "0.9rem",
-                        height: "40px",
-                        px: 1.5,
+                        fontSize: { xs: "0.75rem", md: "0.9rem" },
+                        height: { xs: "32px", md: "40px" },
+                        px: { xs: 0.5, md: 1.5 },
                         boxShadow: "0 4px 12px rgba(255, 215, 0, 0.4)",
                         "& .MuiChip-label": { px: 1 }
                     }}
                 />
             </Box>
 
-            {/* 1. Image Section (Left) */}
+            {/* 1. Image Section (Left/Top) */}
             <Box sx={{
-                flex: { xs: "0 0 300px", md: "0 0 45%" },
-                p: 4,
+                flex: { xs: "0 0 200px", md: "0 0 45%" },
+                p: { xs: 2, md: 4 },
                 position: "relative",
                 display: "flex",
                 alignItems: "center",
@@ -123,7 +123,7 @@ export const FeaturedProduct = ({ product, exchange }: FeaturedProductProps) => 
                         zIndex: 1,
                         width: "80%",
                         height: "auto",
-                        maxHeight: "300px",
+                        maxHeight: { xs: "180px", md: "300px" },
                         objectFit: "contain",
                         transition: "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
                         filter: "drop-shadow(0 15px 25px rgba(0,0,0,0.1))"
@@ -131,10 +131,10 @@ export const FeaturedProduct = ({ product, exchange }: FeaturedProductProps) => 
                 />
             </Box>
 
-            {/* 2. Content Section (Right) */}
+            {/* 2. Content Section (Right/Bottom) */}
             <Box sx={{
                 flex: 1,
-                p: { xs: 3, md: 5 },
+                p: { xs: 2, sm: 3, md: 5 },
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -151,7 +151,7 @@ export const FeaturedProduct = ({ product, exchange }: FeaturedProductProps) => 
                             fontFamily: "var(--font-inter)",
                             fontWeight: 800,
                             color: "text.primary",
-                            fontSize: { xs: "1.5rem", md: "2.2rem" },
+                            fontSize: { xs: "1.25rem", sm: "1.5rem", md: "2.2rem" },
                             lineHeight: 1.2,
                             mb: 2,
                             display: "-webkit-box",
@@ -188,7 +188,7 @@ export const FeaturedProduct = ({ product, exchange }: FeaturedProductProps) => 
                             sx={{
                                 fontFamily: "var(--font-orbitron)",
                                 fontWeight: 800,
-                                fontSize: "3rem",
+                                fontSize: { xs: "2rem", md: "3rem" },
                                 color: "#5914A3",
                                 letterSpacing: "-1px",
                                 lineHeight: 1

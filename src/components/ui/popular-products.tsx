@@ -16,14 +16,14 @@ export const PopularProducts = async ({ exchange }: { exchange: number }) => {
     const otherProducts = products.slice(1, 20);
 
     return (
-        <Box component="section" sx={{ my: 8 }}>
+        <Box component="section" sx={{ my: { xs: 4, md: 8 } }}>
             <Container maxWidth="xl">
                 <Box
                     sx={{
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        mb: 6,
+                        mb: { xs: 3, md: 6 },
                         textAlign: "center",
                     }}
                 >
