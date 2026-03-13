@@ -26,8 +26,8 @@ export const WhatsAppBubble = () => {
                     onClick={handleClick}
                     sx={{
                         position: "fixed",
-                        bottom: 30,
-                        right: 30,
+                        bottom: { xs: 80, sm: 30 },
+                        right: { xs: 16, sm: 30 },
                         zIndex: 1100,
                         backgroundColor: "#25D366",
                         color: "white",

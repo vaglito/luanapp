@@ -44,4 +44,3 @@ export function CartIconButton({ exchange }: { exchange: number }) {
     </>
   );
 }
-

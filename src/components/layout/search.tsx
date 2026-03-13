@@ -8,23 +8,17 @@ export function Search() {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
 
-  // Estado local para controlar el valor del campo de búsqueda
   const [searchTerm, setSearchTerm] = useState(searchParams.get("query") || "");
 
-  // Actualiza el estado cuando los parámetros de la URL cambian
   useEffect(() => {
     setSearchTerm(searchParams.get("query") || "");
   }, [searchParams]);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
-
-    // Si hay un término de búsqueda, agrégalo
     if (searchTerm) {
       params.set("query", searchTerm);
     }
-
-    // 🔥 Elimina `marca` y `subcategoria` cuando cambia la búsqueda
     replace(`/buscar?${params.toString()}`);
   };
 
@@ -37,9 +31,10 @@ export function Search() {
     >
       <TextField
         id="search"
-        label="Buscar producto..."
+        placeholder="Buscar producto..."
         variant="outlined"
-        value={searchTerm} // Vincula el estado al campo de búsqueda
+        hiddenLabel
+        value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {

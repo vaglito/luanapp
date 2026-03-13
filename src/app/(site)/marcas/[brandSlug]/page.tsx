@@ -7,6 +7,7 @@ import {
   ProductListSkeleton,
   FiltersSkeleton,
 } from "@/components/ui/skeleton/search-skeletons";
+import { MobileFilterWrapper } from "@/components/product/search/mobile-filter-wrapper";
 
 export const generateMetadata = async ({
   params,
@@ -46,7 +47,7 @@ export default async function BrandDetail({
   const brandName = startCase(brandSlug);
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4, px: { xs: 0, sm: 2 } }}>
       {/* Header Results Info */}
       <Paper
         elevation={0}
@@ -57,12 +58,14 @@ export default async function BrandDetail({
           justifyContent: "space-between",
           gap: 2,
           p: { xs: 3, md: 4 },
+          px: { xs: 2, sm: 3 }, // override xs p
           mb: 4,
           borderRadius: 3,
           bgcolor: "white",
           border: "1px solid #e5e7eb",
           boxShadow: "0px 4px 6px -1px rgba(0,0,0,0.05)",
           background: "linear-gradient(to right, #ffffff 50%, #fdf4ff 100%)",
+          mx: { xs: 2, sm: 0 },
         }}
       >
         <Box>
@@ -97,28 +100,12 @@ export default async function BrandDetail({
           gap: 4,
         }}
       >
-        <Box
-          sx={{
-            width: { xs: "100%", lg: "280px" },
-            flexShrink: 0,
-            bgcolor: "#fff",
-            p: 3,
-            borderRadius: 3,
-            border: "1px solid #e5e7eb",
-            height: "fit-content",
-            position: { lg: "sticky" },
-            top: { lg: 100 },
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: 700, mb: 2, color: "#545454" }}
-          >
-            Filtros
-          </Typography>
-          <Suspense fallback={<FiltersSkeleton />}>
-            <BrandFilterList brandSlug={brandSlug} />
-          </Suspense>
+        <Box sx={{ px: { xs: 2, lg: 0 }, width: { xs: "100%", lg: "auto" } }}>
+          <MobileFilterWrapper>
+            <Suspense fallback={<FiltersSkeleton />}>
+              <BrandFilterList brandSlug={brandSlug} />
+            </Suspense>
+          </MobileFilterWrapper>
         </Box>
         <Suspense fallback={<ProductListSkeleton />}>
           <BrandProductList

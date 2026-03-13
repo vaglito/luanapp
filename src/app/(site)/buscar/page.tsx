@@ -6,6 +6,7 @@ import {
   ProductListSkeleton,
   FiltersSkeleton,
 } from "@/components/ui/skeleton/search-skeletons";
+import { MobileFilterWrapper } from "@/components/product/search/mobile-filter-wrapper";
 
 export const revalidate = 0;
 
@@ -38,7 +39,7 @@ export default async function SearchPage({ searchParams }: SearchParamsProps) {
     : undefined;
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4, px: { xs: 0, sm: 2 } }}>
       {/* Header Results Info */}
       <Paper
         elevation={0}
@@ -49,11 +50,13 @@ export default async function SearchPage({ searchParams }: SearchParamsProps) {
           justifyContent: "space-between",
           gap: 2,
           p: 3,
+          px: { xs: 2, sm: 3 },
           mb: 4,
           borderRadius: 3,
           bgcolor: "white",
           border: "1px solid #e5e7eb",
           boxShadow: "0px 4px 6px -1px rgba(0,0,0,0.05)",
+          mx: { xs: 2, sm: 0 },
         }}
       >
         <Box>
@@ -81,28 +84,12 @@ export default async function SearchPage({ searchParams }: SearchParamsProps) {
         }}
       >
         {/* Sidebar Filters */}
-        <Box
-          sx={{
-            width: { xs: "100%", lg: "280px" },
-            flexShrink: 0,
-            bgcolor: "#fff",
-            p: 3,
-            borderRadius: 3,
-            border: "1px solid #e5e7eb",
-            height: "fit-content",
-            position: { lg: "sticky" },
-            top: { lg: 100 },
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: 700, mb: 2, color: "#545454" }}
-          >
-            Filtros
-          </Typography>
-          <Suspense fallback={<FiltersSkeleton />}>
-            <FilterList query={query} />
-          </Suspense>
+        <Box sx={{ px: { xs: 2, lg: 0 }, width: { xs: "100%", lg: "auto" } }}>
+          <MobileFilterWrapper>
+            <Suspense fallback={<FiltersSkeleton />}>
+              <FilterList query={query} />
+            </Suspense>
+          </MobileFilterWrapper>
         </Box>
 
         {/* Product Grid */}

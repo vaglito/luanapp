@@ -10,10 +10,10 @@ export const GridProduct = ({
   exchange: number;
 }) => {
   return (
-    <Grid2 container spacing={2}>
+    <Grid2 container rowSpacing={2} columnSpacing={{ xs: 0, sm: 2 }}>
       {products.map((product) => (
-        <Grid2 size={{ xs: 6, sm: 4, md: 4, lg: 3, xl: 3 }} key={product.id}>
-          <CardProduct product={product} exchange={exchange}/>
+        <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 3 }} key={product.id}>
+          <CardProduct product={product} exchange={exchange} />
         </Grid2>
       ))}
     </Grid2>

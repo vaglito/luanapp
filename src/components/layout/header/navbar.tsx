@@ -6,20 +6,17 @@ import { usePathname } from "next/navigation";
 import {
   AppBar,
   Box,
-  CssBaseline,
   Drawer,
-  IconButton,
   Toolbar,
   Button,
 } from "@mui/material";
 
-import MenuIcon from "@mui/icons-material/Menu";
 import { DrawerMobile } from "./drawer";
 import { Brands } from "@/types/brands.type";
 
 interface Props {
   window?: () => Window;
-  brands: Brands[]
+  brands: Brands[];
 }
 
 const navlinks = [
@@ -41,18 +38,12 @@ export function Navbar({ window }: Props) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-
-  const handleDrawerToggle = () => {
-    setMobileOpen((prev) => !prev);
-  };
-
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box>
-      <CssBaseline />
-
+      {/* DESKTOP PURPLE NAVBAR only */}
       <AppBar
         component="nav"
         position="static"
@@ -62,28 +53,10 @@ export function Navbar({ window }: Props) {
           borderTop: "1px solid rgba(255,255,255,0.1)",
         }}
       >
-        <Toolbar sx={{ minHeight: { xs: 56, sm: 48 }, justifyContent: "center" }}>
-          {/* MOBILE MENU ICON */}
-          <IconButton
-            color="inherit"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ display: { sm: "none" }, mr: 1 }}
-            aria-label="Open navigation menu"
-          >
-            <MenuIcon />
-          </IconButton>
-
-          {/* DESKTOP MENU */}
-          <Box
-            sx={{
-              display: { xs: "none", sm: "flex" },
-              gap: 1.5,
-            }}
-          >
+        <Toolbar sx={{ minHeight: 48, justifyContent: "center" }}>
+          <Box sx={{ display: "flex", gap: 1.5 }}>
             {navlinks.map((link) => {
               const isActive = pathname === link.path;
-
               return (
                 <Button
                   key={link.id}
@@ -114,12 +87,12 @@ export function Navbar({ window }: Props) {
         </Toolbar>
       </AppBar>
 
-      {/* MOBILE DRAWER */}
+      {/* MOBILE DRAWER — triggered from MobileHeader */}
       <Drawer
         container={container}
         variant="temporary"
         open={mobileOpen}
-        onClose={handleDrawerToggle}
+        onClose={() => setMobileOpen(false)}
         ModalProps={{ keepMounted: true }}
         sx={{
           display: { xs: "block", sm: "none" },
@@ -136,4 +109,3 @@ export function Navbar({ window }: Props) {
     </Box>
   );
 }
-

@@ -21,7 +21,7 @@ export const PopularProductsCarousel = ({
     startRank
 }: PopularProductsCarouselProps) => {
     return (
-        <Box sx={{ position: "relative", mx: -2, px: 2 }}> {/* Negative margin to allow buttons to sit outside container if needed, or just standard */}
+        <Box sx={{ position: "relative", mx: { xs: 0, md: -2 }, px: { xs: 0, md: 2 } }}>
 
             {/* Navigation Buttons */}
             <IconButton
@@ -29,19 +29,20 @@ export const PopularProductsCarousel = ({
                 sx={{
                     position: "absolute",
                     top: "50%",
-                    left: 0,
+                    left: { xs: 8, md: 0 },
                     transform: "translateY(-50%)",
-                    bgcolor: "white",
+                    bgcolor: "rgba(255, 255, 255, 0.8)",
+                    backdropFilter: "blur(8px)",
                     zIndex: 20,
                     boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                    width: 40,
-                    height: 40,
+                    width: { xs: 36, md: 40 },
+                    height: { xs: 36, md: 40 },
                     border: "1px solid rgba(0,0,0,0.05)",
                     "&:hover": { bgcolor: "white", transform: "translateY(-50%) scale(1.1)" },
-                    display: { xs: "none", md: "flex" }
+                    display: "flex",
                 }}
             >
-                <ArrowBackIosNewIcon fontSize="small" sx={{ color: "#333" }} />
+                <ArrowBackIosNewIcon fontSize="small" sx={{ color: "#333", ml: 0.5 }} />
             </IconButton>
 
             <IconButton
@@ -49,16 +50,17 @@ export const PopularProductsCarousel = ({
                 sx={{
                     position: "absolute",
                     top: "50%",
-                    right: 0,
+                    right: { xs: 8, md: 0 },
                     transform: "translateY(-50%)",
-                    bgcolor: "white",
+                    bgcolor: "rgba(255, 255, 255, 0.8)",
+                    backdropFilter: "blur(8px)",
                     zIndex: 20,
                     boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                    width: 40,
-                    height: 40,
+                    width: { xs: 36, md: 40 },
+                    height: { xs: 36, md: 40 },
                     border: "1px solid rgba(0,0,0,0.05)",
                     "&:hover": { bgcolor: "white", transform: "translateY(-50%) scale(1.1)" },
-                    display: { xs: "none", md: "flex" }
+                    display: "flex",
                 }}
             >
                 <ArrowForwardIosIcon fontSize="small" sx={{ color: "#333" }} />

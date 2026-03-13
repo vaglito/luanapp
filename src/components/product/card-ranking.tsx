@@ -82,7 +82,7 @@ export const CardRanking = ({ product, rank, exchange }: CardRankingProps) => {
                 sx={{
                     width: { xs: "100%", sm: 220 },
                     minWidth: { sm: 220 },
-                    height: { xs: 200, sm: "auto" },
+                    height: { xs: 280, sm: "auto" },
                     position: "relative",
                     bgcolor: "white",
                     borderRadius: { xs: "20px 20px 0 0", sm: "20px 0 0 20px" },
@@ -174,10 +174,11 @@ export const CardRanking = ({ product, rank, exchange }: CardRankingProps) => {
                             endIcon={<ArrowForwardIcon />}
                             sx={{
                                 fontWeight: 700,
+                                textTransform: "none",
                                 "&:hover": { bgcolor: "transparent", textDecoration: "underline" }
                             }}
                         >
-                            Ver Detalles
+                            Ver Detalle
                         </Button>
                     </Link>
                 </Box>

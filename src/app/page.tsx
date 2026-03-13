@@ -1,15 +1,15 @@
 import { Container } from "@mui/material";
 // Components
-import { NewProducts } from "@/components/ui/new-products";
-import { SectionLaptop } from "@/components/ui/category-product";
+import { Suspense } from "react";
+import { ProductListSkeleton } from "@/components/ui/skeleton/search-skeletons";
+import { SuspenseNewProducts } from "./components/SuspenseNewProducts";
+import { SuspenseLaptops } from "./components/SuspenseLaptops";
+
 import { HomeCategory } from "@/components/ui/home-category";
 import { BannerHome } from "@/components/ui/banner/BannerHome";
 import { fetchBannerHome } from "@/services/siteInfo";
 import { fetchCategories } from "@/services/categories";
-import { fetchNewProducts } from "@/services/products";
 import { fetchExchangeRate } from "@/services/exchangeRate";
-import { fetchProductList } from "@/services/products";
-import { TopFooter } from "@/components/layout/footer/top-footer";
 import { ComputerHome } from "@/components/computer/ComputerHome";
 import { PopularProducts } from "@/components/ui/popular-products";
 import { TrustBar } from "@/components/ui/trust-bar";
@@ -66,18 +66,18 @@ export const generateMetadata = () => {
 };
 
 export default async function Home() {
-  const banners = await fetchBannerHome();
-  const categories = await fetchCategories();
-  const newProduct = await fetchNewProducts();
-  const exchange = await fetchExchangeRate();
-  const productsLaptop = await fetchProductList({
-    subcategory: ["laptop-cvideo-dedicada", "laptop-c-video-integrada"],
-  });
+  // Parallelize critical top-of-page data
+  const [banners, categories, exchange] = await Promise.all([
+    fetchBannerHome(),
+    fetchCategories(),
+    fetchExchangeRate(),
+  ]);
+
   return (
     <>
       <BannerHome banners={banners} />
       <TrustBar />
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ px: { xs: 0, sm: 2 } }}>
         <HomeCategory categories={categories} />
 
         <Box sx={{ mb: 6 }}>
@@ -90,17 +90,22 @@ export default async function Home() {
           />
         </Box>
 
-        <NewProducts
-          products={newProduct.results}
-          exchange={exchange.exchange}
-        />
-        <PopularProducts exchange={exchange.exchange} />
+        <Suspense fallback={<ProductListSkeleton />}>
+          <SuspenseNewProducts exchange={exchange.exchange} />
+        </Suspense>
+        
+        <Suspense fallback={<ProductListSkeleton />}>
+          <PopularProducts exchange={exchange.exchange} />
+        </Suspense>
       </Container>
-      <ComputerHome />
-      <SectionLaptop
-        products={productsLaptop.results}
-        exchange={exchange.exchange}
-      />
+      
+      <Suspense fallback={<ProductListSkeleton />}>
+        <ComputerHome />
+      </Suspense>
+
+      <Suspense fallback={<ProductListSkeleton />}>
+        <SuspenseLaptops exchange={exchange.exchange} />
+      </Suspense>
 
       <TikTokExperience />
     </>
