@@ -18,10 +18,10 @@ export function CartIconButton({ exchange }: { exchange: number }) {
   if (!mounted) {
     return (
       <IconButton
-        sx={{ border: "1px solid #ddd", borderRadius: 2, p: { xs: 0.5, md: 1 } }}
+        sx={{ border: "1px solid #ddd", borderRadius: 2 }}
         disabled
       >
-        <ShoppingCartIcon sx={{ fontSize: { xs: "1.2rem", md: "1.5rem" } }} />
+        <ShoppingCartIcon />
       </IconButton>
     );
   }
@@ -30,10 +30,10 @@ export function CartIconButton({ exchange }: { exchange: number }) {
     <>
       <IconButton
         onClick={() => setOpenCart(true)}
-        sx={{ border: "1px solid #ddd", borderRadius: 2, p: { xs: 0.5, md: 1 } }}
+        sx={{ border: "1px solid #ddd", borderRadius: 2 }}
       >
         <Badge badgeContent={cart.items.length} color="secondary">
-          <ShoppingCartIcon sx={{ fontSize: { xs: "1.2rem", md: "1.5rem" } }} />
+          <ShoppingCartIcon />
         </Badge>
       </IconButton>
       <CartDrawer
@@ -44,4 +44,3 @@ export function CartIconButton({ exchange }: { exchange: number }) {
     </>
   );
 }
-

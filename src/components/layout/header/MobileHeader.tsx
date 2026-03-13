@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -46,8 +46,17 @@ export function MobileHeader({ logo, exchange, session }: MobileHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [query, setQuery] = useState("");
+  // Prevent hydration mismatch: cart state lives in localStorage (client-only)
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const cart = useCart();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Only show real count after client hydration to avoid SSR mismatch
+  const itemCount = mounted ? cart.items.length : 0;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,8 +64,6 @@ export function MobileHeader({ logo, exchange, session }: MobileHeaderProps) {
       router.push(`/buscar?query=${encodeURIComponent(query.trim())}`);
     }
   };
-
-  const itemCount = cart.items.length;
 
   return (
     <>
@@ -80,10 +87,10 @@ export function MobileHeader({ logo, exchange, session }: MobileHeaderProps) {
           sx={{
             flexShrink: 0,
             color: "primary.main",
-            bgcolor: "primary.50",
+            bgcolor: "rgba(107,33,168,0.08)",
             borderRadius: 1.5,
             p: 0.75,
-            "&:hover": { bgcolor: "primary.100" },
+            "&:hover": { bgcolor: "rgba(107,33,168,0.15)" },
           }}
         >
           <MenuIcon fontSize="small" />
@@ -115,7 +122,6 @@ export function MobileHeader({ logo, exchange, session }: MobileHeaderProps) {
             borderColor: "divider",
             borderRadius: 1.5,
             p: 0.75,
-            position: "relative",
           }}
         >
           <Badge
@@ -197,7 +203,9 @@ export function MobileHeader({ logo, exchange, session }: MobileHeaderProps) {
           },
         }}
       >
-        <SearchIcon sx={{ fontSize: 18, color: "text.disabled", mr: 1, flexShrink: 0 }} />
+        <SearchIcon
+          sx={{ fontSize: 18, color: "text.disabled", mr: 1, flexShrink: 0 }}
+        />
         <InputBase
           placeholder="Buscar productos..."
           value={query}
