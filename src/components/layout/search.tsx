@@ -37,9 +37,10 @@ export function Search() {
     >
       <TextField
         id="search"
-        label="Buscar producto..."
+        placeholder="Buscar..."
         variant="outlined"
-        value={searchTerm} // Vincula el estado al campo de búsqueda
+        size="small" // Forces slim height to match mobile icons
+        value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
@@ -48,10 +49,18 @@ export function Search() {
         }}
         slotProps={{
           input: {
+            sx: {
+              borderRadius: 8, // Very rounded pills look better compressed
+              backgroundColor: "rgba(255,255,255,0.8)",
+              "& input": {
+                py: { xs: 0.75, md: 1 }, // Custom tighter padding
+                fontSize: { xs: "0.85rem", md: "1rem" },
+              },
+            },
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={handleSearch}>
-                  <SearchIcon />
+                <IconButton onClick={handleSearch} size="small">
+                  <SearchIcon fontSize="small" />
                 </IconButton>
               </InputAdornment>
             ),

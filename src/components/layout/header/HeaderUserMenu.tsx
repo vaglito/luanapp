@@ -23,11 +23,11 @@ export function HeaderUserMenu({ user }: { user: User }) {
   const router = useRouter();
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+      <Typography variant="body2" sx={{ fontWeight: 500, display: { xs: "none", md: "block" } }}>
         Hola, {user.name}
       </Typography>
-      <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-        <Avatar sx={{ bgcolor: "primary.main", width: 36, height: 36 }}>
+      <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} sx={{ p: { xs: 0.5, md: 1 } }}>
+        <Avatar sx={{ bgcolor: "primary.main", width: { xs: 30, md: 36 }, height: { xs: 30, md: 36 }, fontSize: { xs: '0.9rem', md: '1.25rem' } }}>
           {user.name?.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
