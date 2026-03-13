@@ -56,6 +56,7 @@ export async function Header({ logo, exchange, brands }: HeaderProps) {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
+                justifyContent: "space-between",
                 gap: 3,
                 py: 2,
               }}

@@ -31,8 +31,9 @@ export function Search() {
     >
       <TextField
         id="search"
-        label="Buscar producto..."
+        placeholder="Buscar producto..."
         variant="outlined"
+        hiddenLabel
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyDown={(e) => {
