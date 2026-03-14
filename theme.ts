@@ -135,5 +135,14 @@ export const themeOptions = createTheme({
                 },
             },
         },
+        MuiOutlinedInput: {
+            styleOverrides: {
+                // Force the native <input> to always be >= 16px so mobile
+                // browsers (iOS Safari / Chrome Android) don't auto-zoom on focus
+                input: {
+                    fontSize: "1rem", // 16px relative to browser root, NOT MUI's 14px root
+                },
+            },
+        },
     },
 });
