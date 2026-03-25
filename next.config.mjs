@@ -2,6 +2,7 @@ import withMDX from '@next/mdx';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  poweredByHeader: false,
   experimental: {
     workerThreads: false,
     cpus: 2,
