@@ -127,7 +127,7 @@ export const CardProduct = ({
             )}
 
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mt: 1 }}>
-              <CardStock stock={product.relay.totalStock} cod={''} />
+              <CardStock stock={product.relay.totalStock} cod={product.relay.productId} />
             </Box>
           </Box>
 
