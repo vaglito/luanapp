@@ -1,11 +1,19 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { isTokenExpired } from "@/lib/auth/is-token-expired";
-import { refreshAccessToken } from "@/lib/auth/refresh-token";
-import { verifyUser } from "@/lib/auth/verify-user";
+import { verifyUser } from "@/services/auth/verify-user";
+import { refreshAccessToken } from "@/services/auth/refresh-token";
 
-const API_URL = process.env.API_URL
-const API_KEY = process.env.API_KEY
+// Función auxiliar para decodificar la fecha de expiración del JWT
+function getJwtExpiration(token: string) {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = Buffer.from(base64, "base64").toString("utf-8");
+    return JSON.parse(jsonPayload).exp * 1000;
+  } catch (error) {
+    return 0; // Si falla, forzará el refresco
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
@@ -46,6 +54,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           accessToken: data.access,
           refreshToken: data.refresh,
+          accessTokenExpires: getJwtExpiration(data.access),
         };
       },
     }),
@@ -73,16 +82,33 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           accessToken: user.accessToken,
           refreshToken: user.refreshToken,
+          accessTokenExpires: user.accessTokenExpires,
         };
       }
 
-      // Token aún válido
-      if (!isTokenExpired(token.accessToken)) {
+      // Sesión activa: el token de acceso aún no ha expirado
+      if (Date.now() < (token.accessTokenExpires as number)) {
         return token;
       }
 
-      // Token expirado → refresh
-      return await refreshAccessToken(token);
+      // Token expirado: Intentamos actualizarlo llamando a la API
+      try {
+        const refreshedTokens = await refreshAccessToken(token.refreshToken as string);
+
+        return {
+          ...token,
+          accessToken: refreshedTokens.access,
+          accessTokenExpires: getJwtExpiration(refreshedTokens.access),
+          // Si tu backend rota el refresh token, usamos el nuevo. Si no, mantenemos el actual.
+          refreshToken: refreshedTokens.refresh ?? token.refreshToken,
+        };
+      } catch (error) {
+        console.error("Error al refrescar el token de acceso:", error);
+        return {
+          ...token,
+          error: "RefreshAccessTokenError",
+        };
+      }
     },
 
     async session({ session, token }) {
@@ -100,6 +126,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.isSeller = token.isSeller;
       session.user.isActive = token.isActive;
       session.user.accessToken = token.accessToken;
+      // Exponemos el error para poder forzar el cierre de sesión si el refresh falla
+      session.error = token.error as string | undefined; 
       return session;
     },
   },
