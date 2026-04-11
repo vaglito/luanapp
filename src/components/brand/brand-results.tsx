@@ -1,4 +1,4 @@
-import { fetchBrands } from "@/services/brands";
+import { fetchBrands } from "@/services/catalog/brands";
 import { GridBrand } from "@/components/brand/grid-brand";
 import { Box, Typography, Button, Paper, Container } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";

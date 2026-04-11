@@ -1,4 +1,4 @@
-import { fetchNewProducts } from "@/services/products";
+import { fetchNewProducts } from "@/services/catalog/products";
 import { NewProducts } from "@/components/ui/new-products";
 
 export async function SuspenseNewProducts({ exchange }: { exchange: number }) {

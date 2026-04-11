@@ -1,5 +1,5 @@
 import { Filter } from "@/components/product/search/Filter";
-import { fetchBrandsCategories } from "@/services/brands";
+import { fetchBrandsCategories } from "@/services/catalog/brands";
 import { BrandFilter } from "@/components/product/search/BrandFilter";
 
 interface SubCategoryFilterListProps {

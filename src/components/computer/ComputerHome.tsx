@@ -1,6 +1,6 @@
 import { Container, Box, Typography } from "@mui/material";
 import { Computer } from "./computer";
-import { fetchComputerType } from "@/services/computer";
+import { fetchComputerType } from "@/services/catalog/computer";
 
 export async function ComputerHome() {
   const data = await fetchComputerType();

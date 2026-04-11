@@ -1,5 +1,5 @@
-import { fetchProductSearchList } from "@/services/products";
-import { fetchExchangeRate } from "@/services/exchangeRate";
+import { fetchProductSearchList } from "@/services/catalog/products";
+import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
 import { GridProduct } from "@/components/product/grid-product";
 import { PaginationButtons } from "@/components/PaginationButtons";
 import { Box, Typography, Button, Paper } from "@mui/material";

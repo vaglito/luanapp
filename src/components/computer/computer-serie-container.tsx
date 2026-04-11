@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { fetchComputer } from "@/services/computer";
+import { fetchComputer } from "@/services/catalog/computer";
 import { ComputerContainer } from "./computer-container";
 
 export async function ComputerSerieContainer({

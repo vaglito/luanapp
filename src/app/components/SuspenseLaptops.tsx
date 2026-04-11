@@ -1,4 +1,4 @@
-import { fetchProductList } from "@/services/products";
+import { fetchProductList } from "@/services/catalog/products";
 import { SectionLaptop } from "@/components/ui/category-product";
 
 export async function SuspenseLaptops({ exchange }: { exchange: number }) {

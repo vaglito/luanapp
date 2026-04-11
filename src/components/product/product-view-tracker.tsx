@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { registerProductView } from "@/services/products";
+import { registerProductView } from "@/services/catalog/products";
 
 export const ProductViewTracker = ({ slug }: { slug: string }) => {
     useEffect(() => {
