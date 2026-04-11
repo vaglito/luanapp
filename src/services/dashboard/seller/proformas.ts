@@ -1,24 +1,17 @@
 import { auth } from "@/auth";
-import { axiosAuth } from "@/lib/axios";
+import apiPrivate from "../../apiPrivate";
 import { PaginatedResponse } from "@/types/paginatedResponse.type";
 import { Proforma } from "@/types/proformas.type";
-
-const API_URL = process.env.API_URL
-const API_KEY = process.env.API_KEY
 
 export async function getProformas(): Promise<PaginatedResponse<Proforma>> {
   const session = await auth();
   try {
-    const res = await fetch(`${API_URL}/api/proformas/proforma/`, {
-      method: "GET",
+    const res = await apiPrivate.get("/api/proformas/proforma/", {
       headers: {
-        "Content-Type": "application/json",
-        "x-api-key": `${API_KEY}`,
         Authorization: `Bearer ${session?.user.accessToken}`,
       },
     });
-    const data = res.json();
-    return data;
+    return res.data;
   } catch (error) {
     return {
       count: 0,
@@ -30,9 +23,13 @@ export async function getProformas(): Promise<PaginatedResponse<Proforma>> {
 }
 
 export async function searchProformaByCode(code: string) {
-  const res = await axiosAuth.get<Proforma>(
-    `proformas/proforma/${code}/`
+  const session = await auth();
+  const res = await apiPrivate.get<Proforma>(
+    `/api/proformas/proforma/${code}/`, {
+      headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`,
+      },
+    }
   );
   return res.data;
 }
-
