@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { registerProductView } from "@/services/products";
+import { registerProductView } from "@/services/catalog/products";
 
 export async function POST(
     request: Request,
