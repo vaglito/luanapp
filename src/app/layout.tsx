@@ -9,12 +9,12 @@ import "swiper/css";
 import "./globals.css";
 import { fetchSiteMetadata } from "@/services/siteInfo";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { fetchExchangeRate } from "@/services/exchangeRate";
+import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
 import { GTMHead } from "@/components/GTMhead";
 import { GTMBody } from "@/components/GTMbody";
 import { Box } from "@mui/material";
 import { Providers } from "./providers";
-import { fetchBrands } from "@/services/brands";
+import { fetchBrands } from "@/services/catalog/brands";
 import { WhatsAppBubble } from "@/components/ui/whatsapp-bubble";
 
 const orbitron = Orbitron({

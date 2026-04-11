@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from "@mui/material";
-import { fetchComputerSerieList } from "@/services/computer";
+import { fetchComputerSerieList } from "@/services/catalog/computer";
 import { ComputerSerieContainer } from "@/components/computer/computer-serie-container";
-import { fetchExchangeRate } from "@/services/exchangeRate";
+import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
 
 interface ComputerPageProps {
   params: Promise<{
