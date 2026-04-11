@@ -1,7 +1,7 @@
 "use server";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
-import apiClient from "@/services/apiClient";
+import apiClient from "@/services/apiPublic";
 import { LoginSchema, loginSchema } from "@/validations/auth/login.schema";
 import {
   registerSchema,
