@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Box, Typography, Paper, Chip, Stack, Divider } from "@mui/material";
 import { Computer } from "@/types/computer.type";
-import { ShopWhatsApp } from "../shop-whatsapp";
+import { ShopWhatsApp } from "../../common/shop-whatsapp";
 import BoltIcon from "@mui/icons-material/Bolt";
 import { convertUsdToPen } from "@/lib/currency";
 

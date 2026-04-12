@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from "@mui/material";
 import { fetchComputerSerieList } from "@/services/catalog/computer";
-import { ComputerSerieContainer } from "@/components/computer/computer-serie-container";
+import { ComputerSerieContainer } from "@/components/catalog/computer/computer-serie-container";
 import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
 
 interface ComputerPageProps {

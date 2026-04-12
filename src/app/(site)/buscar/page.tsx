@@ -1,12 +1,12 @@
 import { Suspense } from "react";
 import { Box, Container, Typography, Paper } from "@mui/material";
-import { ProductResultList } from "@/components/product/search/product-result-list";
-import { FilterList } from "@/components/product/search/filter-list";
+import { ProductResultList } from "@/components/catalog/product/search/product-result-list";
+import { FilterList } from "@/components/catalog/product/search/filter-list";
 import {
   ProductListSkeleton,
   FiltersSkeleton,
 } from "@/components/ui/skeleton/search-skeletons";
-import { MobileFilterWrapper } from "@/components/product/search/mobile-filter-wrapper";
+import { MobileFilterWrapper } from "@/components/catalog/product/search/mobile-filter-wrapper";
 
 export const revalidate = 0;
 

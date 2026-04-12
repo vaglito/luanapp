@@ -6,7 +6,7 @@ import { ProductDetail } from "@/types/products.type";
 
 // Importamos el componente real de forma dinámica
 const ProductImageCarousel = dynamic(
-  () => import("@/components/product/detail/ProductImageCarousel"),
+  () => import("@/components/catalog/product/detail/ProductImageCarousel"),
   {
     // Esto evita que el código del carrusel se ejecute en el servidor (Node.js)
     ssr: false,

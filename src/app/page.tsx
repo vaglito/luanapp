@@ -10,12 +10,12 @@ import { BannerHome } from "@/components/ui/banner/BannerHome";
 import { fetchBannerHome } from "@/services/siteInfo";
 import { fetchCategories } from "@/services/catalog/categories";
 import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
-import { ComputerHome } from "@/components/computer/ComputerHome";
+import { ComputerHome } from "@/components/catalog/computer/ComputerHome";
 import { PopularProducts } from "@/components/ui/popular-products";
 import { TrustBar } from "@/components/ui/trust-bar";
 import { SecondaryBanner } from "@/components/ui/banner/secondary-banner";
 import { TikTokExperience } from "@/components/ui/tiktok-experience";
-import PromoDialog from "@/components/promo-dialog";
+import PromoDialog from "@/components/common/promo-dialog";
 import { Box } from "@mui/material";
 
 export const revalidate = 360;

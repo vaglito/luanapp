@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Container, Box } from "@mui/material";
-import { BrandResults } from "@/components/brand/brand-results";
+import { BrandResults } from "@/components/catalog/brand/brand-results";
 import { BrandListSkeleton } from "@/components/ui/skeleton/search-skeletons";
 
 export const metadata = {

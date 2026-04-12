@@ -1,9 +1,9 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Box, Typography, Container, Button, Stack } from "@mui/material";
-import { CardProduct } from "../product/card-product";
+import { CardProduct } from "../catalog/product/card-product";
 import { Products } from "@/types/products.type";
-import { SliderProduct } from "../product/slider-product";
+import { SliderProduct } from "../catalog/product/slider-product";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";

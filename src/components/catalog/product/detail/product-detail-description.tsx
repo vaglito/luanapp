@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { ProductPrice } from "@/components/product/detail/product-price";
+import { ProductPrice } from "@/components/catalog/product/detail/product-price";
 import { ShopFunction } from "./shop-functions";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import { isRestrictedSubcategory } from "@/utils/restricted";

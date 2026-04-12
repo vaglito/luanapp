@@ -1,7 +1,7 @@
 import { fetchProductSearchList } from "@/services/catalog/products";
 import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
-import { GridProduct } from "@/components/product/grid-product";
-import { PaginationButtons } from "@/components/PaginationButtons";
+import { GridProduct } from "@/components/catalog/product/grid-product";
+import { PaginationButtons } from "@/components/common/PaginationButtons";
 import { Box, Typography, Button, Paper } from "@mui/material";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 import ErrorIcon from "@mui/icons-material/Error";

@@ -7,7 +7,7 @@ import { Navigation, Autoplay } from "swiper/modules";
 import { Products } from "@/types/products.type";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { CardProduct } from "@/components/product/card-product";
+import { CardProduct } from "@/components/catalog/product/card-product";
 
 interface PopularProductsCarouselProps {
     products: Products[];

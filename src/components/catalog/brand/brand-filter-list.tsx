@@ -1,6 +1,6 @@
-import { Filter } from "@/components/product/search/Filter";
+import { Filter } from "@/components/catalog/product/search/Filter";
 import { fetchCategoriesBrands } from "@/services/catalog/categories";
-import { CategoryFilter } from "@/components/product/search/CategoryFilter";
+import { CategoryFilter } from "@/components/catalog/product/search/CategoryFilter";
 
 interface BrandFilterListProps {
     brandSlug: string;
