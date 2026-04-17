@@ -95,6 +95,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       try {
         const refreshedTokens = await refreshAccessToken(token.refreshToken as string);
 
+        // Si la función devolvió null, significa que no se pudo refrescar el token
+        if (!refreshedTokens) {
+          return {
+            ...token,
+            error: "RefreshAccessTokenError",
+          };
+        }
+
         return {
           ...token,
           accessToken: refreshedTokens.access,
@@ -103,7 +111,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           refreshToken: refreshedTokens.refresh ?? token.refreshToken,
         };
       } catch (error) {
-        console.error("Error al refrescar el token de acceso:", error);
         return {
           ...token,
           error: "RefreshAccessTokenError",
