@@ -22,6 +22,7 @@ import EngineeringIcon from "@mui/icons-material/Engineering";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import PanoramaIcon from '@mui/icons-material/Panorama';
 
 import { User } from "next-auth";
 
@@ -32,7 +33,10 @@ interface DashboardSidebarProps {
   onCloseMobile?: () => void;
 }
 
-export const DashboardSidebar = ({ user, onCloseMobile }: DashboardSidebarProps) => {
+export const DashboardSidebar = ({
+  user,
+  onCloseMobile,
+}: DashboardSidebarProps) => {
   const pathname = usePathname();
 
   const menuConfig = [
@@ -72,6 +76,12 @@ export const DashboardSidebar = ({ user, onCloseMobile }: DashboardSidebarProps)
           label: "Configuración",
           icon: <SettingsIcon />,
           path: "/dashboard/settings",
+          visible: user?.isAdmin,
+        },
+        {
+          label: "Banners",
+          icon: <PanoramaIcon />,
+          path: "/dashboard/banners",
           visible: user?.isAdmin,
         },
       ],
@@ -220,7 +230,19 @@ export const DashboardSidebar = ({ user, onCloseMobile }: DashboardSidebarProps)
               noWrap
               display="block"
             >
-              {user?.isAdmin ? "Administrador" : user?.isSuperuser ? "Superadmin" : user?.isSeller ? "Vendedor" : user?.isTechnician ? "Técnico" : user?.isEditor ? "Editor" : user?.isCustomer ? "Cliente" : "Staff"}
+              {user?.isAdmin
+                ? "Administrador"
+                : user?.isSuperuser
+                  ? "Superadmin"
+                  : user?.isSeller
+                    ? "Vendedor"
+                    : user?.isTechnician
+                      ? "Técnico"
+                      : user?.isEditor
+                        ? "Editor"
+                        : user?.isCustomer
+                          ? "Cliente"
+                          : "Staff"}
             </Typography>
           </Box>
         </Box>
