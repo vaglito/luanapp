@@ -4,7 +4,7 @@ export interface Banner {
   isActive: boolean;
   order: number;
   image: string;
-  link: string;
-  createdAt: string;
-  updatedAt: string;
+  link: string | null;
+  createdAt?: string;
+  updatedAt?: string;
 }
