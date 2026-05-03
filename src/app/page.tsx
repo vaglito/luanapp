@@ -75,9 +75,13 @@ export default async function Home() {
 
   return (
     <>
-      <BannerHome banners={banners} />
-      <TrustBar />
-      <Container maxWidth="xl" sx={{ px: { xs: 0, sm: 2 } }}>
+      <Container maxWidth={false}>
+        <BannerHome banners={banners} />
+      </Container>
+      <Container
+        maxWidth="xl"
+        sx={{ px: { xs: 0, sm: 2 } }}
+      >
         <HomeCategory categories={categories} />
 
         <Box sx={{ mb: 6 }}>
@@ -93,12 +97,12 @@ export default async function Home() {
         <Suspense fallback={<ProductListSkeleton />}>
           <SuspenseNewProducts exchange={exchange.exchange} />
         </Suspense>
-        
+
         <Suspense fallback={<ProductListSkeleton />}>
           <PopularProducts exchange={exchange.exchange} />
         </Suspense>
       </Container>
-      
+
       <Suspense fallback={<ProductListSkeleton />}>
         <ComputerHome />
       </Suspense>
@@ -108,7 +112,7 @@ export default async function Home() {
       </Suspense>
 
       <TikTokExperience />
+      <TrustBar />
     </>
   );
 }
-

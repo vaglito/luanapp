@@ -8,6 +8,7 @@ const orbitron = Orbitron({ subsets: ["latin"], display: "swap" });
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const themeOptions = createTheme({
+    
     palette: {
         mode: "light",
         primary: {
@@ -141,6 +142,19 @@ export const themeOptions = createTheme({
                 // browsers (iOS Safari / Chrome Android) don't auto-zoom on focus
                 input: {
                     fontSize: "1rem", // 16px relative to browser root, NOT MUI's 14px root
+                },
+            },
+        },
+        MuiContainer: {
+            styleOverrides: {
+                maxWidthXl: {
+                    maxWidth: "1800px !important", // Aumenta el límite para reducir el espacio vacío lateral
+                },
+                root: {
+                    "@media (min-width: 1536px)": {
+                        paddingLeft: "32px", // Mantiene un margen interior limpio a los bordes
+                        paddingRight: "32px",
+                    },
                 },
             },
         },

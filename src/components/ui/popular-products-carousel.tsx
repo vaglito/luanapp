@@ -83,7 +83,7 @@ export const PopularProductsCarousel = ({
                 breakpoints={{
                     640: { slidesPerView: 2, spaceBetween: 20 },
                     900: { slidesPerView: 3, spaceBetween: 24 },
-                    1200: { slidesPerView: 4, spaceBetween: 24 },
+                    1200: { slidesPerView: 5, spaceBetween: 24 },
                 }}
                 style={{ padding: "20px 4px" }} // Padding for shadows and rank badges
             >
