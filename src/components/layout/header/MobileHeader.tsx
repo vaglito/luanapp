@@ -11,11 +11,13 @@ import {
   Avatar,
   Badge,
   Typography,
+  Skeleton,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { DrawerMobile } from "./drawer";
 import { useCart } from "@/hooks/use-cart";
 import { CartDrawer } from "../../cart/CartDrawer";
@@ -40,15 +42,17 @@ interface MobileHeaderProps {
   exchange: number;
   brands: Brands[];
   session: Session | null;
+  isLoading?: boolean;
 }
 
-export function MobileHeader({ logo, exchange, session }: MobileHeaderProps) {
+export function MobileHeader({ logo, exchange, session, isLoading }: MobileHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [query, setQuery] = useState("");
   // Prevent hydration mismatch: cart state lives in localStorage (client-only)
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const cart = useCart();
 
   useEffect(() => {
@@ -64,6 +68,17 @@ export function MobileHeader({ logo, exchange, session }: MobileHeaderProps) {
       router.push(`/buscar?query=${encodeURIComponent(query.trim())}`);
     }
   };
+
+  const isAuthPage = pathname === "/login" || pathname === "/registro";
+  const displaySession = isAuthPage ? null : session;
+
+  useEffect(() => {
+    if (session && isAuthPage) {
+      signOut({ redirect: false }).then(() => {
+        router.refresh();
+      });
+    }
+  }, [session, isAuthPage, router]);
 
   return (
     <>
@@ -142,7 +157,9 @@ export function MobileHeader({ logo, exchange, session }: MobileHeaderProps) {
         </IconButton>
 
         {/* ── Avatar / Login ── */}
-        {session ? (
+        {isLoading ? (
+          <Skeleton variant="circular" width={34} height={34} sx={{ flexShrink: 0 }} />
+        ) : displaySession ? (
           <Link href="/dashboard" style={{ flexShrink: 0 }}>
             <Avatar
               sx={{
@@ -155,7 +172,7 @@ export function MobileHeader({ logo, exchange, session }: MobileHeaderProps) {
                 boxShadow: "0 0 0 2px rgba(107,33,168,0.2)",
               }}
             >
-              {session.user?.name?.charAt(0).toUpperCase()}
+              {displaySession.user?.name?.charAt(0).toUpperCase()}
             </Avatar>
           </Link>
         ) : (

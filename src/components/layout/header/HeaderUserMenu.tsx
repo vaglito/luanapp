@@ -10,7 +10,7 @@ import {
   Box,
   Divider,
 } from "@mui/material";
-import { logout } from "@/lib/auth/logout";
+import { signOut } from "next-auth/react"
 
 import LogoutIcon from "@mui/icons-material/Logout";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -64,7 +64,7 @@ export function HeaderUserMenu({ user }: { user: User }) {
 
         <Divider />
 
-        <MenuItem onClick={() => logout()} sx={{ color: "error.main" }}>
+        <MenuItem onClick={() => signOut()} sx={{ color: "error.main" }}>
           <LogoutIcon fontSize="small" sx={{ mr: 1 }} />
           Cerrar sesión
         </MenuItem>

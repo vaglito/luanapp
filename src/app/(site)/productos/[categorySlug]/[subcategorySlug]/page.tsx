@@ -5,9 +5,9 @@ import {
   ProductListSkeleton,
   FiltersSkeleton,
 } from "@/components/ui/skeleton/search-skeletons";
-import { SubCategoryProductList } from "@/components/product/subcategory/subcategory-product-list";
-import { SubCategoryFilterList } from "@/components/product/subcategory/subcategory-filter-list";
-import { MobileFilterWrapper } from "@/components/product/search/mobile-filter-wrapper";
+import { SubCategoryProductList } from "@/components/catalog/product/subcategory/subcategory-product-list";
+import { SubCategoryFilterList } from "@/components/catalog/product/subcategory/subcategory-filter-list";
+import { MobileFilterWrapper } from "@/components/catalog/product/search/mobile-filter-wrapper";
 
 export const revalidate = 0;
 

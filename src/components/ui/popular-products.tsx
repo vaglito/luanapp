@@ -1,6 +1,6 @@
-import { Typography, Box, Container, Grid } from "@mui/material";
-import { fetchPopularProducts } from "@/services/products";
-import { FeaturedProduct } from "../product/featured-product";
+import { Typography, Box, Container } from "@mui/material";
+import { fetchPopularProducts } from "@/services/catalog/products";
+import { FeaturedProduct } from "../catalog/product/featured-product";
 import { PopularProductsCarousel } from "./popular-products-carousel";
 
 export const PopularProducts = async ({ exchange }: { exchange: number }) => {

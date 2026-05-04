@@ -2,12 +2,12 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { Box, Typography } from "@mui/material";
 import ProfileForm from "./components/ProfileForm";
-import { getUserProfile } from "@/services/user-service";
+import { getUserProfile } from "@/services/profile/user-service";
 
 export default async function ProfilePage() {
     const session = await auth();
 
-    if (!session || !session.user || !session.user.accessToken) {
+    if (!session?.user) {
         redirect("/login");
     }
 

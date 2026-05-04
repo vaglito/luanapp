@@ -1,13 +1,13 @@
 import { Suspense } from "react";
 import { Container, Box, Typography, Paper } from "@mui/material";
 import { startCase } from "lodash";
-import { BrandProductList } from "@/components/brand/brand-product-list";
-import { BrandFilterList } from "@/components/brand/brand-filter-list";
+import { BrandProductList } from "@/components/catalog/brand/brand-product-list";
+import { BrandFilterList } from "@/components/catalog/brand/brand-filter-list";
 import {
   ProductListSkeleton,
   FiltersSkeleton,
 } from "@/components/ui/skeleton/search-skeletons";
-import { MobileFilterWrapper } from "@/components/product/search/mobile-filter-wrapper";
+import { MobileFilterWrapper } from "@/components/catalog/product/search/mobile-filter-wrapper";
 
 export const generateMetadata = async ({
   params,

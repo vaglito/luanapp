@@ -40,7 +40,7 @@ export default function PrivacyPolicyPage() {
                     <Typography variant="h5" sx={{ fontWeight: 600, color: "#545454", mb: 2 }}>
                         1. Introducción
                     </Typography>
-                    <Typography paragraph sx={{ color: "#6b7280" }}>
+                    <Typography sx={{ color: "#6b7280" }}>
                         En <strong>Corporación Luana S.A.C.</strong>, valoramos tu privacidad y estamos comprometidos a proteger tus datos personales.
                         Esta Política de Privacidad explica cómo recopilamos, utilizamos y salvaguardamos tu información cuando visitas nuestro sitio web y utilizas nuestros servicios.
                     </Typography>
@@ -50,7 +50,7 @@ export default function PrivacyPolicyPage() {
                     <Typography variant="h5" sx={{ fontWeight: 600, color: "#545454", mb: 2 }}>
                         2. Información que Recopilamos
                     </Typography>
-                    <Typography paragraph sx={{ color: "#6b7280" }}>
+                    <Typography sx={{ color: "#6b7280" }}>
                         Podemos recopilar la siguiente información personal:
                     </Typography>
                     <ul style={{ color: "#6b7280", paddingLeft: "1.5rem" }}>
@@ -65,7 +65,7 @@ export default function PrivacyPolicyPage() {
                     <Typography variant="h5" sx={{ fontWeight: 600, color: "#545454", mb: 2 }}>
                         3. Uso de la Información
                     </Typography>
-                    <Typography paragraph sx={{ color: "#6b7280" }}>
+                    <Typography sx={{ color: "#6b7280" }}>
                         Utilizamos la información recopilada para los siguientes fines:
                     </Typography>
                     <ul style={{ color: "#6b7280", paddingLeft: "1.5rem" }}>
@@ -81,7 +81,7 @@ export default function PrivacyPolicyPage() {
                     <Typography variant="h5" sx={{ fontWeight: 600, color: "#545454", mb: 2 }}>
                         4. Protección de Datos
                     </Typography>
-                    <Typography paragraph sx={{ color: "#6b7280" }}>
+                    <Typography sx={{ color: "#6b7280" }}>
                         Implementamos medidas de seguridad técnicas y organizativas para proteger tus datos personales contra el acceso no autorizado,
                         la pérdida, el uso indebido o la alteración. Utilizamos cifrado SSL para asegurar la transmisión de datos sensibles.
                     </Typography>
@@ -91,7 +91,7 @@ export default function PrivacyPolicyPage() {
                     <Typography variant="h5" sx={{ fontWeight: 600, color: "#545454", mb: 2 }}>
                         5. Compartir Información
                     </Typography>
-                    <Typography paragraph sx={{ color: "#6b7280" }}>
+                    <Typography sx={{ color: "#6b7280" }}>
                         No vendemos ni alquilamos tu información personal a terceros. Solo compartimos tus datos con proveedores de servicios de confianza
                         que nos ayudan a operar nuestro negocio (por ejemplo, servicios de mensajería y pasarelas de pago), y siempre bajo estrictas condiciones de confidencialidad.
                     </Typography>
@@ -101,7 +101,7 @@ export default function PrivacyPolicyPage() {
                     <Typography variant="h5" sx={{ fontWeight: 600, color: "#545454", mb: 2 }}>
                         6. Tus Derechos
                     </Typography>
-                    <Typography paragraph sx={{ color: "#6b7280" }}>
+                    <Typography sx={{ color: "#6b7280" }}>
                         Tienes derecho a acceder, corregir o eliminar tu información personal. Si deseas ejercer estos derechos, por favor contáctanos a través de nuestros canales de atención.
                     </Typography>
                 </Box>
@@ -110,7 +110,7 @@ export default function PrivacyPolicyPage() {
                     <Typography variant="h5" sx={{ fontWeight: 600, color: "#545454", mb: 2 }}>
                         7. Cambios en la Política
                     </Typography>
-                    <Typography paragraph sx={{ color: "#6b7280" }}>
+                    <Typography sx={{ color: "#6b7280" }}>
                         Nos reservamos el derecho de actualizar esta Política de Privacidad en cualquier momento. Los cambios serán publicados en esta página con la fecha de la última actualización.
                     </Typography>
                 </Box>

@@ -25,7 +25,7 @@ export default async function InvoicesPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const session = await auth();
-  if (!session) {
+  if (!session?.user) {
     redirect("/login");
   }
 
@@ -48,7 +48,6 @@ export default async function InvoicesPage({
   const fecha2 = typeof resolvedParams?.fecha2 === "string" ? resolvedParams.fecha2 : undefined;
 
   const documentNumber = session.user.documentNumber;
-  console.log(documentNumber);
   let invoicesData: InvoicesResponse | null = null;
   let errorMsg = null;
 

@@ -14,9 +14,9 @@ import {
   TableRow,
   Grid2,
 } from "@mui/material";
-import { fetchComputerDetail } from "@/services/computer";
-import { ShopWhatsApp } from "@/components/shop-whatsapp";
-import { fetchExchangeRate } from "@/services/exchangeRate";
+import { fetchComputerDetail } from "@/services/catalog/computer";
+import { ShopWhatsApp } from "@/components/common/shop-whatsapp";
+import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
 import { convertUsdToPen } from "@/lib/currency";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";

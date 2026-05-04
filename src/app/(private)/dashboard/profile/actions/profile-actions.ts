@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
-import { updateUserProfile, ProfileUpdateData } from "@/services/user-service";
+import { updateUserProfile, ProfileUpdateData } from "@/services/profile/user-service";
 
 export async function updateProfile(data: ProfileUpdateData) {
     try {

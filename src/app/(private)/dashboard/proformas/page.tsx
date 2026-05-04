@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { Box, Grid2, Paper, Typography, Divider } from "@mui/material";
 import { ProformasWithSearch } from "@/components/proformas/proformaslist/ProformaSearch";
 import { CreateProformaForm } from "@/components/proformas/create/CreateProformaForm";
-import { fetchExchangeRate } from "@/services/exchangeRate";
+import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
 import { getProformas } from "@/services/dashboard/seller/proformas";
 
 export default async function ProformasPage() {
