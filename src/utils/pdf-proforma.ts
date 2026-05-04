@@ -112,7 +112,7 @@ export async function generateProformaPDF(
         columns: [
           {
             ul: [
-              "VALIDEZ DE OFERTA: 3 DIAS",
+              "VALIDEZ DE OFERTA: 1 DIA",
               "IMPUESTO: INCLUYE IGV",
               "PRECIOS SUJETOS A TIPO DE CAMBIO",
             ],
