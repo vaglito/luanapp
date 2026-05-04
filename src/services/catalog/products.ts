@@ -87,7 +87,7 @@ export async function fetchProductSearchList(
   filters: ProductSearchFielters
 ): Promise<PaginatedResponse<Products>> {
   try {
-    const response = await apiClient.get("/api/products/products/search/", {
+    const response = await apiClient.get("/api/products/products/", {
       params: filters,
       paramsSerializer: { indexes: null },
     });
