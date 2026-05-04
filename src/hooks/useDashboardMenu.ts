@@ -1,5 +1,5 @@
 "use client";
-
+/* 
 import { DASHBOARD_MENU } from "@/config/dashboard-menu";
 import { useAuthorization } from "./useAuthorization";
 
@@ -15,3 +15,4 @@ export function useDashboardMenu() {
 
   return filteredMenu;
 }
+ */
