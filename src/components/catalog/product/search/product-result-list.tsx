@@ -12,6 +12,7 @@ interface ProductResultListProps {
     page: number;
     marca?: string[];
     subcategoria?: string[];
+    ordering?: string;
 }
 
 export const ProductResultList = async ({
@@ -19,6 +20,7 @@ export const ProductResultList = async ({
     page,
     marca,
     subcategoria,
+    ordering,
 }: ProductResultListProps) => {
     try {
         const [searchProduct, exchange] = await Promise.all([
@@ -27,6 +29,7 @@ export const ProductResultList = async ({
                 brand: marca,
                 subcategory: subcategoria,
                 page: page,
+                ordering: ordering,
             }),
             fetchExchangeRate(),
         ]);
@@ -136,4 +139,3 @@ export const ProductResultList = async ({
         );
     }
 };
-
