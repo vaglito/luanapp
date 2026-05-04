@@ -2,7 +2,7 @@ import { Skeleton, Grid2, Box, Card, CardContent } from "@mui/material";
 
 export const ProductListSkeleton = () => {
     return (
-        <Grid2 container spacing={2}>
+        <Grid2 container spacing={2} sx={{ width: "100%" }}>
             {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
                 <Grid2 size={{ xs: 6, sm: 4, md: 4, lg: 3, xl: 3 }} key={item}>
                     <Card
