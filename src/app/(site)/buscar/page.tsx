@@ -7,6 +7,7 @@ import {
   FiltersSkeleton,
 } from "@/components/ui/skeleton/search-skeletons";
 import { MobileFilterWrapper } from "@/components/catalog/product/search/mobile-filter-wrapper";
+import { ProductSortSelect } from "@/components/catalog/product/search/product-sort-select";
 
 export const revalidate = 0;
 
@@ -16,6 +17,7 @@ interface SearchParamsProps {
     page?: string;
     marca?: string | string[];
     subcategoria?: string | string[];
+    ordering?: string;
   }>;
 }
 
@@ -24,6 +26,7 @@ export default async function SearchPage({ searchParams }: SearchParamsProps) {
   const query = resolvedSearchParams?.query || "";
   const pageParam = parseInt(resolvedSearchParams.page || "1", 10);
   const currentPage = isNaN(pageParam) ? 1 : pageParam;
+  const ordering = resolvedSearchParams.ordering || undefined;
 
   // Handle potentially array or string params
   const marca = resolvedSearchParams.marca
@@ -74,6 +77,13 @@ export default async function SearchPage({ searchParams }: SearchParamsProps) {
             Explora nuestro catálogo completo
           </Typography>
         </Box>
+
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2, width: { xs: "100%", md: "auto" } }}>
+          <Typography variant="body2" color="text.secondary" sx={{ display: { xs: "none", sm: "block" } }}>
+            Ordenar por:
+          </Typography>
+          <ProductSortSelect />
+        </Box>
       </Paper>
 
       <Box
@@ -99,10 +109,10 @@ export default async function SearchPage({ searchParams }: SearchParamsProps) {
             page={currentPage}
             marca={marca}
             subcategoria={subcategoria}
+            ordering={ordering}
           />
         </Suspense>
       </Box>
     </Container>
   );
 }
-
