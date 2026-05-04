@@ -10,9 +10,9 @@ export async function refreshAccessToken(refreshToken: string) {
 
     return res.data;
   } catch (error) {
-    if (isAxiosError(error)) {
+/*     if (isAxiosError(error)) {
       console.warn("Aviso: El refresh token es inválido o ha expirado.");
-    }
+    } */
     // En lugar de hacer "throw" (lo cual Next.js intercepta en dev mostrando un error molesto),
     // devolvemos "null" para indicar que falló de manera silenciosa.
     return null;
