@@ -97,7 +97,7 @@ export async function generateProformaPDFUSD(proforma: Proforma) {
       columns: [
         {
           ul: [
-            "VALIDEZ DE OFERTA: 3 DÍAS",
+            "VALIDEZ DE OFERTA: 1 DÍA",
             "IMPUESTO: INCLUYE IGV",
             "DOCUMENTO NO TRIBUTARIO",
           ],
