@@ -121,9 +121,9 @@ export default async function InvoicesPage({
                     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 2 }}>
                       <Box>
                         <Chip
-                          label={invoice.tipoDoc.descripcion}
+                          label={invoice.tipoDoc?.descripcion || "Desconocido"}
                           size="small"
-                          color={invoice.tipoDoc.cod === "01" ? "primary" : "default"}
+                          color={invoice.tipoDoc?.cod === "01" ? "primary" : "default"}
                           sx={{ fontWeight: "bold", mb: 1, textTransform: "uppercase", fontSize: "0.7rem", letterSpacing: 0.5 }}
                         />
                         <Typography variant="h6" fontWeight="bold" sx={{ letterSpacing: 0.5 }}>
@@ -135,7 +135,7 @@ export default async function InvoicesPage({
                           Total Facturado
                         </Typography>
                         <Typography variant="h6" fontWeight="900" color="success.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          S/ {invoice.total.toFixed(2)}
+                          {invoice.total.toFixed(2)}
                         </Typography>
                       </Box>
                     </Box>
@@ -163,7 +163,7 @@ export default async function InvoicesPage({
                     <Box sx={{ display: "flex", gap: 1.5 }}>
                       <Button
                         component="a"
-                        href={`https://see.corporacionluana.pe/download.php?val=${invoice.unico}&ty=p&dat=${invoice.tipoDoc.cod}`}
+                        href={`https://see.corporacionluana.pe/download.php?val=${invoice.unico}&ty=p&dat=${invoice.tipoDoc?.cod || ""}`}
                         target="_blank"
                         variant="contained"
                         color="error"
@@ -176,7 +176,7 @@ export default async function InvoicesPage({
                       </Button>
                       <Button
                         component="a"
-                        href={`https://see.corporacionluana.pe/download.php?val=${invoice.unico}&ty=x&dat=${invoice.tipoDoc.cod}`}
+                        href={`https://see.corporacionluana.pe/download.php?val=${invoice.unico}&ty=x&dat=${invoice.tipoDoc?.cod || ""}`}
                         target="_blank"
                         variant="outlined"
                         color="primary"
