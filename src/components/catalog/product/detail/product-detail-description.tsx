@@ -13,7 +13,7 @@ interface ProductDetailDescriptionProps {
   priceb: number;
   exchange: number;
   subCategories: string;
-  product: ProductDetail; // 🔹 Nueva prop
+  product: ProductDetail;
 }
 
 export function ProductDetailDescription({
@@ -24,7 +24,7 @@ export function ProductDetailDescription({
   stock,
   exchange,
   subCategories,
-  product, // 🔹 Recibir prop
+  product,
 }: ProductDetailDescriptionProps) {
   const isRestricted = isRestrictedSubcategory(subCategories);
 
@@ -47,12 +47,12 @@ export function ProductDetailDescription({
         <Typography
           variant="h1"
           sx={{
-            fontFamily: "var(--font-inter)", // Changed to Inter per user request
-            fontWeight: 700, // Extra bold for title impact
+            fontFamily: "var(--font-inter)",
+            fontWeight: 700,
             fontSize: { xs: 22, sm: 26, md: 28, lg: 28 },
             color: "text.primary",
             textAlign: "justify",
-            mb: 1, // Reduced margin
+            mb: 1,
           }}
         >
           {title}
@@ -98,9 +98,6 @@ export function ProductDetailDescription({
           "& p": { mb: 1.5 },
         }}
       >
-        <Typography variant="h6" sx={{ fontFamily: "var(--font-orbitron)", mb: 1, fontSize: "1.1rem" }}>
-          Resumen
-        </Typography>
         <Box dangerouslySetInnerHTML={{ __html: resumen }} />
       </Box>
     </Box>
