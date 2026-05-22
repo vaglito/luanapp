@@ -4,6 +4,7 @@ import { Orbitron, Inter } from "next/font/google";
 
 // Definimos las fuentes aquí para que MUI las reconozca si fuera necesario, 
 // aunque idealmente se usan las clases next/font en layout.
+// Glassmorphism 
 const orbitron = Orbitron({ subsets: ["latin"], display: "swap" });
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
