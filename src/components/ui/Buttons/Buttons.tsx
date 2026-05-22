@@ -4,7 +4,7 @@ import { Button, ButtonProps, alpha } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // 1. Definimos tus variantes de negocio
-export type MyButtonVariant = "submit" | "alertar" | "checkout" | "cotizar" | "verMas" | "verDetalle";
+export type MyButtonVariant = "submit" | "alert" | "checkout" | "info" | "text" | "details";
 
 // 2. Creamos una interfaz que extienda las props de MUI Button
 // Usamos Omit para que nuestra prop 'variant' sea la prioritaria o manejamos 'customVariant'
@@ -35,7 +35,7 @@ const variantStyles = (theme: any, customVariant?: MyButtonVariant) => {
         borderColor: alpha(theme.palette.primary.main, 0.4),
       },
     },
-    alertar: {
+    alert: {
       backgroundColor: alpha(theme.palette.error.main, 0.1),
       color: theme.palette.error.main,
       borderColor: alpha(theme.palette.error.main, 0.2),
@@ -53,16 +53,16 @@ const variantStyles = (theme: any, customVariant?: MyButtonVariant) => {
         borderColor: alpha(theme.palette.success.main, 0.4),
       },
     },
-    cotizar: {
+    info: {
       backgroundColor: alpha(theme.palette.info.main, 0.1),
       color: theme.palette.info.dark,
       borderColor: alpha(theme.palette.info.main, 0.2),
     },
-    verMas: {
+    text: {
       backgroundColor: "rgba(255, 255, 255, 0.4)",
       color: theme.palette.text.primary,
     },
-    verDetalle: {
+    details: {
       backgroundColor: alpha("#FFC107", 0.15),
       color: "#856404",
       borderColor: alpha("#FFC107", 0.4),
