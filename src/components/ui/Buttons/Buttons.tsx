@@ -86,11 +86,10 @@ const StyledButton = styled(Button, {
   // Estilos base
   borderRadius: "12px",
   /*   textTransform: "none", */
-  fontWeight: 600,
   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-  padding: theme.spacing(1.2, 4),
   position: "relative",
   overflow: "hidden",
+
 
   // Aplicamos los estilos de la variante usando nuestra función de configuración
   ...variantStyles(theme, customVariant),
