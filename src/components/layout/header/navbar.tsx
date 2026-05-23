@@ -2,14 +2,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-import {
-  AppBar,
-  Box,
-  Drawer,
-  Toolbar,
-  Button,
-} from "@mui/material";
+import { useTheme } from "@mui/material";
+import { AppBar, Box, Drawer, Toolbar, Button, alpha } from "@mui/material";
 
 import { DrawerMobile } from "./drawer";
 import { Brands } from "@/types/brands.type";
@@ -35,6 +29,7 @@ const navlinks = [
 const drawerWidth = 260;
 
 export function Navbar({ window }: Props) {
+  const theme = useTheme();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -49,8 +44,9 @@ export function Navbar({ window }: Props) {
         position="static"
         elevation={0}
         sx={{
-          backgroundColor: "primary.main",
-          borderTop: "1px solid rgba(255,255,255,0.1)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          backgroundColor: alpha(theme.palette.primary.main, 0.95),
         }}
       >
         <Toolbar sx={{ minHeight: 48, justifyContent: "center" }}>
@@ -87,25 +83,6 @@ export function Navbar({ window }: Props) {
         </Toolbar>
       </AppBar>
 
-      {/* MOBILE DRAWER — triggered from MobileHeader */}
-      <Drawer
-        container={container}
-        variant="temporary"
-        open={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        ModalProps={{ keepMounted: true }}
-        sx={{
-          display: { xs: "block", sm: "none" },
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-          },
-        }}
-      >
-        <DrawerMobile
-          navlinks={navlinks}
-          onNavigate={() => setMobileOpen(false)}
-        />
-      </Drawer>
     </Box>
   );
 }
