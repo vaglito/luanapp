@@ -10,7 +10,7 @@ import {
   Box,
   Divider,
 } from "@mui/material";
-import { signOut } from "next-auth/react"
+import { signOut } from "next-auth/react";
 
 import LogoutIcon from "@mui/icons-material/Logout";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -36,12 +36,14 @@ export function HeaderUserMenu({ user }: { user: User }) {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
-        PaperProps={{
-          elevation: 3,
-          sx: {
-            mt: 1,
-            minWidth: 220,
-            borderRadius: 2,
+        slotProps={{
+          paper: {
+            elevation: 3,
+            sx: {
+              mt: 1,
+              minWidth: 220,
+              borderRadius: 2,
+            },
           },
         }}
       >
@@ -72,4 +74,3 @@ export function HeaderUserMenu({ user }: { user: User }) {
     </Box>
   );
 }
-
