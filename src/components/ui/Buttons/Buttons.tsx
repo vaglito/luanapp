@@ -4,7 +4,13 @@ import { Button, ButtonProps, alpha } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // 1. Definimos tus variantes de negocio
-export type MyButtonVariant = "submit" | "alert" | "checkout" | "info" | "text" | "details";
+export type MyButtonVariant =
+  | "submit"
+  | "alert"
+  | "checkout"
+  | "info"
+  | "text"
+  | "details";
 
 // 2. Creamos una interfaz que extienda las props de MUI Button
 // Usamos Omit para que nuestra prop 'variant' sea la prioritaria o manejamos 'customVariant'
@@ -79,11 +85,10 @@ const StyledButton = styled(Button, {
 })<MyButtonProps>(({ theme, customVariant }) => ({
   // Estilos base
   borderRadius: "12px",
-/*   textTransform: "none", */
+  /*   textTransform: "none", */
   fontWeight: 600,
-  padding: theme.spacing(1.2, 4),
   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-
+  padding: theme.spacing(1.2, 4),
   position: "relative",
   overflow: "hidden",
 
@@ -93,7 +98,7 @@ const StyledButton = styled(Button, {
 
 export const MyButton = React.forwardRef<HTMLButtonElement, MyButtonProps>(
   ({ customVariant, variant, ...props }, ref) => {
-    const muiBaseVariant = customVariant ? "text" : (variant || "contained");
+    const muiBaseVariant = customVariant ? "text" : variant || "contained";
 
     return (
       <StyledButton
@@ -103,7 +108,7 @@ export const MyButton = React.forwardRef<HTMLButtonElement, MyButtonProps>(
         {...props} // <-- Aquí viajan automáticamente startIcon o endIcon
       />
     );
-  }
+  },
 );
 
 MyButton.displayName = "MyButton";
