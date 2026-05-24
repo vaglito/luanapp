@@ -1,5 +1,5 @@
 "use client"
-import { Box, Typography, IconButton, TextField, Divider } from "@mui/material";
+import { Box, Typography, IconButton, TextField, Divider, Tooltip, alpha, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -49,75 +49,97 @@ export function CartItem({ product, exchange }: CartItemProps) {
   };
 
   return (
-    <Box sx={{ mb: 3 }}>
-      <Box sx={{ display: "flex", gap: 2 }}>
-        <Box sx={{ flexShrink: 0 }}>
-          <Image
-            src={imageSrc}
-            alt={productName}
-            width={80}
-            height={80}
-            style={{ objectFit: "cover", borderRadius: 8 }}
-          />
-        </Box>
+    <Box 
+      sx={{ 
+        mb: 2, 
+        p: 2, 
+        borderRadius: 2, 
+        border: '1px solid',
+        borderColor: 'divider',
+        transition: 'all 0.2s ease',
+        '&:hover': {
+          bgcolor: alpha('#000', 0.02),
+          borderColor: 'primary.light',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
+        }
+      }}
+    >
+      <Stack direction="row" spacing={2}>
+        <Image
+          src={imageSrc}
+          alt={productName}
+          width={110}
+          height={110}
+          style={{ objectFit: "cover", borderRadius: 12, backgroundColor: '#f5f5f5' }}
+        />
 
         <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="subtitle1" fontWeight={600}>
+          <Typography variant="subtitle1" fontWeight={700} lineHeight={1.2} mb={1}>
             {productName}
           </Typography>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
-            <IconButton
-              onClick={() => handleChange(-1)}
-              size="small"
-              disabled={product.quantity <= 1}
-            >
-              <RemoveIcon fontSize="small" />
-            </IconButton>
-            <TextField
-              value={product.quantity}
-              size="small"
-              slotProps={{
-                input: {
-                  readOnly: true,
-                  style: { width: 40, textAlign: "center" },
-                },
-              }}
-            />
-            <IconButton
-              onClick={() => handleChange(1)}
-              size="small"
-              disabled={product.quantity >= maxStock}
-            >
-              <AddIcon fontSize="small" />
-            </IconButton>
-          </Box>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'flex-start', sm: 'center' }}>
+            {/* Quantity Selector Control */}
+            <Box sx={{ 
+              display: "flex", 
+              alignItems: "center", 
+              border: '1px solid', 
+              borderColor: 'divider',
+              borderRadius: '20px',
+              p: 0.5,
+              bgcolor: 'background.paper'
+            }}>
+              <IconButton
+                onClick={() => handleChange(-1)}
+                size="small"
+                disabled={product.quantity <= 1}
+                sx={{ color: 'primary.main' }}
+              >
+                <RemoveIcon fontSize="small" />
+              </IconButton>
+              <Typography sx={{ width: 30, textAlign: 'center', fontWeight: 600 }}>
+                {product.quantity}
+              </Typography>
+              <IconButton
+                onClick={() => handleChange(1)}
+                size="small"
+                disabled={product.quantity >= maxStock}
+                sx={{ color: 'primary.main' }}
+              >
+                <AddIcon fontSize="small" />
+              </IconButton>
+            </Box>
 
-          <Typography variant="body2" color="text.secondary" mt={1}>
-            Precio unitario: <strong>${unitPriceUSD.toFixed(2)}</strong> - S/.{" "}
-            <strong>{unitPricePEN.toFixed(2)}</strong>
-          </Typography>
+            <Box>
+              <Typography variant="caption" color="text.secondary" display="block">
+                Unit: ${unitPriceUSD.toFixed(2)} / S/. {unitPricePEN.toFixed(2)}
+              </Typography>
+              <Typography variant="body2" fontWeight={700} color="primary.main">
+                Subtotal: ${subtotalUSD.toFixed(2)} / S/. {subtotalPEN.toFixed(2)}
+              </Typography>
+            </Box>
+          </Stack>
 
           {useOfferPrice && !isComputer && (
-            <Typography variant="caption" color="success.main">
-              Oferta activa (antes ${product.relay.priceSale.toFixed(2)})
-            </Typography>
+            <Box sx={{ mt: 1, display: 'inline-flex', bgcolor: 'success.light', px: 1, borderRadius: 1 }}>
+              <Typography variant="caption" sx={{ color: 'success.contrastText', fontWeight: 600 }}>
+                OFERTA: antes ${product.relay.priceSale.toFixed(2)}
+              </Typography>
+            </Box>
           )}
-
-          <Typography variant="body2" fontWeight={600} mt={0.5}>
-            Subtotal: ${subtotalUSD.toFixed(2)} - S/. {subtotalPEN.toFixed(2)}
-          </Typography>
         </Box>
 
         <Box sx={{ alignSelf: "flex-start" }}>
-          <IconButton onClick={() => removeItem(product.id)} color="error">
-            <DeleteIcon />
-          </IconButton>
+          <Tooltip title="Eliminar del carrito" arrow>
+            <IconButton 
+              onClick={() => removeItem(product.id)} 
+              sx={{ color: 'error.light', '&:hover': { color: 'error.main', bgcolor: alpha('#f44336', 0.08) } }}
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
         </Box>
-      </Box>
-
-      <Divider sx={{ mt: 2 }} />
+      </Stack>
     </Box>
   );
 }
-

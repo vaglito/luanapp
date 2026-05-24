@@ -1,5 +1,5 @@
 "use client";
-import { Drawer, Box, Typography, IconButton, Divider } from "@mui/material";
+import { Drawer, Box, Typography, IconButton, Divider, alpha } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useCart } from "@/hooks/use-cart";
 import { CartItem } from "./CartItem";
@@ -15,23 +15,39 @@ export function CartDrawer({ open, onClose, exchange }: CartDrawerProps) {
   const { items } = useCart();
 
   return (
-    <Drawer anchor="right" open={open} onClose={onClose}>
-      <Box sx={{ width: { xs: "100vw", sm: 450 }, padding: 2 }}>
+    <Drawer
+      anchor="right"
+      open={open}
+      onClose={onClose}
+      sx={{
+        "& .MuiDrawer-paper": {
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          backgroundColor: alpha("#fff", 0.9),
+        },
+      }}
+    >
+      <Box
+        sx={{
+          width: { xs: "100vw", sm: 700 },
+          padding: 2,
+        }}
+      >
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            marginBottom: 4,
           }}
         >
           <Typography variant="h6" fontWeight={600}>
             Tu carrito
           </Typography>
-          <IconButton onClick={onClose}>
+          <IconButton onClick={onClose} color="primary">
             <CloseIcon />
           </IconButton>
         </Box>
-        <Divider sx={{ my: 2 }} />
         {items.length === 0 ? (
           <Typography variant="body2" color="text.secondary">
             No hay productos en el carrito.
@@ -39,14 +55,12 @@ export function CartDrawer({ open, onClose, exchange }: CartDrawerProps) {
         ) : (
           <>
             {items.map((item) => (
-              <CartItem key={item.id} product={item} exchange={exchange}/>
+              <CartItem key={item.id} product={item} exchange={exchange} />
             ))}
-            <Divider sx={{ my: 2 }} />
-            <CartSummary exchange={exchange}/>
+            <CartSummary exchange={exchange} />
           </>
         )}
       </Box>
     </Drawer>
   );
 }
-
