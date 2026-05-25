@@ -1,5 +1,5 @@
 import { Grid2 } from "@mui/material";
-import { CardProduct } from "@/components/catalog/product/card-product";
+import { CardProduct } from "@/components/catalog/product/CardProduct/card-product";
 import { Products } from "@/types/products.type";
 
 export const GridProduct = ({

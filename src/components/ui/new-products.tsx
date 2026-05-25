@@ -2,7 +2,7 @@
 import { Typography, Box } from "@mui/material";
 import { SliderProduct } from "../catalog/product/slider-product";
 import { Products } from "@/types/products.type";
-import { CardProduct } from "../catalog/product/card-product";
+import { CardProduct } from "../catalog/product/CardProduct/card-product";
 
 export const NewProducts = ({
   products,
