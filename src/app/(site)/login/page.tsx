@@ -7,18 +7,22 @@ export default function LoginPage() {
     <Container
       maxWidth="sm"
       sx={{
-        minHeight: "100vh",
+        minHeight: "90vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        py: 4,
       }}
     >
       <Paper
-        elevation={3}
+        elevation={0}
         sx={{
           width: "100%",
           p: 4,
-          borderRadius: 3,
+          borderRadius: 4,
+          border: "1px solid",
+          borderColor: "divider",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.05)",
         }}
       >
         <Suspense
@@ -34,4 +38,3 @@ export default function LoginPage() {
     </Container>
   );
 }
-

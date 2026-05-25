@@ -8,14 +8,14 @@ import { useRouter } from "next/navigation";
 
 import {
   Box,
-  Button,
   TextField,
-  Typography,
   Alert,
   CircularProgress,
   IconButton,
   InputAdornment,
 } from "@mui/material";
+import { MyButton } from "../ui/Buttons/Buttons";
+import { TypographyWrapper } from "../ui/Typography/Typography";
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -35,14 +35,16 @@ export const LoginForm = () => {
   useEffect(() => {
     if (searchParams.get("registered") === "true") {
       setInfoMessage(
-        "¡Cuenta creada! Por favor, verifica tu correo para poder ingresar."
+        "¡Cuenta creada! Por favor, verifica tu correo para poder ingresar.",
       );
     }
     if (searchParams.get("verified") === "true") {
       setInfoMessage("Correo verificado con éxito. Ya puedes iniciar sesión.");
     }
     if (searchParams.get("passwordReset") === "true") {
-      setInfoMessage("Tu contraseña ha sido restablecida con éxito. Inicia sesión con tu nueva contraseña.");
+      setInfoMessage(
+        "Tu contraseña ha sido restablecida con éxito. Inicia sesión con tu nueva contraseña.",
+      );
     }
   }, [searchParams]);
 
@@ -68,7 +70,7 @@ export const LoginForm = () => {
         res.error.toLowerCase().includes("verific")
       ) {
         setError(
-          "Tu cuenta aún no ha sido activada. Revisa tu bandeja de entrada."
+          "Tu cuenta aún no ha sido activada. Revisa tu bandeja de entrada.",
         );
       } else {
         setError(res.error);
@@ -82,12 +84,12 @@ export const LoginForm = () => {
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h5" fontWeight={600} mb={1}>
+      <TypographyWrapper customVariant="subtitle" variant="h5" mb={1}>
         Bienvenido 👋
-      </Typography>
-      <Typography variant="body2" color="text.secondary" mb={3}>
-        Ingresa tus credenciales para continuar
-      </Typography>
+      </TypographyWrapper>
+      <TypographyWrapper color="text.secondary" mb={3}>
+        Ingresa tus credenciales para continuar.
+      </TypographyWrapper>
 
       {/* MENSAJE DE ÉXITO O INFO */}
       {infoMessage && (
@@ -118,6 +120,8 @@ export const LoginForm = () => {
         label="Correo electrónico"
         fullWidth
         margin="normal"
+        autoComplete="email"
+        disabled={loading}
         {...register("email")}
         error={!!errors.email}
         helperText={errors.email?.message}
@@ -128,32 +132,39 @@ export const LoginForm = () => {
         type={showPassword ? "text" : "password"}
         fullWidth
         margin="normal"
+        autoComplete="current-password"
+        disabled={loading}
         {...register("password")}
         error={!!errors.password}
         helperText={errors.password?.message}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                onClick={() => setShowPassword((prev) => !prev)}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
         }}
       />
 
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
-        <Link href="/forgot-password" className="font-bold hover:underline text-[#5914A3]">
+        <Link
+          href="/forgot-password"
+          className="font-bold hover:underline text-[#5914A3]"
+        >
           ¿Olvidaste tu contraseña?
         </Link>
       </Box>
 
-      <Button
+      <MyButton
         type="submit"
-        variant="contained"
+        customVariant="submit"
         fullWidth
         disabled={loading}
         sx={{ mt: 3, py: 1.5, textTransform: "none", fontSize: "1rem" }}
@@ -163,19 +174,21 @@ export const LoginForm = () => {
         ) : (
           "Iniciar sesión"
         )}
-      </Button>
+      </MyButton>
 
-      <Typography
-        variant="body2"
+      <TypographyWrapper
         textAlign="center"
         mt={3}
         color="text.secondary"
       >
         ¿No tienes cuenta?{" "}
-        <Link href="/registro" className="font-bold text-[#5914A3] hover:underline">
+        <Link
+          href="/registro"
+          className="font-bold text-[#5914A3] hover:underline"
+        >
           Crear cuenta
         </Link>
-      </Typography>
+      </TypographyWrapper>
     </Box>
   );
 };
