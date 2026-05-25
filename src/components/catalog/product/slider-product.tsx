@@ -1,13 +1,12 @@
 "use client";
 import "swiper/css";
-import "swiper/css/navigation";
-import { Box, IconButton } from "@mui/material";
+import { Box } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { Products } from "@/types/products.type";
+import { ButtonSlider } from "@/components/ui/Buttons/ButtonSlider";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-
 interface SliderProductProps {
   products: Products[];
   Component: React.ElementType;
@@ -22,49 +21,17 @@ export const SliderProduct = ({
   return (
     <Box sx={{ position: "relative", marginTop: 2 }}>
       {/* Botón anterior */}
-      <IconButton
+      <ButtonSlider
         className="custom-prev"
-        color="primary"
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: { xs: 8, sm: -20, md: -50 }, // Overlaps on mobile, pulls out on desktop
-          transform: "translateY(-50%)",
-          bgcolor: "rgba(255, 255, 255, 0.8)",
-          backdropFilter: "blur(8px)",
-          zIndex: 10,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          width: { xs: 36, md: 40 },
-          height: { xs: 36, md: 40 },
-          border: "1px solid rgba(0,0,0,0.05)",
-          "&:hover": { bgcolor: "white", transform: "translateY(-50%) scale(1.1)" },
-        }}
-      >
-        <ArrowBackIosNewIcon fontSize="small" sx={{ ml: 0.5 }} />
-      </IconButton>
+        side="left"
+        icon={<ArrowBackIosNewIcon />}
+      />
 
-      {/* Botón siguiente */}
-      <IconButton
+      <ButtonSlider
         className="custom-next"
-        color="primary"
-        sx={{
-          position: "absolute",
-          top: "50%",
-          right: { xs: 8, sm: -20, md: -50 }, // Overlaps on mobile, pulls out on desktop
-          transform: "translateY(-50%)",
-          bgcolor: "rgba(255, 255, 255, 0.8)",
-          backdropFilter: "blur(8px)",
-          zIndex: 10,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          width: { xs: 36, md: 40 },
-          height: { xs: 36, md: 40 },
-          border: "1px solid rgba(0,0,0,0.05)",
-          "&:hover": { bgcolor: "white", transform: "translateY(-50%) scale(1.1)" },
-        }}
-      >
-        <ArrowForwardIosIcon fontSize="small" />
-      </IconButton>
-
+        side="right"
+        icon={<ArrowForwardIosIcon />}
+      />
       <Swiper
         modules={[Navigation, Autoplay]}
         loop={true}
@@ -96,4 +63,3 @@ export const SliderProduct = ({
     </Box>
   );
 };
-

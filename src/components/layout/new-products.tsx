@@ -1,9 +1,16 @@
-import { Categories } from "@/types/categories.type";
-import { Box } from "@mui/material";
-import { SliderCategory } from "./slider-category";
 import { TypographyWrapper } from "../ui/Typography/Typography";
+import { Box } from "@mui/material";
+import { SliderProduct } from "../catalog/product/slider-product";
+import { Products } from "@/types/products.type";
+import { CardProduct } from "../catalog/product/CardProduct/card-product";
 
-export const HomeCategory = ({ categories }: { categories: Categories[] }) => {
+export const NewProducts = ({
+  products,
+  exchange,
+}: {
+  products: Products[];
+  exchange: number;
+}) => {
   return (
     <Box
       component="section"
@@ -25,15 +32,19 @@ export const HomeCategory = ({ categories }: { categories: Categories[] }) => {
         }}
       >
         <TypographyWrapper customVariant="hero" variant="h2" gradient="brand">
-          Categorías Destacadas
+          Nuevos Ingresos
         </TypographyWrapper>
         <TypographyWrapper customVariant="body">
-          Explora nuestra colección y encuentra lo que necesitas en tecnología
+          Descubre los últimos lanzamientos y actualizaciones de nuestro
+          catálogo.
         </TypographyWrapper>
       </Box>
-
-      <Box sx={{ position: "relative", zIndex: 2, width: "100%" }}>
-        <SliderCategory categories={categories} />
+      <Box>
+        <SliderProduct
+          products={products}
+          Component={CardProduct}
+          exchange={exchange}
+        />
       </Box>
     </Box>
   );
