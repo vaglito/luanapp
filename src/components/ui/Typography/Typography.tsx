@@ -2,10 +2,20 @@
 import React from "react";
 import { Typography, TypographyProps, styled } from "@mui/material";
 
-export type MyTypographyVariant = "hero" | "price" | "discount" | "tag" | "glass" | "body";
+export type MyTypographyVariant =
+  | "hero"
+  | "subtitle"
+  | "price"
+  | "discount"
+  | "tag"
+  | "glass"
+  | "body";
 type GradientType = "brand" | "blue" | "gold" | "pink";
 
-export interface TypographyWrapperProps extends Omit<TypographyProps, "variant"> {
+export interface TypographyWrapperProps extends Omit<
+  TypographyProps,
+  "variant"
+> {
   /** Activa la fuente Orbitron para estilos tecnológicos/gamer */
   orbitron?: boolean;
   /** Aplica degradados predefinidos de la marca */
@@ -22,7 +32,8 @@ const gradients: Record<GradientType, string> = {
 };
 
 const StyledTypography = styled(Typography, {
-  shouldForwardProp: (prop) => !["customVariant", "orbitron", "gradient"].includes(prop as string),
+  shouldForwardProp: (prop) =>
+    !["customVariant", "orbitron", "gradient"].includes(prop as string),
 })<TypographyWrapperProps>(({ theme, customVariant, orbitron, gradient }) => ({
   // Estilos base de fuente
   ...(orbitron && { fontFamily: "var(--font-orbitron)" }),
@@ -39,6 +50,13 @@ const StyledTypography = styled(Typography, {
   ...(customVariant === "hero" && {
     fontWeight: 900,
     fontSize: "clamp(2rem, 8vw, 3rem)", // Responsivo: min 2.2rem, max 3.5rem
+    lineHeight: 1.1,
+    letterSpacing: "-0.04em",
+    textTransform: "uppercase",
+  }),
+  ...(customVariant === "subtitle" && {
+    fontWeight: 700,
+    fontSize: "clamp(2rem, 8vw, 2.8rem)", // Responsivo: min 2.2rem, max 3.5rem
     lineHeight: 1.1,
     letterSpacing: "-0.04em",
     textTransform: "uppercase",
@@ -92,20 +110,21 @@ const StyledTypography = styled(Typography, {
  * Un componente base estilizado que envuelve el Typography de MUI.
  * Implementa el enfoque "wrapper" para centralizar reglas de diseño de la marca Luana.
  */
-export const TypographyWrapper = React.forwardRef<HTMLElement, TypographyWrapperProps>(
-  ({ customVariant, variant, ...props }, ref) => {
-    // Si no hay variante MUI definida, usamos body1 por defecto
-    const muiBaseVariant = variant || "body1";
+export const TypographyWrapper = React.forwardRef<
+  HTMLElement,
+  TypographyWrapperProps
+>(({ customVariant, variant, ...props }, ref) => {
+  // Si no hay variante MUI definida, usamos body1 por defecto
+  const muiBaseVariant = variant || "body1";
 
-    return (
-      <StyledTypography
-        ref={ref}
-        variant={muiBaseVariant}
-        customVariant={customVariant}
-        {...props}
-      />
-    );
-  }
-);
+  return (
+    <StyledTypography
+      ref={ref}
+      variant={muiBaseVariant}
+      customVariant={customVariant}
+      {...props}
+    />
+  );
+});
 
 TypographyWrapper.displayName = "TypographyWrapper";
