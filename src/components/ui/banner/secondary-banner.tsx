@@ -3,7 +3,7 @@ import Link from "next/link";
 import { MyButton } from "../Buttons/Buttons";
 import { TypographyWrapper } from "../Typography/Typography";
 
-import { Box, Typography, Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 interface SecondaryBannerProps {
