@@ -56,7 +56,7 @@ const StyledTypography = styled(Typography, {
   }),
   ...(customVariant === "subtitle" && {
     fontWeight: 700,
-    fontSize: "clamp(2rem, 8vw, 2.8rem)", // Responsivo: min 2.2rem, max 3.5rem
+    fontSize: "clamp(2rem, 8vw, 2.5rem)", // Responsivo: min 2.2rem, max 3.5rem
     lineHeight: 1.1,
     letterSpacing: "-0.04em",
     textTransform: "uppercase",
