@@ -1,10 +1,9 @@
-
 "use client";
 import { useState, useEffect } from "react";
 import { IconButton, Badge } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useCart } from "@/hooks/use-cart";
-import { CartDrawer } from "../../cart/CartDrawer";
+import { CartDrawer } from "@/components/cart/CartDrawer";
 
 export function CartIconButton({ exchange }: { exchange: number }) {
   const [openCart, setOpenCart] = useState(false);
@@ -17,23 +16,17 @@ export function CartIconButton({ exchange }: { exchange: number }) {
 
   if (!mounted) {
     return (
-      <IconButton
-        sx={{ border: "1px solid #ddd", borderRadius: 2 }}
-        disabled
-      >
-        <ShoppingCartIcon />
+      <IconButton disabled size="large">
+        <ShoppingCartOutlinedIcon fontSize="inherit" />
       </IconButton>
     );
   }
 
   return (
     <>
-      <IconButton
-        onClick={() => setOpenCart(true)}
-        sx={{ border: "1px solid #ddd", borderRadius: 2 }}
-      >
+      <IconButton onClick={() => setOpenCart(true)} size="large">
         <Badge badgeContent={cart.items.length} color="secondary">
-          <ShoppingCartIcon />
+          <ShoppingCartOutlinedIcon fontSize="inherit" />
         </Badge>
       </IconButton>
       <CartDrawer

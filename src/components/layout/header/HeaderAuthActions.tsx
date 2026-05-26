@@ -4,10 +4,11 @@ import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonIcon from "@mui/icons-material/Person";
 import { Session } from "next-auth";
+import { MyButton } from "@/components/ui/Buttons/Buttons";
 
 import { HeaderUserMenu } from "./HeaderUserMenu";
 
@@ -34,14 +35,14 @@ export function HeaderAuthActions({ session }: { session: Session | null }) {
   return (
     <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
       <Link href="/login">
-        <Button variant="text" startIcon={<LoginIcon />}>
+        <MyButton customVariant="text" startIcon={<LoginIcon />}>
           Ingresar
-        </Button>
+        </MyButton>
       </Link>
       <Link href="/registro">
-        <Button variant="contained" startIcon={<PersonIcon />} sx={{ borderRadius: 2 }}>
+        <MyButton customVariant="submit" startIcon={<PersonIcon />}>
           Registro
-        </Button>
+        </MyButton>
       </Link>
     </Box>
   );

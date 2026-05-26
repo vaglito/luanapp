@@ -10,19 +10,21 @@ import {
   InputBase,
   Avatar,
   Badge,
-  Typography,
   Skeleton,
+  alpha,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { useRouter, usePathname } from "next/navigation";
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import { signOut } from "next-auth/react";
 import { DrawerMobile } from "./drawer";
 import { useCart } from "@/hooks/use-cart";
 import { CartDrawer } from "../../cart/CartDrawer";
 import { Session } from "next-auth";
 import { Brands } from "@/types/brands.type";
+import { useTheme } from "@mui/material";
 
 const navlinks = [
   { id: 1, title: "Inicio", path: "/" },
@@ -45,7 +47,13 @@ interface MobileHeaderProps {
   isLoading?: boolean;
 }
 
-export function MobileHeader({ logo, exchange, session, isLoading }: MobileHeaderProps) {
+export function MobileHeader({
+  logo,
+  exchange,
+  session,
+  isLoading,
+}: MobileHeaderProps) {
+  const theme = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -128,14 +136,11 @@ export function MobileHeader({ logo, exchange, session, isLoading }: MobileHeade
 
         {/* ── Cart button ── */}
         <IconButton
-          size="small"
+          size="medium"
           onClick={() => setCartOpen(true)}
           aria-label="Carrito de compras"
           sx={{
             flexShrink: 0,
-            border: "1.5px solid",
-            borderColor: "divider",
-            borderRadius: 1.5,
             p: 0.75,
           }}
         >
@@ -152,13 +157,18 @@ export function MobileHeader({ logo, exchange, session, isLoading }: MobileHeade
               },
             }}
           >
-            <ShoppingCartIcon fontSize="small" />
+            <ShoppingCartOutlinedIcon fontSize="inherit" />
           </Badge>
         </IconButton>
 
         {/* ── Avatar / Login ── */}
         {isLoading ? (
-          <Skeleton variant="circular" width={34} height={34} sx={{ flexShrink: 0 }} />
+          <Skeleton
+            variant="circular"
+            width={34}
+            height={34}
+            sx={{ flexShrink: 0 }}
+          />
         ) : displaySession ? (
           <Link href="/dashboard" style={{ flexShrink: 0 }}>
             <Avatar
@@ -176,23 +186,9 @@ export function MobileHeader({ logo, exchange, session, isLoading }: MobileHeade
             </Avatar>
           </Link>
         ) : (
-          <Link href="/login" style={{ textDecoration: "none", flexShrink: 0 }}>
-            <Typography
-              variant="caption"
-              sx={{
-                fontWeight: 700,
-                color: "primary.main",
-                border: "1.5px solid",
-                borderColor: "primary.main",
-                borderRadius: 1.5,
-                px: 1.5,
-                py: 0.5,
-                lineHeight: 1,
-              }}
-            >
-              Ingresar
-            </Typography>
-          </Link>
+          <IconButton component={Link} href="/login" size="large">
+            <PersonOutlineOutlinedIcon color="primary" fontSize="inherit" />
+          </IconButton>
         )}
       </Box>
 
@@ -244,11 +240,20 @@ export function MobileHeader({ logo, exchange, session, isLoading }: MobileHeade
         variant="temporary"
         open={menuOpen}
         onClose={() => setMenuOpen(false)}
+        anchor="left"
         ModalProps={{ keepMounted: true }}
-        sx={{ "& .MuiDrawer-paper": { width: 260 } }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: { xs: "100vw", sm: 450 },
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            backgroundColor: alpha(theme.palette.primary.main, 0.9),
+          },
+        }}
       >
         <DrawerMobile
           navlinks={navlinks}
+          onClose={() => setMenuOpen(false)}
           onNavigate={() => setMenuOpen(false)}
         />
       </Drawer>

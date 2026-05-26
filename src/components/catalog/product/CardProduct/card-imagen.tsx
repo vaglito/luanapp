@@ -44,9 +44,7 @@ export function CardImage({ product }: CardImageProps) {
         sx={{
           position: "relative",
           width: "100%",
-          height: "100%", // Fill height
-          // Remove strict aspect ratio here to let it fill the 260px container
-          // aspectRatio: "1 / 1", 
+          aspectRatio: "1 / 1",
           overflow: "hidden",
           cursor: "pointer",
           borderRadius: 0,
@@ -73,7 +71,7 @@ export function CardImage({ product }: CardImageProps) {
             alt={product.relay.productName}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            style={{ objectFit: "contain", borderRadius: 0 }}
+            style={{ objectFit: "cover", borderRadius: 0 }}
           />
         </Box>
 

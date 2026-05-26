@@ -4,8 +4,9 @@ import {
   List,
   ListItemButton,
   ListItemText,
-  Divider,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface NavLink {
   id: number;
@@ -16,11 +17,17 @@ interface NavLink {
 interface Props {
   navlinks: NavLink[];
   onNavigate: () => void;
+  onClose: () => void;
 }
 
-export function DrawerMobile({ navlinks, onNavigate }: Props) {
+export function DrawerMobile({ navlinks, onNavigate, onClose }: Props) {
   return (
     <Box sx={{ p: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <IconButton onClick={onClose} sx={{ color: "white" }}>
+          <CloseIcon />
+        </IconButton>
+      </Box>
       <List>
         {navlinks.map((link) => (
           <ListItemButton
@@ -31,19 +38,23 @@ export function DrawerMobile({ navlinks, onNavigate }: Props) {
             sx={{
               borderRadius: 2,
               mb: 0.5,
+              "&:hover": {
+                backgroundColor: "rgba(255,255,255,0.2)",
+              },
             }}
           >
             <ListItemText
               primary={link.title}
-              primaryTypographyProps={{
-                fontWeight: 500,
+              slotProps={{
+                primary: {
+                  fontWeight: 500,
+                  color: "white",
+                },
               }}
             />
           </ListItemButton>
         ))}
       </List>
-
-      <Divider sx={{ my: 2 }} />
     </Box>
   );
 }

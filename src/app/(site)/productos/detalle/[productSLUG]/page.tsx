@@ -8,18 +8,17 @@ import { ProductDetail } from "@/types/products.type";
 import { ProductDetailMore } from "@/components/catalog/product/detail/product-detail-more";
 import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
 import { notFound } from "next/navigation";
-import { CarouselWrapper } from "@/components/catalog/product/detail/CarouselWrapper"; // 👈 Importa el nuevo wrapper
+import { CarouselWrapper } from "@/components/catalog/product/detail/CarouselWrapper";
 import { ProductViewTracker } from "@/components/catalog/product/product-view-tracker";
 
 export const revalidate = 0;
 
-// En Next 15, params en generateMetadata también es una Promesa
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ productSLUG: string }>; // 👈 Cambiado a Promise
+  params: Promise<{ productSLUG: string }>;
 }): Promise<Metadata> {
-  const { productSLUG } = await params; // 👈 Await obligatorio
+  const { productSLUG } = await params;
   const product = await fetchDetailProduct(productSLUG);
 
   if (!product) return { title: "Producto no encontrado" };
@@ -44,9 +43,9 @@ export async function generateMetadata({
 export default async function ProductDetailPage({
   params,
 }: {
-  params: Promise<{ productSLUG: string }>; // 👈 Cambiado a Promise para Next 15.5
+  params: Promise<{ productSLUG: string }>;
 }) {
-  const { productSLUG } = await params; // 👈 Await de params
+  const { productSLUG } = await params;
 
   const [product, exchange] = await Promise.all([
     fetchDetailProduct(productSLUG).catch(() => null),

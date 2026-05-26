@@ -25,9 +25,9 @@ export const themeOptions = createTheme({
             contrastText: "#FFFFFF",
         },
         info: {
-            main: "#00E5FF", // Neon Cyan (User liked this)
-            light: "#6EFFE8",
-            dark: "#00B1CC",
+            main: "#FFC107",
+            light: "#FFCD38",
+            dark: "#B28704",
         },
         background: {
             default: "#F3F4F6", // Gris muy claro para contraste limpio

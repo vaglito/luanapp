@@ -3,10 +3,10 @@ import withMDX from '@next/mdx';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
-  experimental: {
+/*   experimental: {
     workerThreads: false,
     cpus: 2,
-  },
+  }, */
   pageExtensions: ['ts', 'tsx', 'mdx'],
   images: {
     dangerouslyAllowLocalIP: true,

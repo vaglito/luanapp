@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { auth } from "@/auth";
 import Link from "next/link";
 import Image from "next/image";
-import { Box, Container, Button, Divider, Skeleton } from "@mui/material";
+import { Box, Container, Skeleton } from "@mui/material";
 
 import { Navbar } from "./navbar";
 import { Search } from "../search";
@@ -83,7 +83,6 @@ export async function Header({ logo, exchange, brands }: HeaderProps) {
             {/* ACTIONS */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
               <CartIconButton exchange={exchange} />
-              <Divider orientation="vertical" flexItem sx={{ height: 24 }} />
               <HeaderAuthActions session={session} />
             </Box>
           </Box>

@@ -1,22 +1,21 @@
-import { Container } from "@mui/material";
+// MUI
+import { Container, Box } from "@mui/material";
+
 // Components
 import { Suspense } from "react";
 import { ProductListSkeleton } from "@/components/ui/skeleton/search-skeletons";
 import { SuspenseNewProducts } from "./components/SuspenseNewProducts";
 import { SuspenseLaptops } from "./components/SuspenseLaptops";
-
-import { HomeCategory } from "@/components/ui/home-category";
+import { HomeCategory } from "@/components/categories/home-category";
 import { BannerHome } from "@/components/ui/banner/BannerHome";
 import { fetchBannerHome } from "@/services/siteInfo";
 import { fetchCategories } from "@/services/catalog/categories";
 import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
 import { ComputerHome } from "@/components/catalog/computer/ComputerHome";
-import { PopularProducts } from "@/components/ui/popular-products";
+import { PopularProducts } from "@/components/layout/popular-products";
 import { TrustBar } from "@/components/ui/trust-bar";
 import { SecondaryBanner } from "@/components/ui/banner/secondary-banner";
 import { TikTokExperience } from "@/components/ui/tiktok-experience";
-import PromoDialog from "@/components/common/promo-dialog";
-import { Box } from "@mui/material";
 
 export const revalidate = 360;
 
@@ -66,7 +65,6 @@ export const generateMetadata = () => {
 };
 
 export default async function Home() {
-  // Parallelize critical top-of-page data
   const [banners, categories, exchange] = await Promise.all([
     fetchBannerHome(),
     fetchCategories(),
@@ -78,12 +76,8 @@ export default async function Home() {
       <Container maxWidth={false}>
         <BannerHome banners={banners} />
       </Container>
-      <Container
-        maxWidth="xl"
-        sx={{ px: { xs: 0, sm: 2 } }}
-      >
+      <Container maxWidth="xl" sx={{ px: { xs: 0, sm: 2 } }}>
         <HomeCategory categories={categories} />
-
         <Box sx={{ mb: 6 }}>
           <SecondaryBanner
             title="Zona Gamer"
@@ -93,7 +87,6 @@ export default async function Home() {
             gradient="linear-gradient(135deg, #5914A3 0%, #A3147F 100%)" // Luana Brand Colors
           />
         </Box>
-
         <Suspense fallback={<ProductListSkeleton />}>
           <SuspenseNewProducts exchange={exchange.exchange} />
         </Suspense>
