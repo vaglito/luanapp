@@ -96,9 +96,9 @@ export default async function Home() {
         </Suspense>
       </Container>
 
-      <Suspense fallback={<ProductListSkeleton />}>
+      {/*       <Suspense fallback={<ProductListSkeleton />}>
         <ComputerHome />
-      </Suspense>
+      </Suspense> */}
 
       <Suspense fallback={<ProductListSkeleton />}>
         <SuspenseLaptops exchange={exchange.exchange} />

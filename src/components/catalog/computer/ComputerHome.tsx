@@ -1,6 +1,7 @@
-import { Container, Box, Typography } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { Computer } from "./computer";
 import { fetchComputerType } from "@/services/catalog/computer";
+import { TypographyWrapper } from "@/components/ui/Typography/Typography";
 
 export async function ComputerHome() {
   const data = await fetchComputerType();
@@ -19,31 +20,18 @@ export async function ComputerHome() {
               textAlign: "center",
             }}
           >
-            <Typography
-              variant="h3"
+            <TypographyWrapper
+              customVariant="hero"
               component="h2"
-              sx={{
-                fontWeight: 800,
-                mb: 1,
-                background: "linear-gradient(45deg, #1a237e 30%, #534bae 90%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                fontSize: { xs: "2rem", md: "3rem" },
-              }}
+              gradient="brand"
             >
               Computadoras Ensambladas
-            </Typography>
+            </TypographyWrapper>
             <Box>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                sx={{
-                  maxWidth: "600px",
-                  fontSize: { xs: "1rem", md: "1.1rem" },
-                }}
-              >
-                Encuentra configuraciones optimizadas para tu trabajo, estudio o gaming.
-              </Typography>
+              <TypographyWrapper customVariant="body" color="text.secondary">
+                Encuentra configuraciones optimizadas para tu trabajo, estudio o
+                gaming.
+              </TypographyWrapper>
             </Box>
           </Box>
         </Box>
@@ -55,4 +43,3 @@ export async function ComputerHome() {
     </Box>
   );
 }
-
