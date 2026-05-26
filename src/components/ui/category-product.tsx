@@ -1,12 +1,14 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Box, Typography, Container, Button, Stack } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import { CardProduct } from "../catalog/product/CardProduct/card-product";
 import { Products } from "@/types/products.type";
 import { SliderProduct } from "../catalog/product/slider-product";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { TypographyWrapper } from "./Typography/Typography";
+import { MyButton } from "./Buttons/Buttons";
 
 export const SectionLaptop = ({
   products,
@@ -44,7 +46,8 @@ export const SectionLaptop = ({
           width: "80%",
           height: "200%",
           // Secondary Color Blob #A3147F
-          background: "radial-gradient(circle, rgba(163,20,127,0.2) 0%, rgba(0,0,0,0) 70%)",
+          background:
+            "radial-gradient(circle, rgba(163,20,127,0.2) 0%, rgba(0,0,0,0) 70%)",
           zIndex: -1,
           filter: "blur(80px)",
         }}
@@ -57,7 +60,8 @@ export const SectionLaptop = ({
           width: "60%",
           height: "150%",
           // Primary Color Blob #5914A3
-          background: "radial-gradient(circle, rgba(89,20,163,0.25) 0%, rgba(0,0,0,0) 70%)",
+          background:
+            "radial-gradient(circle, rgba(89,20,163,0.25) 0%, rgba(0,0,0,0) 70%)",
           zIndex: -1,
           filter: "blur(80px)",
         }}
@@ -66,40 +70,34 @@ export const SectionLaptop = ({
       <Container maxWidth="xl">
         {/* Header Section */}
         <Box sx={{ textAlign: "center", mb: 6 }}>
-          <Typography
-            variant="h2"
-            sx={{
-              fontSize: { xs: "2rem", md: "3rem" },
-              fontWeight: 800,
-              color: "white",
-              letterSpacing: "-0.02em",
-              mb: 2,
-              textTransform: "uppercase",
-            }}
-          >
-            Busca tu <Typography variant="h2" component={"span"} sx={{
-              fontSize: { xs: "2rem", md: "3rem" },
-              fontWeight: 800,
-              color: "info.main",
-              letterSpacing: "-0.02em",
-              mb: 2,
-              textTransform: "uppercase",
-            }}>Laptop Ideal</Typography>
-          </Typography>
+          <TypographyWrapper customVariant="hero" color="white">
+            Busca tu{" "}
+            <TypographyWrapper
+              variant="h2"
+              component={"span"}
+              sx={{
+                fontSize: { xs: "2rem", md: "3rem" },
+                fontWeight: 800,
+                color: "info.main",
+                letterSpacing: "-0.02em",
+                mb: 2,
+                textTransform: "uppercase",
+              }}
+            >
+              Laptop Ideal
+            </TypographyWrapper>
+          </TypographyWrapper>
 
-          <Typography
-            variant="body1"
+          <TypographyWrapper
+            customVariant="body"
             sx={{
-              fontSize: { xs: "1rem", md: "1.25rem" },
               color: "#d1d5db",
-              maxWidth: "700px",
               mx: "auto",
-              lineHeight: 1.6,
             }}
           >
             Encuentra la potencia perfecta para tus necesidades. Desde
             productividad diaria hasta alto rendimiento para gaming y diseño.
-          </Typography>
+          </TypographyWrapper>
         </Box>
 
         {/* Action Buttons */}
@@ -110,83 +108,42 @@ export const SectionLaptop = ({
           alignItems="center"
           sx={{ mb: 6 }}
         >
-          <Button
-            variant="contained"
+          <MyButton
+            customVariant="text"
             size="large"
             startIcon={<LaptopMacIcon />}
             onClick={() => handleFilter("laptop-c-video-integrada")}
-            sx={{
-              bgcolor: "white",
-              color: "#333",
-              fontWeight: "bold",
-              px: 4,
-              py: 1.5,
-              borderRadius: 50,
-              textTransform: "none",
-              fontSize: "1rem",
-              boxShadow: "0 4px 14px 0 rgba(0,0,0,0.1)",
-              transition: "all 0.3s ease",
-              "&:hover": {
-                bgcolor: "#f3f4f6",
-                transform: "translateY(-2px)",
-                boxShadow: "0 6px 20px rgba(255,255,255,0.2)",
-              },
-            }}
           >
             Video Integrado
-          </Button>
+          </MyButton>
 
-          <Button
-            variant="contained"
+          <MyButton
+            customVariant="info"
             size="large"
             startIcon={<SportsEsportsIcon />}
             onClick={() => handleFilter("laptop-cvideo-dedicada")}
-            sx={{
-              bgcolor: "#A3147F",
-              color: "white",
-              fontWeight: "bold",
-              px: 4,
-              py: 1.5,
-              borderRadius: 50,
-              textTransform: "none",
-              fontSize: "1rem",
-              boxShadow: "0 4px 14px 0 rgba(163, 20, 127, 0.39)",
-              transition: "all 0.3s ease",
-              "&:hover": {
-                bgcolor: "#8a116b",
-                transform: "translateY(-2px)",
-                boxShadow: "0 6px 20px rgba(163, 20, 127, 0.6)",
-              },
-            }}
           >
             Video Dedicado (Gamer/Pro)
-          </Button>
+          </MyButton>
 
-          <Button
-            variant="text"
+          <MyButton
+            customVariant="text"
             endIcon={<ArrowForwardIcon />}
             onClick={() => router.push("/buscar?query=laptop")}
-            sx={{
-              color: "white",
-              fontWeight: 600,
-              ml: { sm: 2 },
-              textTransform: "none",
-              fontSize: "1rem",
-              "&:hover": {
-                color: "#A3147F",
-                bgcolor: "rgba(255,255,255,0.05)"
-              },
-            }}
           >
             Ver todo
-          </Button>
+          </MyButton>
         </Stack>
 
         {/* Slider Section */}
         <Box sx={{ position: "relative", zIndex: 1 }}>
           {/* Wrapping the slider to ensure it handles the dark background if cards expect light */}
           {/* If cards are designed for white background (which they seem to be), they will pop out nicely on dark */}
-          <SliderProduct products={products} Component={CardProduct} exchange={exchange} />
+          <SliderProduct
+            products={products}
+            Component={CardProduct}
+            exchange={exchange}
+          />
         </Box>
       </Container>
     </Box>
