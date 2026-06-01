@@ -12,20 +12,22 @@ import {
   Badge,
   Skeleton,
   alpha,
+  useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import LocalPlayIcon from "@mui/icons-material/LocalPlay"; // 👈 Ícono del Sorteo
 import { useRouter, usePathname } from "next/navigation";
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import { signOut } from "next-auth/react";
 import { DrawerMobile } from "./drawer";
 import { useCart } from "@/hooks/use-cart";
 import { CartDrawer } from "../../cart/CartDrawer";
 import { Session } from "next-auth";
 import { Brands } from "@/types/brands.type";
-import { useTheme } from "@mui/material";
 
+// 1. Actualizamos el navlinks para que concuerde con la versión Desktop
 const navlinks = [
   { id: 1, title: "Inicio", path: "/" },
   { id: 2, title: "Marcas", path: "/marcas" },
@@ -36,6 +38,12 @@ const navlinks = [
     title: "Busca tu comprobante",
     path: "https://see.corporacionluana.pe/",
     external: true,
+  },
+  {
+    id: 6,
+    title: "¡Participa y Gana!",
+    path: "/participa",
+    isCTA: true, // Para que tu DrawerMobile sepa que debe pintarlo distinto
   },
 ];
 
@@ -57,7 +65,6 @@ export function MobileHeader({
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [query, setQuery] = useState("");
-  // Prevent hydration mismatch: cart state lives in localStorage (client-only)
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -67,7 +74,6 @@ export function MobileHeader({
     setMounted(true);
   }, []);
 
-  // Only show real count after client hydration to avoid SSR mismatch
   const itemCount = mounted ? cart.items.length : 0;
 
   const handleSearch = (e: React.FormEvent) => {
@@ -91,7 +97,7 @@ export function MobileHeader({
   return (
     <>
       {/* ═══════════════════════════════════════
-          ROW 1: Hamburger | Logo | Cart | Avatar
+          ROW 1: Hamburger | Logo | PARTICIPA | Cart | Avatar
       ═══════════════════════════════════════ */}
       <Box
         sx={{
@@ -134,15 +140,37 @@ export function MobileHeader({
         {/* ── Spacer ── */}
         <Box sx={{ flexGrow: 1 }} />
 
+        {/* ── Botón CTA Sorteo (Siempre visible y llamativo) ── */}
+        <IconButton
+          component={Link}
+          href="/participa"
+          size="medium"
+          aria-label="Participa en el sorteo"
+          sx={{
+            flexShrink: 0,
+            p: 0.75,
+            bgcolor: "#FFD700", // Fondo dorado
+            color: theme.palette.primary.main, // Ícono morado
+            boxShadow: "0 0 10px rgba(255, 215, 0, 0.6)", // Brillo
+            // Animación de latido suave integrada directo en Material-UI
+            "@keyframes pulse": {
+              "0%": { transform: "scale(1)", boxShadow: "0 0 0 0 rgba(255, 215, 0, 0.7)" },
+              "70%": { transform: "scale(1.05)", boxShadow: "0 0 0 8px rgba(255, 215, 0, 0)" },
+              "100%": { transform: "scale(1)", boxShadow: "0 0 0 0 rgba(255, 215, 0, 0)" },
+            },
+            animation: "pulse 2s infinite",
+            "&:hover": { bgcolor: "#FFEA00" },
+          }}
+        >
+          <LocalPlayIcon fontSize="small" />
+        </IconButton>
+
         {/* ── Cart button ── */}
         <IconButton
           size="medium"
           onClick={() => setCartOpen(true)}
           aria-label="Carrito de compras"
-          sx={{
-            flexShrink: 0,
-            p: 0.75,
-          }}
+          sx={{ flexShrink: 0, p: 0.75 }}
         >
           <Badge
             badgeContent={itemCount}
@@ -163,12 +191,7 @@ export function MobileHeader({
 
         {/* ── Avatar / Login ── */}
         {isLoading ? (
-          <Skeleton
-            variant="circular"
-            width={34}
-            height={34}
-            sx={{ flexShrink: 0 }}
-          />
+          <Skeleton variant="circular" width={34} height={34} sx={{ flexShrink: 0 }} />
         ) : displaySession ? (
           <Link href="/dashboard" style={{ flexShrink: 0 }}>
             <Avatar
@@ -216,9 +239,7 @@ export function MobileHeader({
           },
         }}
       >
-        <SearchIcon
-          sx={{ fontSize: 18, color: "text.disabled", mr: 1, flexShrink: 0 }}
-        />
+        <SearchIcon sx={{ fontSize: 18, color: "text.disabled", mr: 1, flexShrink: 0 }} />
         <InputBase
           placeholder="Buscar productos..."
           value={query}
@@ -258,11 +279,7 @@ export function MobileHeader({
         />
       </Drawer>
 
-      <CartDrawer
-        open={cartOpen}
-        onClose={() => setCartOpen(false)}
-        exchange={exchange}
-      />
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} exchange={exchange} />
     </>
   );
 }

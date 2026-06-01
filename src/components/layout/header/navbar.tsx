@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "@mui/material";
 import { AppBar, Box, Drawer, Toolbar, Button, alpha } from "@mui/material";
+import LocalPlayIcon from "@mui/icons-material/LocalPlay"; // 👈 Ícono de ticket de sorteo
 
 import { DrawerMobile } from "./drawer";
 import { Brands } from "@/types/brands.type";
@@ -13,6 +14,7 @@ interface Props {
   brands: Brands[];
 }
 
+// 1. Agregamos la propiedad 'isCTA' (Call To Action) al nuevo enlace
 const navlinks = [
   { id: 1, title: "Inicio", path: "/" },
   { id: 2, title: "Marcas", path: "/marcas" },
@@ -23,6 +25,12 @@ const navlinks = [
     title: "Busca tu comprobante",
     path: "https://see.corporacionluana.pe/",
     external: true,
+  },
+  { 
+    id: 6, 
+    title: "¡Participa y Gana!", 
+    path: "/participa", 
+    isCTA: true // 👈 Esta bandera cambiará todo el diseño
   },
 ];
 
@@ -50,9 +58,10 @@ export function Navbar({ window }: Props) {
         }}
       >
         <Toolbar sx={{ minHeight: 48, justifyContent: "center" }}>
-          <Box sx={{ display: "flex", gap: 1.5 }}>
+          <Box sx={{ display: "flex", gap: 1.5, alignItems: "center" }}>
             {navlinks.map((link) => {
               const isActive = pathname === link.path;
+              
               return (
                 <Button
                   key={link.id}
@@ -60,18 +69,38 @@ export function Navbar({ window }: Props) {
                   href={link.path}
                   target={link.external ? "_blank" : undefined}
                   rel={link.external ? "noopener noreferrer" : undefined}
+                  // 2. Si es el CTA, le agregamos el ícono a la izquierda
+                  startIcon={link.isCTA ? <LocalPlayIcon /> : undefined}
                   sx={{
-                    color: "white",
-                    fontWeight: isActive ? 700 : 500,
+                    // --- Lógica de Color de Texto ---
+                    color: link.isCTA ? theme.palette.primary.main : "white",
+                    fontWeight: link.isCTA ? 800 : (isActive ? 700 : 500),
                     borderRadius: 2,
-                    px: 2,
+                    px: link.isCTA ? 2.5 : 2,
                     textTransform: "none",
                     fontSize: "0.95rem",
-                    backgroundColor: isActive
+                    transition: "all 0.2s ease-in-out",
+                    
+                    // --- Lógica de Fondo y Sombras ---
+                    backgroundColor: link.isCTA
+                      ? "#FFD700" // Dorado llamativo
+                      : isActive
                       ? "rgba(255,255,255,0.15)"
                       : "transparent",
+                      
+                    boxShadow: link.isCTA 
+                      ? "0 4px 14px 0 rgba(255, 215, 0, 0.39)" 
+                      : "none",
+
+                    // --- Lógica de Hover ---
                     "&:hover": {
-                      backgroundColor: "rgba(255,255,255,0.2)",
+                      backgroundColor: link.isCTA 
+                        ? "#FFEA00" // Un amarillo más brillante al pasar el mouse
+                        : "rgba(255,255,255,0.2)",
+                      transform: link.isCTA ? "translateY(-2px)" : "none",
+                      boxShadow: link.isCTA 
+                        ? "0 6px 20px rgba(255, 215, 0, 0.6)" 
+                        : "none",
                     },
                   }}
                 >
@@ -82,7 +111,6 @@ export function Navbar({ window }: Props) {
           </Box>
         </Toolbar>
       </AppBar>
-
     </Box>
   );
 }
