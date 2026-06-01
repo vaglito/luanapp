@@ -9,8 +9,8 @@ export const TIPOS_DOCUMENTO = [
 export const SERIES_DISPONIBLES = [
   { value: "F001", label: "Factura (F001)" },
   { value: "B001", label: "Boleta (B001)" },
-  { value: "F002", label: "Factura (F002)" },
-  { value: "B002", label: "Boleta (B002)" },
+  { value: "F003", label: "Factura (F003)" },
+  { value: "B004", label: "Boleta (B004)" },
 ];
 
 export const ParticipacionSchema = z.object({
