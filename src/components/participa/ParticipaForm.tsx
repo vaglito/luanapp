@@ -179,6 +179,7 @@ export function ParticipaForm() {
                 select
                 fullWidth
                 label="Tipo"
+                defaultValue="DNI"
                 {...register("doc_type")}
                 error={!!errors.doc_type}
                 helperText={errors.doc_type?.message}
