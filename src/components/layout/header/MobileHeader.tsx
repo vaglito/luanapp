@@ -12,22 +12,20 @@ import {
   Badge,
   Skeleton,
   alpha,
-  useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import LocalPlayIcon from "@mui/icons-material/LocalPlay"; // 👈 Ícono del Sorteo
 import { useRouter, usePathname } from "next/navigation";
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import { signOut } from "next-auth/react";
 import { DrawerMobile } from "./drawer";
 import { useCart } from "@/hooks/use-cart";
 import { CartDrawer } from "../../cart/CartDrawer";
 import { Session } from "next-auth";
 import { Brands } from "@/types/brands.type";
+import { useTheme } from "@mui/material";
 
-// 1. Actualizamos el navlinks para que concuerde con la versión Desktop
 const navlinks = [
   { id: 1, title: "Inicio", path: "/" },
   { id: 2, title: "Marcas", path: "/marcas" },
@@ -59,6 +57,7 @@ export function MobileHeader({
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [query, setQuery] = useState("");
+  // Prevent hydration mismatch: cart state lives in localStorage (client-only)
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -68,6 +67,7 @@ export function MobileHeader({
     setMounted(true);
   }, []);
 
+  // Only show real count after client hydration to avoid SSR mismatch
   const itemCount = mounted ? cart.items.length : 0;
 
   const handleSearch = (e: React.FormEvent) => {
@@ -91,7 +91,7 @@ export function MobileHeader({
   return (
     <>
       {/* ═══════════════════════════════════════
-          ROW 1: Hamburger | Logo | PARTICIPA | Cart | Avatar
+          ROW 1: Hamburger | Logo | Cart | Avatar
       ═══════════════════════════════════════ */}
       <Box
         sx={{
@@ -139,7 +139,10 @@ export function MobileHeader({
           size="medium"
           onClick={() => setCartOpen(true)}
           aria-label="Carrito de compras"
-          sx={{ flexShrink: 0, p: 0.75 }}
+          sx={{
+            flexShrink: 0,
+            p: 0.75,
+          }}
         >
           <Badge
             badgeContent={itemCount}

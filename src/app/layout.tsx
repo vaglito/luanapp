@@ -64,12 +64,12 @@ export default async function RootLayout({
   const brands = await fetchBrands()
 
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="es">
       <head>
         <GoogleAnalytics gaId="G-XELJ23CNWC" />
         <GTMHead />
       </head>
-      <body className={`${inter.className} ${orbitron.variable} antialiased`} suppressHydrationWarning>
+      <body className={`${inter.className} ${orbitron.variable} antialiased`}>
         <GTMBody />
         <ThemeProvider theme={themeOptions}>
           <AppRouterCacheProvider options={{ key: "css" }}>
