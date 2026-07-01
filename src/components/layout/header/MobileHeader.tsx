@@ -39,12 +39,6 @@ const navlinks = [
     path: "https://see.corporacionluana.pe/",
     external: true,
   },
-  {
-    id: 6,
-    title: "¡Participa y Gana!",
-    path: "/participa",
-    isCTA: true, // Para que tu DrawerMobile sepa que debe pintarlo distinto
-  },
 ];
 
 interface MobileHeaderProps {
@@ -140,31 +134,6 @@ export function MobileHeader({
         {/* ── Spacer ── */}
         <Box sx={{ flexGrow: 1 }} />
 
-        {/* ── Botón CTA Sorteo (Siempre visible y llamativo) ── */}
-        <IconButton
-          component={Link}
-          href="/participa"
-          size="medium"
-          aria-label="Participa en el sorteo"
-          sx={{
-            flexShrink: 0,
-            p: 0.75,
-            bgcolor: "#FFD700", // Fondo dorado
-            color: theme.palette.primary.main, // Ícono morado
-            boxShadow: "0 0 10px rgba(255, 215, 0, 0.6)", // Brillo
-            // Animación de latido suave integrada directo en Material-UI
-            "@keyframes pulse": {
-              "0%": { transform: "scale(1)", boxShadow: "0 0 0 0 rgba(255, 215, 0, 0.7)" },
-              "70%": { transform: "scale(1.05)", boxShadow: "0 0 0 8px rgba(255, 215, 0, 0)" },
-              "100%": { transform: "scale(1)", boxShadow: "0 0 0 0 rgba(255, 215, 0, 0)" },
-            },
-            animation: "pulse 2s infinite",
-            "&:hover": { bgcolor: "#FFEA00" },
-          }}
-        >
-          <LocalPlayIcon fontSize="small" />
-        </IconButton>
-
         {/* ── Cart button ── */}
         <IconButton
           size="medium"
@@ -191,7 +160,12 @@ export function MobileHeader({
 
         {/* ── Avatar / Login ── */}
         {isLoading ? (
-          <Skeleton variant="circular" width={34} height={34} sx={{ flexShrink: 0 }} />
+          <Skeleton
+            variant="circular"
+            width={34}
+            height={34}
+            sx={{ flexShrink: 0 }}
+          />
         ) : displaySession ? (
           <Link href="/dashboard" style={{ flexShrink: 0 }}>
             <Avatar
@@ -239,7 +213,9 @@ export function MobileHeader({
           },
         }}
       >
-        <SearchIcon sx={{ fontSize: 18, color: "text.disabled", mr: 1, flexShrink: 0 }} />
+        <SearchIcon
+          sx={{ fontSize: 18, color: "text.disabled", mr: 1, flexShrink: 0 }}
+        />
         <InputBase
           placeholder="Buscar productos..."
           value={query}
@@ -279,7 +255,11 @@ export function MobileHeader({
         />
       </Drawer>
 
-      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} exchange={exchange} />
+      <CartDrawer
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+        exchange={exchange}
+      />
     </>
   );
 }

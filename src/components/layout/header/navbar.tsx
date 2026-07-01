@@ -26,12 +26,6 @@ const navlinks = [
     path: "https://see.corporacionluana.pe/",
     external: true,
   },
-  { 
-    id: 6, 
-    title: "¡Participa y Gana!", 
-    path: "/participa", 
-    isCTA: true // 👈 Esta bandera cambiará todo el diseño
-  },
 ];
 
 const drawerWidth = 260;
