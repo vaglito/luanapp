@@ -29,6 +29,7 @@ export const useCart = create(
           const newQuantity = existingItems.quantity + quantity;
           if (newQuantity > data.relay.totalStock) {
             showToast.error("No puedes agregar más que el stock disponible.");
+            return;
           }
           const updatedItems = currentItems.map((item) =>
             item.id === data.id ? { ...item, quantity: newQuantity } : item
@@ -38,6 +39,7 @@ export const useCart = create(
         } else {
           if (quantity > data.relay.totalStock) {
             showToast.error("No puedes agregar más que el stock disponible.");
+            return;
           }
 
           set({ items: [...currentItems, { ...data, quantity }] });
@@ -51,10 +53,12 @@ export const useCart = create(
 
         if (quantity > item.relay.totalStock) {
           showToast.error("No puedes exceder el stock disponible.");
+          return;
         }
 
         if (quantity < 1) {
           showToast.info("La cantidad mínima es 1.");
+          return;
         }
 
         const updatedItems = currentItems.map((item) =>
