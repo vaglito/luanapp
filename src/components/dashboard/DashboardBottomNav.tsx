@@ -9,8 +9,6 @@ import {
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import EngineeringIcon from "@mui/icons-material/Engineering";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import { User } from "next-auth";
 
@@ -23,26 +21,13 @@ export function DashboardBottomNav({ user, onMenuClick }: DashboardBottomNavProp
   const pathname = usePathname();
   const router = useRouter();
 
-  // Determine dynamic third action based on role
-  let dynamicAction = {
+  // Use hardcoded /dashboard/invoices always — /dashboard/sales and /dashboard/tech
+  // do not exist yet. The role-based dynamic path can be restored when those routes are built.
+  const dynamicAction = {
     label: "Facturas",
     icon: <ReceiptIcon />,
     path: "/dashboard/invoices",
   };
-
-  if (user.isSeller || user.isAdmin || user.isSuperuser) {
-    dynamicAction = {
-      label: "Ventas",
-      icon: <ShoppingCartIcon />,
-      path: "/dashboard/sales",
-    };
-  } else if (user.isTechnician) {
-    dynamicAction = {
-      label: "Servicio",
-      icon: <EngineeringIcon />,
-      path: "/dashboard/tech",
-    };
-  }
 
   // Handle navigation internally so BottomNavigation can use standard 'value' logic
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {

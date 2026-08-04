@@ -4,8 +4,8 @@ import { GridProduct } from "@/components/catalog/product/grid-product";
 import { PaginationButtons } from "@/components/common/PaginationButtons";
 import { Box, Typography, Button, Paper } from "@mui/material";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
-import ErrorIcon from "@mui/icons-material/Error";
 import Link from "next/link";
+import { SearchErrorFallback } from "./SearchErrorFallback";
 
 interface ProductResultListProps {
     query: string;
@@ -106,36 +106,7 @@ export const ProductResultList = async ({
         );
     } catch (error) {
         return (
-            <Paper
-                elevation={0}
-                sx={{
-                    p: 4,
-                    textAlign: "center",
-                    borderRadius: 4,
-                    bgcolor: "#fff",
-                    border: "1px solid #e5e7eb",
-                }}
-            >
-                <ErrorIcon color="error" sx={{ fontSize: 60, mb: 2 }} />
-                <Typography
-                    variant="h5"
-                    color="text.secondary"
-                    gutterBottom
-                    fontWeight={600}
-                >
-                    Ocurrió un error al buscar productos.
-                </Typography>
-                <Typography variant="body1" color="text.secondary" mb={3}>
-                    Por favor, intenta recargar la página o vuelve más tarde.
-                </Typography>
-                <Button
-                    variant="contained"
-                    onClick={() => window.location.reload()} // Simple reload
-                    sx={{ bgcolor: "#5914A3", "&:hover": { bgcolor: "#450b82" } }}
-                >
-                    Recargar
-                </Button>
-            </Paper>
+            <SearchErrorFallback message="Ocurrió un error al buscar productos." />
         );
     }
 };
