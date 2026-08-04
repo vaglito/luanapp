@@ -3,7 +3,8 @@ import { ProductPrice } from "@/components/catalog/product/detail/product-price"
 import { ShopFunction } from "./shop-functions";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import { isRestrictedSubcategory } from "@/utils/restricted";
-import { ProductDetail } from "@/types/products.type"; // 🔹 Importamos el tipo
+import { ProductDetail } from "@/types/products.type";
+import DOMPurify from "dompurify";
 
 interface ProductDetailDescriptionProps {
   title: string;
@@ -16,6 +17,13 @@ interface ProductDetailDescriptionProps {
   product: ProductDetail;
 }
 
+const DOMPURIFY_ALLOWED_TAGS = [
+  "b", "i", "u", "ul", "ol", "li", "p", "br",
+  "strong", "em", "a", "img", "table", "thead", "tbody",
+  "tr", "td", "th", "h1", "h2", "h3", "h4", "h5", "h6",
+  "span", "div", "pre", "code", "blockquote", "hr",
+];
+
 export function ProductDetailDescription({
   title,
   resumen,
@@ -27,6 +35,10 @@ export function ProductDetailDescription({
   product,
 }: ProductDetailDescriptionProps) {
   const isRestricted = isRestrictedSubcategory(subCategories);
+
+  const sanitizedHtml = resumen
+    ? DOMPurify.sanitize(resumen, { ALLOWED_TAGS: DOMPURIFY_ALLOWED_TAGS })
+    : "";
 
   return (
     <Box
@@ -98,7 +110,7 @@ export function ProductDetailDescription({
           "& p": { mb: 1.5 },
         }}
       >
-        <Box dangerouslySetInnerHTML={{ __html: resumen }} />
+        <Box dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
       </Box>
     </Box>
   );
