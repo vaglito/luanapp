@@ -52,7 +52,14 @@ import axios from "axios";
 // ... previous code ...
 
 export async function RegisterUser(data: RegisterInput) {
-  // ... validation ...
+  const validatedFields = registerSchema.safeParse(data);
+
+  if (!validatedFields.success) {
+    return {
+      error: "Hay errores en los datos ingresados",
+      fieldErrors: validatedFields.error.flatten(),
+    };
+  }
 
   try {
     const response = await apiClient.post("/api/v2.0/auth/user/create/", data);

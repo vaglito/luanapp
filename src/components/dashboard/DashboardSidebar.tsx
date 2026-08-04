@@ -70,13 +70,13 @@ export const DashboardSidebar = ({
           label: "Usuarios",
           icon: <PeopleIcon />,
           path: "/dashboard/users",
-          visible: user?.isAdmin,
+          visible: false, // TODO: habilitar cuando la ruta exista
         },
         {
           label: "Configuración",
           icon: <SettingsIcon />,
           path: "/dashboard/settings",
-          visible: user?.isAdmin,
+          visible: false, // TODO: habilitar cuando la ruta exista
         },
         {
           label: "Banners",
@@ -93,7 +93,7 @@ export const DashboardSidebar = ({
           label: "Ventas",
           icon: <ShoppingCartIcon />,
           path: "/dashboard/sales",
-          visible: user?.isAdmin || user?.isSeller,
+          visible: false, // TODO: habilitar cuando la ruta exista
         },
         {
           label: "Proformas",
@@ -105,13 +105,13 @@ export const DashboardSidebar = ({
           label: "Ordenes",
           icon: <LocalShippingIcon />,
           path: "/dashboard/ordenes",
-          visible: user?.isAdmin || user?.isSeller,
+          visible: false, // TODO: habilitar cuando la ruta exista
         },
         {
           label: "Servicio Técnico",
           icon: <EngineeringIcon />,
           path: "/dashboard/tech",
-          visible: user?.isAdmin || user?.isTechnician,
+          visible: false, // TODO: habilitar cuando la ruta exista
         },
       ],
     },

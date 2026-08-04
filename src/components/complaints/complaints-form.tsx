@@ -17,10 +17,13 @@ import {
     FormHelperText,
     Checkbox,
     Paper,
-    Divider,
+    CircularProgress,
+    Alert,
 } from "@mui/material";
 import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
+import { postComplaint } from "@/services/complaints/complaints";
+import type { ComplaintResponse } from "@/types/complaints.type";
 
 // Schema de validación
 const complaintSchema = z.object({
@@ -51,7 +54,9 @@ const complaintSchema = z.object({
 type ComplaintFormData = z.infer<typeof complaintSchema>;
 
 export function ComplaintsForm() {
-    const [submitted, setSubmitted] = useState(false);
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [trackingNumber, setTrackingNumber] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const {
         control,
@@ -69,14 +74,34 @@ export function ComplaintsForm() {
         mode: "onChange"
     });
 
-    const onSubmit = (data: ComplaintFormData) => {
-        console.log("Form Data:", data);
-        // Aquí iría la lógica para enviar al API
-        setSubmitted(true);
-        window.scrollTo({ top: 0, behavior: "smooth" });
+    const onSubmit = async (data: ComplaintFormData) => {
+        setStatus("loading");
+        setErrorMessage(null);
+
+        try {
+            const response: ComplaintResponse = await postComplaint(data);
+            setTrackingNumber(response.tracking_number);
+            setStatus("success");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        } catch (error) {
+            const message =
+                error instanceof Error
+                    ? error.message
+                    : "Error desconocido al enviar el reclamo.";
+            setErrorMessage(message);
+            setStatus("error");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
     };
 
-    if (submitted) {
+    const handleReset = () => {
+        setStatus("idle");
+        setTrackingNumber(null);
+        setErrorMessage(null);
+        reset();
+    };
+
+    if (status === "success" && trackingNumber) {
         return (
             <Paper elevation={3} sx={{ p: 5, textAlign: "center", borderRadius: 4 }}>
                 <Typography variant="h4" color="primary" gutterBottom sx={{ fontWeight: "bold" }}>
@@ -86,12 +111,12 @@ export function ComplaintsForm() {
                     Hemos recibido tu solicitud correctamente. Se ha enviado una copia de tu hoja de reclamación a tu correo electrónico.
                 </Typography>
                 <Typography variant="h6" sx={{ mt: 2 }}>
-                    Número de Reclamo: <span style={{ color: "#A3147F" }}>REC-{new Date().getFullYear()}-00123</span>
+                    Número de Reclamo: <span style={{ color: "#A3147F" }}>{trackingNumber}</span>
                 </Typography>
                 <Typography variant="body2" sx={{ mt: 2, mb: 4, color: "grey.600" }}>
                     Recuerda que tenemos un plazo máximo de 15 días hábiles para dar respuesta a tu solicitud.
                 </Typography>
-                <Button variant="outlined" onClick={() => { setSubmitted(false); reset(); }}>
+                <Button variant="outlined" onClick={handleReset}>
                     Enviar otro reclamo
                 </Button>
             </Paper>
@@ -100,6 +125,16 @@ export function ComplaintsForm() {
 
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+            {errorMessage && (
+                <Alert
+                    severity="error"
+                    sx={{ mb: 3, borderRadius: 2 }}
+                    onClose={() => setErrorMessage(null)}
+                >
+                    {errorMessage}
+                </Alert>
+            )}
+
             <Paper elevation={0} sx={{ p: { xs: 2, md: 4 }, border: "1px solid #e0e0e0", borderRadius: 3 }}>
 
                 {/* 1. Identificación del Consumidor */}
@@ -355,8 +390,8 @@ export function ComplaintsForm() {
                         type="submit"
                         variant="contained"
                         size="large"
-                        disabled={!isValid}
-                        startIcon={<SendIcon />}
+                        disabled={!isValid || status === "loading"}
+                        startIcon={status === "loading" ? <CircularProgress size={20} color="inherit" /> : <SendIcon />}
                         sx={{
                             bgcolor: "#A3147F",
                             py: 1.5,
@@ -366,7 +401,7 @@ export function ComplaintsForm() {
                             "&:hover": { bgcolor: "#8a116b" }
                         }}
                     >
-                        Enviar Hoja de Reclamación
+                        {status === "loading" ? "Enviando..." : "Enviar Hoja de Reclamación"}
                     </Button>
                 </Box>
 

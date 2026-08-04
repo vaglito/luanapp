@@ -2,6 +2,7 @@
 import { Box, Typography, Stack, Divider } from "@mui/material";
 import { useCart } from "@/hooks/use-cart";
 import { convertUsdToPen } from "@/lib/currency";
+import { getPrice } from "@/lib/getPrice";
 import { generateProformaPDF } from "@/utils/pdf-proforma";
 import { MyButton } from "../ui/Buttons/Buttons";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
@@ -11,9 +12,7 @@ export function CartSummary({ exchange }: { exchange: number }) {
   const { items, removeAll } = useCart();
 
   const totalUSD = items.reduce((sum, item) => {
-    const price =
-      item.relay.priceBulk > 0 ? item.relay.priceBulk : item.relay.priceSale;
-    return sum + price * item.quantity;
+    return sum + getPrice(item) * item.quantity;
   }, 0);
 
   const totalPEN = convertUsdToPen(totalUSD, exchange);
