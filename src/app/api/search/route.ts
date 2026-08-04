@@ -17,7 +17,7 @@ export async function GET(request: Request) {
       {
         method: "GET",
         headers: {
-          "Content-Type": "applications/json",
+          "Content-Type": "application/json",
           "x-api-key": `${API_KEY}`,
         },
       }

@@ -20,6 +20,6 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
   STAFF: ["dashboard.view", "orders.view", "orders.manage"],
   SELLER: ["orders.manage", "products.manage"],
   TECHNICIAN: ["tickets.view", "tickets.update"],
-  EDITOR: ["desboard.view", "products.manage"],
+  EDITOR: ["dashboard.view", "products.manage"],
   CUSTOMER: ["orders.view", "profile.update"],
 };

@@ -8,6 +8,7 @@ export function getUserRoles(token: JWT): Role[] {
   if (token.isStaff) roles.push("STAFF");
   if (token.isSeller) roles.push("SELLER");
   if (token.isTechnician) roles.push("TECHNICIAN");
+  if (token.isEditor) roles.push("EDITOR");
   if (token.isCustomer) roles.push("CUSTOMER");
 
   return roles;
