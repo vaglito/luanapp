@@ -36,22 +36,29 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const site = await fetchSiteMetadata(1);
+  try {
+    const site = await fetchSiteMetadata(1);
 
-  return {
-    metadataBase: new URL(process.env.API_URL || "http://localhost:3000"),
-    title: `${site.siteName} | ${site.slogan}`,
-    description: site.metaDescription,
-    keywords: ["computadoras", "accesorios", "envío rápido"],
-    openGraph: {
+    return {
+      metadataBase: new URL(process.env.API_URL || "http://localhost:3000"),
       title: `${site.siteName} | ${site.slogan}`,
       description: site.metaDescription,
-      images: [site.logo],
-    },
-    icons: {
-      icon: site.favicon,
-    },
-  };
+      keywords: ["computadoras", "accesorios", "envío rápido"],
+      openGraph: {
+        title: `${site.siteName} | ${site.slogan}`,
+        description: site.metaDescription,
+        images: [site.logo],
+      },
+      icons: {
+        icon: site.favicon,
+      },
+    };
+  } catch {
+    return {
+      title: "Corporación Luana | Tecnología y Hardware",
+      description: "Tienda de computadoras, accesorios y componentes de hardware con envío rápido en Perú.",
+    };
+  }
 }
 
 export default async function RootLayout({
