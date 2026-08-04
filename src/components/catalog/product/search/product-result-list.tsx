@@ -2,9 +2,8 @@ import { fetchProductSearchList } from "@/services/catalog/products";
 import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
 import { GridProduct } from "@/components/catalog/product/grid-product";
 import { PaginationButtons } from "@/components/common/PaginationButtons";
-import { Box, Typography, Button, Paper } from "@mui/material";
-import SearchOffIcon from "@mui/icons-material/SearchOff";
-import Link from "next/link";
+import { Box, Typography } from "@mui/material";
+import { EmptyState } from "@/components/shared/EmptyState";
 import { SearchErrorFallback } from "./SearchErrorFallback";
 
 interface ProductResultListProps {
@@ -36,43 +35,12 @@ export const ProductResultList = async ({
 
         if (!searchProduct || searchProduct.results.length === 0) {
             return (
-                <Paper
-                    elevation={0}
-                    sx={{
-                        p: 6,
-                        textAlign: "center",
-                        borderRadius: 4,
-                        bgcolor: "#fff",
-                        border: "1px dashed #e5e7eb",
-                    }}
-                >
-                    <SearchOffIcon sx={{ fontSize: 80, color: "#d1d5db", mb: 2 }} />
-                    <Typography variant="h4" color="#545454" fontWeight={700} gutterBottom>
-                        Sin resultados para "{query}"
-                    </Typography>
-                    <Typography
-                        variant="body1"
-                        color="text.secondary"
-                        sx={{ maxWidth: 600, mx: "auto", mb: 4 }}
-                    >
-                        No encontramos productos que coincidan con tu búsqueda. Intenta
-                        revisar la ortografía o usar términos más generales.
-                    </Typography>
-                    <Link href="/" passHref style={{ textDecoration: "none" }}>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            sx={{
-                                bgcolor: "#A3147F",
-                                borderRadius: 50,
-                                px: 4,
-                                "&:hover": { bgcolor: "#800e63" },
-                            }}
-                        >
-                            Explorar Catálogo General
-                        </Button>
-                    </Link>
-                </Paper>
+                <EmptyState
+                    title={`Sin resultados para "${query}"`}
+                    description="No encontramos productos que coincidan con tu búsqueda. Intenta revisar la ortografía o usar términos más generales."
+                    primaryAction={{ label: "Volver al catálogo", href: "/productos" }}
+                    secondaryAction={{ label: "Limpiar filtros", href: "/buscar" }}
+                />
             );
         }
 

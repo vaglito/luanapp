@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/skeleton/search-skeletons";
 import { MobileFilterWrapper } from "@/components/catalog/product/search/mobile-filter-wrapper";
 import { ProductSortSelect } from "@/components/catalog/product/search/product-sort-select";
+import { SearchLoadingProgress } from "@/components/catalog/product/search/search-loading-progress";
 
 export const revalidate = 0;
 
@@ -43,6 +44,9 @@ export default async function SearchPage({ searchParams }: SearchParamsProps) {
 
   return (
     <Container maxWidth="xl" sx={{ py: 4, px: { xs: 0, sm: 2 } }}>
+      {/* Loading indicator for filter/sort transitions */}
+      <SearchLoadingProgress />
+
       {/* Header Results Info */}
       <Paper
         elevation={0}

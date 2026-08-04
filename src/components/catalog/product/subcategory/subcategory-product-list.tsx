@@ -3,9 +3,8 @@ import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
 import { GridProduct } from "@/components/catalog/product/grid-product";
 import { PaginationButtons } from "@/components/common/PaginationButtons";
 import { Box, Typography, Button, Paper, Container } from "@mui/material";
-import SearchOffIcon from "@mui/icons-material/SearchOff";
+import { EmptyState } from "@/components/shared/EmptyState";
 import ErrorIcon from "@mui/icons-material/Error";
-import Link from "next/link";
 import { startCase } from "lodash";
 
 interface SubCategoryProductListProps {
@@ -38,48 +37,12 @@ export const SubCategoryProductList = async ({
             if (isEmpty) {
                 return (
                     <Container maxWidth="xl" sx={{ mt: 8, mb: 8, px: { xs: 2, sm: 2 } }}>
-                        <Paper
-                            elevation={0}
-                            sx={{
-                                p: 6,
-                                textAlign: "center",
-                                borderRadius: 4,
-                                bgcolor: "#fff",
-                                border: "1px dashed #e5e7eb",
-                            }}
-                        >
-                            <SearchOffIcon sx={{ fontSize: 80, color: "#d1d5db", mb: 2 }} />
-                            <Typography
-                                variant="h4"
-                                color="#545454"
-                                fontWeight={700}
-                                gutterBottom
-                            >
-                                No hay productos en esta categoría
-                            </Typography>
-                            <Typography
-                                variant="body1"
-                                color="text.secondary"
-                                sx={{ maxWidth: 600, mx: "auto", mb: 4 }}
-                            >
-                                Actualmente no tenemos stock disponible para{" "}
-                                {startCase(subcategorySlug)}. Por favor revisa otras categorías.
-                            </Typography>
-                            <Link href="/" passHref style={{ textDecoration: "none" }}>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    sx={{
-                                        bgcolor: "#A3147F",
-                                        borderRadius: 50,
-                                        px: 4,
-                                        "&:hover": { bgcolor: "#800e63" },
-                                    }}
-                                >
-                                    Volver al Inicio
-                                </Button>
-                            </Link>
-                        </Paper>
+                        <EmptyState
+                            title="No hay productos en esta categoría"
+                            description={`Actualmente no tenemos stock disponible para ${startCase(subcategorySlug)}. Por favor revisa otras categorías.`}
+                            primaryAction={{ label: "Volver al catálogo", href: "/productos" }}
+                            secondaryAction={{ label: "Limpiar filtros", href: `/catalogo/${categorySlug}/${subcategorySlug}` }}
+                        />
                     </Container>
                 );
             }
