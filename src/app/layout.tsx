@@ -13,9 +13,11 @@ import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
 import { GTMHead } from "@/components/GTMhead";
 import { GTMBody } from "@/components/GTMbody";
 import { Box } from "@mui/material";
+import { ScrollToTop } from "@/components/shared/ScrollToTop";
 import { Providers } from "./providers";
 import { fetchBrands } from "@/services/catalog/brands";
 import { WhatsAppBubble } from "@/components/ui/whatsapp-bubble";
+import { Suspense } from "react";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -89,6 +91,9 @@ export default async function RootLayout({
                   minHeight: "100vh",
                 }}
               >
+                <Suspense>
+                  <ScrollToTop />
+                </Suspense>
                 <Header logo={site.logo} exchange={exchange.exchange} brands={brands} />
 
                 {/* Contenido principal ocupa el espacio restante */}
