@@ -1,7 +1,12 @@
-import { Box, Typography } from "@mui/material";
+"use client";
+
+import { useState, useCallback } from "react";
+import { Box, Typography, IconButton, Tooltip } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import CancelIcon from "@mui/icons-material/Cancel";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CheckIcon from "@mui/icons-material/Check";
 
 interface CardStockProps {
   stock: number;
@@ -9,6 +14,26 @@ interface CardStockProps {
 }
 
 export function CardStock({ stock, cod }: CardStockProps) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(cod);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback for older browsers
+      const textarea = document.createElement("textarea");
+      textarea.value = cod;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }, [cod]);
+
   let content;
   if (stock > 20) {
     content = (
@@ -135,10 +160,23 @@ export function CardStock({ stock, cod }: CardStockProps) {
       }}
     >
       <Box>{content}</Box>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
         <Typography sx={{ fontSize: 15, fontWeight: 600, color: "#545454" }}>
-          Codigo: {cod}
+          Código: {cod}
         </Typography>
+        <Tooltip title={copied ? "¡Copiado!" : "Copiar código"} arrow>
+          <IconButton
+            size="small"
+            onClick={handleCopy}
+            sx={{ p: 0.5, color: copied ? "success.main" : "action.active" }}
+          >
+            {copied ? (
+              <CheckIcon sx={{ fontSize: 16 }} />
+            ) : (
+              <ContentCopyIcon sx={{ fontSize: 14 }} />
+            )}
+          </IconButton>
+        </Tooltip>
       </Box>
     </Box>
   );
