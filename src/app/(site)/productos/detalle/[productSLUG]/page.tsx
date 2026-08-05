@@ -10,6 +10,7 @@ import { fetchExchangeRate } from "@/services/catalog/exchangeRate";
 import { notFound } from "next/navigation";
 import { CarouselWrapper } from "@/components/catalog/product/detail/CarouselWrapper";
 import { ProductViewTracker } from "@/components/catalog/product/product-view-tracker";
+import { BreadcrumbNav } from "@/components/shared/BreadcrumbNav";
 
 export const revalidate = 0;
 
@@ -56,6 +57,12 @@ export default async function ProductDetailPage({
 
   return (
     <Container maxWidth="xl" sx={{ marginY: 4 }}>
+      <BreadcrumbNav
+        items={[
+          { label: "Productos", href: "/productos" },
+          { label: product.relay.productName },
+        ]}
+      />
       <ProductViewTracker slug={productSLUG} />
       <Box
         sx={{

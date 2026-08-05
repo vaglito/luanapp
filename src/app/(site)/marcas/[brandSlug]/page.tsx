@@ -8,6 +8,7 @@ import {
   FiltersSkeleton,
 } from "@/components/ui/skeleton/search-skeletons";
 import { MobileFilterWrapper } from "@/components/catalog/product/search/mobile-filter-wrapper";
+import { BreadcrumbNav } from "@/components/shared/BreadcrumbNav";
 
 export const generateMetadata = async ({
   params,
@@ -48,6 +49,13 @@ export default async function BrandDetail({
 
   return (
     <Container maxWidth="xl" sx={{ py: 4, px: { xs: 0, sm: 2 } }}>
+      <BreadcrumbNav
+        items={[
+          { label: "Marcas", href: "/marcas" },
+          { label: brandName },
+        ]}
+      />
+
       {/* Header Results Info */}
       <Paper
         elevation={0}

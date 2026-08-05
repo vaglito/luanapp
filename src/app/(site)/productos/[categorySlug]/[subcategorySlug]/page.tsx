@@ -8,6 +8,7 @@ import {
 import { SubCategoryProductList } from "@/components/catalog/product/subcategory/subcategory-product-list";
 import { SubCategoryFilterList } from "@/components/catalog/product/subcategory/subcategory-filter-list";
 import { MobileFilterWrapper } from "@/components/catalog/product/search/mobile-filter-wrapper";
+import { BreadcrumbNav } from "@/components/shared/BreadcrumbNav";
 
 export const revalidate = 0;
 
@@ -51,6 +52,14 @@ export default async function ListProductSubCategoryPage(
 
   return (
     <Container maxWidth="xl" sx={{ py: 4, px: { xs: 0, sm: 2 } }}>
+      <BreadcrumbNav
+        items={[
+          { label: "Productos", href: "/productos" },
+          { label: startCase(categorySlug) },
+          { label: startCase(subcategorySlug) },
+        ]}
+      />
+
       {/* Header Results Info */}
       <Paper
         elevation={0}
