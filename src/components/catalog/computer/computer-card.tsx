@@ -63,6 +63,8 @@ export function ComputerCard({
             src={computer.image || "/not-found.png"}
             alt={computer.title}
             fill
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmMGYwZjAiIC8+PC9zdmc+"
             style={{ objectFit: "contain", padding: "12px" }}
             sizes="(max-width: 640px) 80vw, (max-width: 1024px) 40vw, 25vw"
           />

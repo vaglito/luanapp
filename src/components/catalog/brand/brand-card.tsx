@@ -55,6 +55,8 @@ export const BrandCard = ({ brand }: { brand: Brands }) => {
             alt={`Marca ${brand.relay.brandName}`}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmMGYwZjAiIC8+PC9zdmc+"
             style={{ objectFit: "contain", padding: "16px" }}
           />
         </Box>
