@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Typography } from "@mui/material";
 import { ProductPrice } from "@/components/catalog/product/detail/product-price";
 import { ShopFunction } from "./shop-functions";
