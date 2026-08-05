@@ -1,4 +1,5 @@
 "use client"
+import { memo } from "react";
 import { Box, Typography, IconButton, TextField, Divider, Tooltip, alpha, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -13,8 +14,9 @@ interface CartItemProps {
   exchange: number;
 }
 
-export function CartItem({ product, exchange }: CartItemProps) {
-  const { removeItem, updatedItemQuantity } = useCart();
+export const CartItem = memo(function CartItem({ product, exchange }: CartItemProps) {
+  const removeItem = useCart((s) => s.removeItem);
+  const updatedItemQuantity = useCart((s) => s.updatedItemQuantity);
 
   // Compatibilidad para Items tipo Computer que no tienen 'relay'
   const isComputer = !product.relay;
@@ -142,4 +144,4 @@ export function CartItem({ product, exchange }: CartItemProps) {
       </Stack>
     </Box>
   );
-}
+});

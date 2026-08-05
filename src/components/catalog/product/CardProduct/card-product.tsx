@@ -1,4 +1,5 @@
 "use client";
+import { memo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Products } from "@/types/products.type";
@@ -13,13 +14,13 @@ import { isRestrictedSubcategory } from "@/utils/restricted";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 
-export const CardProduct = ({
+export const CardProduct = memo(function CardProduct({
   product,
   exchange,
 }: {
   product: Products;
   exchange: number;
-}) => {
+}) {
   const isRestricted = isRestrictedSubcategory(
     product.relay.subcategoryCode.subcategoryweb,
   );
@@ -189,4 +190,4 @@ export const CardProduct = ({
       </Box>
     </Box>
   );
-};
+});

@@ -80,3 +80,15 @@ export const useCart = create(
     }
   )
 );
+
+/**
+ * Stable action references — selectors ensure callers never get
+ * new function references across renders, equivalent to useCallback.
+ */
+export function useCartActions() {
+  const addItem = useCart((s) => s.addItem);
+  const removeItem = useCart((s) => s.removeItem);
+  const updatedItemQuantity = useCart((s) => s.updatedItemQuantity);
+  const removeAll = useCart((s) => s.removeAll);
+  return { addItem, removeItem, updatedItemQuantity, removeAll } as const;
+}
