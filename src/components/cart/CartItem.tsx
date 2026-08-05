@@ -1,6 +1,6 @@
 "use client"
-import { memo } from "react";
-import { Box, Typography, IconButton, TextField, Divider, Tooltip, alpha, Stack } from "@mui/material";
+import { memo, useState } from "react";
+import { Box, Typography, IconButton, TextField, Divider, Tooltip, alpha, Stack, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,6 +15,7 @@ interface CartItemProps {
 }
 
 export const CartItem = memo(function CartItem({ product, exchange }: CartItemProps) {
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const removeItem = useCart((s) => s.removeItem);
   const updatedItemQuantity = useCart((s) => s.updatedItemQuantity);
 
@@ -134,7 +135,7 @@ export const CartItem = memo(function CartItem({ product, exchange }: CartItemPr
         <Box sx={{ alignSelf: "flex-start" }}>
           <Tooltip title="Eliminar del carrito" arrow>
             <IconButton 
-              onClick={() => removeItem(product.id)} 
+              onClick={() => setConfirmOpen(true)} 
               sx={{ color: 'error.light', '&:hover': { color: 'error.main', bgcolor: alpha('#f44336', 0.08) } }}
             >
               <DeleteIcon fontSize="small" />
@@ -142,6 +143,38 @@ export const CartItem = memo(function CartItem({ product, exchange }: CartItemPr
           </Tooltip>
         </Box>
       </Stack>
+
+      <Dialog
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        aria-labelledby="confirm-delete-title"
+        aria-describedby="confirm-delete-description"
+      >
+        <DialogTitle id="confirm-delete-title">
+          ¿Eliminar producto?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="confirm-delete-description">
+            ¿Estás seguro de que querés eliminar <strong>{productName}</strong> del carrito?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmOpen(false)} color="inherit">
+            Cancelar
+          </Button>
+          <Button
+            onClick={() => {
+              removeItem(product.id);
+              setConfirmOpen(false);
+            }}
+            color="error"
+            variant="contained"
+            autoFocus
+          >
+            Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 });

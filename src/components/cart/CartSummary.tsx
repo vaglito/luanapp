@@ -1,5 +1,6 @@
 "use client"
-import { Box, Typography, Stack, Divider } from "@mui/material";
+import { useState } from "react";
+import { Box, Typography, Stack, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
 import { useCart } from "@/hooks/use-cart";
 import { convertUsdToPen } from "@/lib/currency";
 import { getPrice } from "@/lib/getPrice";
@@ -10,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 export function CartSummary({ exchange }: { exchange: number }) {
   const { items, removeAll } = useCart();
+  const [clearOpen, setClearOpen] = useState(false);
 
   const totalUSD = items.reduce((sum, item) => {
     return sum + getPrice(item) * item.quantity;
@@ -59,13 +61,45 @@ export function CartSummary({ exchange }: { exchange: number }) {
           customVariant="alert" 
           color="error" 
           fullWidth 
-          onClick={removeAll} 
+          onClick={() => setClearOpen(true)} 
           endIcon={<DeleteIcon />}
           sx={{ py: 1.5 }}
         >
           Vaciar carrito
         </MyButton>
       </Stack>
+
+      <Dialog
+        open={clearOpen}
+        onClose={() => setClearOpen(false)}
+        aria-labelledby="confirm-clear-title"
+        aria-describedby="confirm-clear-description"
+      >
+        <DialogTitle id="confirm-clear-title">
+          ¿Vaciar carrito?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="confirm-clear-description">
+            ¿Estás seguro de que querés eliminar todos los productos del carrito?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setClearOpen(false)} color="inherit">
+            Cancelar
+          </Button>
+          <Button
+            onClick={() => {
+              removeAll();
+              setClearOpen(false);
+            }}
+            color="error"
+            variant="contained"
+            autoFocus
+          >
+            Vaciar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
