@@ -1,6 +1,7 @@
 "use server";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
+import axios from "axios";
 import apiClient from "@/services/apiPublic";
 import { LoginSchema, loginSchema } from "@/validations/auth/login.schema";
 import {
@@ -8,7 +9,12 @@ import {
   RegisterInput,
 } from "@/validations/auth/register.schema";
 
-export async function loginAction(data: LoginSchema) {
+export type LoginResult = {
+  success?: boolean;
+  error?: string;
+};
+
+export async function loginAction(data: LoginSchema): Promise<LoginResult> {
   const validatedFields = loginSchema.safeParse(data);
 
   if (!validatedFields.success)
@@ -47,11 +53,15 @@ export async function loginAction(data: LoginSchema) {
   }
 }
 
-import axios from "axios";
+export type RegisterResult = {
+  error?: string;
+  fieldErrors?: unknown;
+  id?: number;
+  email?: string;
+  serverErrors?: unknown;
+};
 
-// ... previous code ...
-
-export async function RegisterUser(data: RegisterInput) {
+export async function RegisterUser(data: RegisterInput): Promise<RegisterResult> {
   const validatedFields = registerSchema.safeParse(data);
 
   if (!validatedFields.success) {
@@ -78,7 +88,13 @@ export async function RegisterUser(data: RegisterInput) {
   }
 }
 
-export async function VerifyEmailAction(tokenUUID: string) {
+export type VerifyResult = {
+  success: boolean;
+  detail?: string;
+  error?: string;
+};
+
+export async function VerifyEmailAction(tokenUUID: string): Promise<VerifyResult> {
   try {
     const response = await apiClient.post("/api/v2.0/auth/verify-email/", {
       token: tokenUUID,
@@ -90,11 +106,17 @@ export async function VerifyEmailAction(tokenUUID: string) {
     if (axios.isAxiosError(error)) {
       message = error.response?.data?.detail || message;
     }
-    return { error: message };
+    return { success: false, error: message };
   }
 }
 
-export async function ForgotPasswordAction(email: string) {
+export type PasswordResetResult = {
+  success: boolean;
+  detail?: string;
+  error?: string;
+};
+
+export async function ForgotPasswordAction(email: string): Promise<PasswordResetResult> {
   try {
     const response = await apiClient.post("/api/v2.0/auth/password-reset/", {
       email,
@@ -103,17 +125,17 @@ export async function ForgotPasswordAction(email: string) {
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response?.data?.detail) {
-        return { error: error.response.data.detail };
+        return { success: false, error: error.response.data.detail };
       }
       if (error.response?.data?.email) {
-        return { error: error.response.data.email[0] }
+        return { success: false, error: error.response.data.email[0] }
       }
     }
-    return { error: "Ocurrió un error al procesar tu solicitud." };
+    return { success: false, error: "Ocurrió un error al procesar tu solicitud." };
   }
 }
 
-export async function ResetPasswordAction(uid: string, token: string, newPassword: string) {
+export async function ResetPasswordAction(uid: string, token: string, newPassword: string): Promise<PasswordResetResult> {
   try {
     const response = await apiClient.post("/api/v2.0/auth/password-reset-confirm/", {
       uid,
@@ -124,11 +146,11 @@ export async function ResetPasswordAction(uid: string, token: string, newPasswor
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response?.data) {
       const errorData = error.response.data;
-      if (errorData.detail) return { error: errorData.detail };
-      if (errorData.token) return { error: errorData.token[0] || "El enlace es inválido o ha expirado." };
-      if (errorData.uid) return { error: "Enlace inválido." };
-      if (errorData.new_password) return { error: errorData.new_password[0] };
+      if (errorData.detail) return { success: false, error: errorData.detail };
+      if (errorData.token) return { success: false, error: errorData.token[0] || "El enlace es inválido o ha expirado." };
+      if (errorData.uid) return { success: false, error: "Enlace inválido." };
+      if (errorData.new_password) return { success: false, error: errorData.new_password[0] };
     }
-    return { error: "Ocurrió un error al procesar tu solicitud." };
+    return { success: false, error: "Ocurrió un error al procesar tu solicitud." };
   }
 }

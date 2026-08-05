@@ -23,7 +23,7 @@ export default function VerifyEmailPage() {
 
     if (res.success) {
       setStatus("success");
-      setMessage(res.detail);
+      setMessage(res.detail ?? "");
       setTimeout(() => router.push("/login"), 5000);
     } else {
       setStatus("error");
