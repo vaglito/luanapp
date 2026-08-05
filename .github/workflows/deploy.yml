@@ -33,14 +33,18 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             
-            # Instalar las dependencias de producción
+            # Instalar todas las dependencias (incluye devDeps para el build)
             pnpm install
             
-            # Compilar el proyecto Next.js
+            # Compilar el proyecto Next.js con heap extendido
+            export NODE_OPTIONS="--max-old-space-size=1024"
             pnpm run build
             
+            # Eliminar devDependencies para liberar memoria en runtime
+            pnpm install --prod
+            
             # Iniciar o reiniciar la aplicación usando el ecosystem de pm2
-            pm2 startOrReload ecosystem.config.js --env production
+            pm2 startOrReload ecosystem.config.js --env production --node-args="--max-old-space-size=1024"
             
             # Guardar la lista actual de PM2 para que levante automático en caso de reinicio del server
             pm2 save
