@@ -1,8 +1,10 @@
+import { cache } from "react";
 import apiClient from "../apiPublic";
 import { Brands } from "../../types/brands.type";
 import { isAxiosError } from "axios";
 
-export async function fetchBrands(): Promise<Brands[]> {
+export const fetchBrands = cache(
+  async (): Promise<Brands[]> => {
   try {
     const response = await apiClient.get<Brands[]>("/api/brands/brands/");
     return response.data;
@@ -22,8 +24,10 @@ export async function fetchBrands(): Promise<Brands[]> {
     throw new Error("Error inesperado al obtener las marcas.");
   }
 }
+);
 
-export async function fetchBrandsSearch(search: string): Promise<Brands[]> {
+export const fetchBrandsSearch = cache(
+  async (search: string): Promise<Brands[]> => {
   try {
     const response = await apiClient.get<Brands[]>("/api/brands/brands/search", {
       params: { search }
@@ -45,10 +49,12 @@ export async function fetchBrandsSearch(search: string): Promise<Brands[]> {
     throw new Error("Error inesperado al buscar las marcas.");
   }
 }
+);
 
-export async function fetchBrandsCategories(
-  subcategory: string
-): Promise<Brands[]> {
+export const fetchBrandsCategories = cache(
+  async (
+    subcategory: string
+  ): Promise<Brands[]> => {
   try {
     const response = await apiClient.get<Brands[]>("/api/categories/categories/brand/", {
       params: { subcategory }
@@ -70,3 +76,4 @@ export async function fetchBrandsCategories(
     throw new Error("Error inesperado al obtener las marcas por categoría.");
   }
 }
+);
