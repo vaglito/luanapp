@@ -17,6 +17,9 @@ const nextConfig = {
       { protocol: 'https', hostname: 'media.corporacionluana.pe' },
     ],
   },
+  experimental: {
+    viewTransition: true,
+  },
 };
 
 export default withMDX({
