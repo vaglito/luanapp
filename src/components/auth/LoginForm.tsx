@@ -51,6 +51,7 @@ export const LoginForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -64,6 +65,8 @@ export const LoginForm = () => {
     const res = await loginAction(data);
 
     if (res?.error) {
+      // Preservar los campos del formulario en el error
+      reset(data, { keepErrors: false });
       // UX: Si el error menciona "verificar", damos una instrucción clara
       if (
         res.error.toLowerCase().includes("active") ||
