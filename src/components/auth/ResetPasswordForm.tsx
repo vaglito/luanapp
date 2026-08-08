@@ -113,6 +113,7 @@ export const ResetPasswordForm = ({ uid, token }: ResetPasswordFormProps) => {
                             <IconButton
                                 onClick={() => setShowPassword(!showPassword)}
                                 edge="end"
+                                aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                             >
                                 {showPassword ? <VisibilityOff /> : <Visibility />}
                             </IconButton>
@@ -135,6 +136,7 @@ export const ResetPasswordForm = ({ uid, token }: ResetPasswordFormProps) => {
                             <IconButton
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                 edge="end"
+                                aria-label={showConfirmPassword ? "Ocultar confirmación" : "Mostrar confirmación"}
                             >
                                 {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                             </IconButton>

@@ -44,7 +44,7 @@ export function CartDrawer({ open, onClose, exchange }: CartDrawerProps) {
           <Typography variant="h6" fontWeight={600}>
             Tu carrito
           </Typography>
-          <IconButton onClick={onClose} color="primary">
+          <IconButton onClick={onClose} color="primary" aria-label="Cerrar carrito">
             <CloseIcon />
           </IconButton>
         </Box>

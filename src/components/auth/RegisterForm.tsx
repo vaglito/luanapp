@@ -205,6 +205,7 @@ export default function RegisterForm() {
                     <IconButton
                       onClick={() => setShowPassword(!showPassword)}
                       edge="end"
+                      aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
