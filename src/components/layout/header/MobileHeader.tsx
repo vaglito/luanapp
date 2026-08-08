@@ -82,6 +82,7 @@ export function MobileHeader({
 
   useEffect(() => {
     if (session && isAuthPage) {
+      useCart.getState().removeAll();
       signOut({ redirect: false }).then(() => {
         router.refresh();
       });

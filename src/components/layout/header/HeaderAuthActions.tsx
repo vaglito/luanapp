@@ -8,6 +8,7 @@ import { Box } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonIcon from "@mui/icons-material/Person";
 import { Session } from "next-auth";
+import { useCart } from "@/hooks/use-cart";
 import { MyButton } from "@/components/ui/Buttons/Buttons";
 
 import { HeaderUserMenu } from "./HeaderUserMenu";
@@ -22,6 +23,7 @@ export function HeaderAuthActions({ session }: { session: Session | null }) {
   // Forzamos limpieza profunda si caímos en la página de login pero quedó sesión fantasma
   useEffect(() => {
     if (session && isAuthPage) {
+      useCart.getState().removeAll();
       signOut({ redirect: false }).then(() => {
         router.refresh();
       });

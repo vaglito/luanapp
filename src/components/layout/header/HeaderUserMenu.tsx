@@ -17,6 +17,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 
 import { User } from "next-auth";
+import { useCart } from "@/hooks/use-cart";
 
 export function HeaderUserMenu({ user }: { user: User }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -66,7 +67,7 @@ export function HeaderUserMenu({ user }: { user: User }) {
 
         <Divider />
 
-        <MenuItem onClick={() => signOut()} sx={{ color: "error.main" }}>
+        <MenuItem onClick={() => { useCart.getState().removeAll(); signOut(); }} sx={{ color: "error.main" }}>
           <LogoutIcon fontSize="small" sx={{ mr: 1 }} />
           Cerrar sesión
         </MenuItem>
