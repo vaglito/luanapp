@@ -1,8 +1,8 @@
 function required(key: string): string {
   const value = process.env[key];
   if (!value) {
-    if (typeof window !== "undefined") return "";
-    throw new Error(`Missing required environment variable: ${key}`);
+    console.warn(`Missing environment variable: ${key}`);
+    return "";
   }
   return value;
 }
