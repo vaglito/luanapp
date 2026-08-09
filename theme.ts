@@ -84,6 +84,29 @@ export const themeOptions = createTheme({
         borderRadius: 16,
     },
     components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                // Glassmorphism global utility
+                ".glass": {
+                    background: "rgba(255, 255, 255, 0.7) !important",
+                    backdropFilter: "blur(20px) !important",
+                    WebkitBackdropFilter: "blur(20px) !important",
+                    border: "1px solid rgba(255, 255, 255, 0.3) !important",
+                },
+                ".glass-strong": {
+                    background: "rgba(255, 255, 255, 0.9) !important",
+                    backdropFilter: "blur(24px) !important",
+                    WebkitBackdropFilter: "blur(24px) !important",
+                    border: "1px solid rgba(255, 255, 255, 0.5) !important",
+                },
+                ".glass-dark": {
+                    background: "rgba(89, 20, 163, 0.85) !important",
+                    backdropFilter: "blur(20px) !important",
+                    WebkitBackdropFilter: "blur(20px) !important",
+                    border: "1px solid rgba(255, 255, 255, 0.15) !important",
+                },
+            },
+        },
         MuiButton: {
             styleOverrides: {
                 root: {

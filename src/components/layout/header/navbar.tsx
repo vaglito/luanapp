@@ -44,9 +44,10 @@ export function Navbar({ window }: Props) {
         position="static"
         elevation={0}
         sx={{
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          backgroundColor: alpha(theme.palette.primary.main, 0.95),
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          backgroundColor: alpha(theme.palette.primary.main, 0.9),
+          borderBottom: "1px solid rgba(255, 255, 255, 0.15)",
         }}
       >
         <Toolbar sx={{ minHeight: 48, justifyContent: "center" }}>

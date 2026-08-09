@@ -29,9 +29,10 @@ export async function Header({ logo, exchange, brands }: HeaderProps) {
         position: "sticky",
         top: 0,
         zIndex: 1100,
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
-        backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(0, 0, 0, 0.08)",
+        backgroundColor: "rgba(255, 255, 255, 0.85)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.3)",
         boxShadow: "0 2px 12px rgba(0, 0, 0, 0.06)",
       }}
     >
