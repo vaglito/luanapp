@@ -16,9 +16,9 @@ import { Box } from "@mui/material";
 import { ScrollToTop } from "@/components/shared/ScrollToTop";
 import { Providers } from "./providers";
 import { fetchBrands } from "@/services/catalog/brands";
-import { WhatsAppBubble } from "@/components/ui/whatsapp-bubble";
 import { Suspense } from "react";
 import { env } from "@/lib/env";
+import { WhatsAppBubble } from "@/components/ui/whatsapp-bubble";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -43,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const site = await fetchSiteMetadata(1);
 
     return {
-      metadataBase: new URL(env.API_URL),
+      metadataBase: new URL(process.env.API_URL || "http://localhost:3000"),
       title: `${site.siteName} | ${site.slogan}`,
       description: site.metaDescription,
       keywords: ["computadoras", "accesorios", "envío rápido"],
