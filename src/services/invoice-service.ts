@@ -1,7 +1,5 @@
 import { auth } from "@/auth";
-
-const EDOC_URL = process.env.API_URL_EDIC
-const API_KEY = process.env.API_KEY;
+import { env } from "@/lib/env";
 
 export interface InvoiceSearchParams {
     ruc: string;
@@ -71,10 +69,10 @@ export async function searchInvoices(params: InvoiceSearchParams): Promise<Invoi
         "Accept": "application/json",
     };
 
-    if (API_KEY) headers["x-api-key"] = API_KEY;
+    if (env.API_KEY) headers["x-api-key"] = env.API_KEY;
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
-    const res = await fetch(`${EDOC_URL}/api/documents/search?${searchQuery.toString()}`, {
+    const res = await fetch(`${env.API_URL_EDIC}/api/documents/search?${searchQuery.toString()}`, {
         cache: "no-store",
         headers,
     });

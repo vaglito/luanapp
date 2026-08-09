@@ -1,11 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { auth } from "@/auth";
-
-const API_URL = process.env.API_URL;
-const API_KEY = process.env.API_KEY;
+import { env } from "@/lib/env";
 
 const apiPrivate = axios.create({
-  baseURL: API_URL,
+  baseURL: env.API_URL,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
