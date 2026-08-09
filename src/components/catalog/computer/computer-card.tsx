@@ -26,13 +26,13 @@ export function ComputerCard({
         marginY: 2,
         bgcolor: "white",
         border: "1px solid #e5e7eb",
-        transition: "box-shadow 0.3s ease-in-out",
+        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         "&:hover": {
-          boxShadow: "0px 0px 20px rgb(203, 182, 214)",
-          transform: "translateY(-4px)",
+          transform: "translateY(-6px)",
+          boxShadow: "0 12px 24px rgba(89, 20, 163, 0.12)",
         },
       }}
     >

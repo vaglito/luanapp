@@ -26,8 +26,8 @@ export const BrandCard = ({ brand }: { brand: Brands }) => {
           position: "relative",
           overflow: "hidden",
           "&:hover": {
-            transform: "translateY(-5px)",
-            boxShadow: "0 12px 24px -10px rgba(0, 0, 0, 0.15)",
+            transform: "translateY(-6px)",
+            boxShadow: "0 12px 24px rgba(89, 20, 163, 0.12)",
             borderColor: "transparent",
             "& .brand-action": {
               opacity: 1,
