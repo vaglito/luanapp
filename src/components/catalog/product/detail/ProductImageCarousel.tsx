@@ -26,12 +26,11 @@ export default function ProductImageCarousel({ product }: { product: ProductDeta
         backdropFilter: "blur(12px)",
         border: "1px solid rgba(255, 255, 255, 0.5)",
         borderRadius: "16px",
-        padding: 3,
+        p: { xs: 1.5, sm: 2, md: 3 },
         height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        // Subtle Glow
         boxShadow: "0 4px 20px rgba(98, 0, 234, 0.05)",
       }}
     >
@@ -49,27 +48,23 @@ export default function ProductImageCarousel({ product }: { product: ProductDeta
             <SwiperSlide key={index}>
               <Box
                 sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  position: "relative",
                   width: "100%",
-                  height: "100%",
-                  minHeight: "300px",
+                  aspectRatio: { xs: "4/3", md: "1/1" },
+                  minHeight: { xs: 280, md: 400 },
+                  maxHeight: { xs: "60vh", md: 600 },
+                  bgcolor: "grey.50",
+                  borderRadius: 1,
+                  overflow: "hidden",
                 }}
               >
                 <Image
                   src={image.images || "/not-found.png"}
                   alt={product.relay.productName}
-                  width={600}
-                  height={500}
+                  fill
                   priority={index === 0}
-                  style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                    maxHeight: "500px",
-                    objectFit: "contain",
-                    borderRadius: "0px",
-                  }}
+                  sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 600px"
+                  style={{ objectFit: "contain" }}
                 />
               </Box>
             </SwiperSlide>
@@ -79,10 +74,10 @@ export default function ProductImageCarousel({ product }: { product: ProductDeta
 
       {/* Thumbs Slider */}
       {images.length > 1 && (
-        <Box sx={{ height: "100px", mt: 2 }}>
+        <Box sx={{ height: { xs: 64, sm: 80, md: 100 }, mt: 1 }}>
           <Swiper
             onSwiper={setThumbsSwiper}
-            spaceBetween={10}
+            spaceBetween={8}
             slidesPerView={4}
             freeMode={true}
             watchSlidesProgress={true}
@@ -91,18 +86,21 @@ export default function ProductImageCarousel({ product }: { product: ProductDeta
             style={{ width: "100%", height: "100%" }}
           >
             {images.map((image, index) => (
-              <SwiperSlide key={index} style={{ opacity: 0.6, cursor: "pointer", borderRadius: "0px", overflow: "hidden" }}>
+              <SwiperSlide key={index} style={{ opacity: 0.6, cursor: "pointer", borderRadius: "8px", overflow: "hidden" }}>
                 <Box sx={{
                   width: "100%",
                   height: "100%",
                   position: "relative",
-                  border: "1px solid #e0e0e0",
-                  borderRadius: "0px",
+                  border: "1.5px solid #e0e0e0",
+                  borderRadius: "8px",
+                  overflow: "hidden",
+                  transition: "all 0.2s",
                   "&.swiper-slide-thumb-active": {
                     opacity: 1,
                     borderColor: "primary.main",
-                    borderWidth: "2px"
-                  }
+                    borderWidth: "2px",
+                    boxShadow: "0 0 0 2px rgba(89,20,163,0.15)",
+                  },
                 }}>
                   <Image
                     src={image.images || "/not-found.png"}
