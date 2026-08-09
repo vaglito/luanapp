@@ -43,7 +43,7 @@ export function ProformaTable({ proformas, onSelect }: Props) {
               <TableCell>$ {p.total}</TableCell>
               <TableCell>{p.mode}</TableCell>
               <TableCell>
-                {new Date(p.createdAt).toLocaleDateString()}
+                {new Date(p.createdAt).toLocaleDateString("es-PE", { timeZone: "America/Lima" })}
               </TableCell>
             </TableRow>
           ))}

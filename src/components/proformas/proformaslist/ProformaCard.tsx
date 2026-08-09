@@ -41,7 +41,7 @@ export function ProformaCard({ proforma, onClick }: Props) {
           </Stack>
 
           <Typography variant="caption" color="text.secondary">
-            {new Date(proforma.createdAt).toLocaleString()}
+            {new Date(proforma.createdAt).toLocaleString("es-PE", { timeZone: "America/Lima" })}
           </Typography>
         </Stack>
       </CardContent>
