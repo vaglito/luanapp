@@ -24,9 +24,9 @@ export const SliderBanner = ({ banners }: { banners: Banner[] }) => {
         dynamicBullets: true, // Muestra paginación con bullets dinámicos.
       }}
     >
-      {banners.map((banner) => (
+      {banners.map((banner, index) => (
         <SwiperSlide key={banner.id}>
-          <BannerCard banner={banner} />
+          <BannerCard banner={banner} priority={index === 0} />
         </SwiperSlide>
       ))}
     </Swiper>
