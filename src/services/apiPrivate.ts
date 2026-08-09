@@ -24,8 +24,8 @@ apiPrivate.interceptors.request.use(
     }
 
     // 3. Agregamos la API Key si es necesaria para todos los endpoints
-    if (API_KEY) {
-      config.headers["x-api-key"] = API_KEY;
+    if (env.API_KEY) {
+      config.headers["x-api-key"] = env.API_KEY;
     }
 
     return config;
