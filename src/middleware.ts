@@ -1,5 +1,8 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
+import { getUserRoles } from "@/lib/getUserRoles";
+
+const DASHBOARD_ROLES = ["ADMIN", "STAFF", "SELLER", "TECHNICIAN", "EDITOR"];
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
@@ -67,7 +70,16 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
-  // 5. Evitar que usuarios logueados regresen al Login/Registro
+  // 5. Validar roles para el dashboard — solo usuarios con rol de staff/admin/vendedor
+  if (isLoggedIn && isProtectedRoute && req.auth) {
+    const roles = getUserRoles(req.auth.user);
+    const hasDashboardAccess = roles.some((r) => DASHBOARD_ROLES.includes(r));
+    if (!hasDashboardAccess) {
+      return NextResponse.redirect(new URL("/", req.nextUrl));
+    }
+  }
+
+  // 6. Evitar que usuarios logueados regresen al Login/Registro
   if (isLoggedIn && isAuthRoute) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }

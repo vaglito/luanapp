@@ -1,7 +1,15 @@
-import { JWT } from "next-auth/jwt";
 import { Role } from "@/config/roles";
 
-export function getUserRoles(token: JWT): Role[] {
+interface UserFlags {
+  isAdmin?: boolean | null;
+  isStaff?: boolean | null;
+  isSeller?: boolean | null;
+  isTechnician?: boolean | null;
+  isEditor?: boolean | null;
+  isCustomer?: boolean | null;
+}
+
+export function getUserRoles(token: UserFlags): Role[] {
   const roles: Role[] = [];
 
   if (token.isAdmin) roles.push("ADMIN");
