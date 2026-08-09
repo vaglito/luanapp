@@ -176,11 +176,10 @@ export default function ProductImageCarousel({
                 onSwiper={setThumbsSwiper}
                 spaceBetween={8}
                 slidesPerView={4}
-                freeMode={true}
                 watchSlidesProgress={true}
                 modules={[FreeMode, Navigation, Thumbs]}
                 className="mySwiper"
-                style={{ width: "100%", height: "100%" }}
+                style={{ width: "100%", height: "100%", overflow: "hidden" }}
               >
                 {images.map((image, index) => (
                   <SwiperSlide
@@ -188,8 +187,8 @@ export default function ProductImageCarousel({
                     style={{
                       opacity: 0.6,
                       cursor: "pointer",
-                      borderRadius: "8px",
-                      overflow: "hidden",
+                      width: `calc((100% - ${8 * 3}px) / 4)`,
+                      flexShrink: 0,
                     }}
                   >
                     <Box
