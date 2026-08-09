@@ -6,7 +6,7 @@ import { ShopFunction } from "./shop-functions";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import { isRestrictedSubcategory } from "@/utils/restricted";
 import { ProductDetail } from "@/types/products.type";
-import DOMPurify from "dompurify";
+import { sanitize } from "dompurify";
 
 interface ProductDetailDescriptionProps {
   title: string;
@@ -39,7 +39,7 @@ export function ProductDetailDescription({
   const isRestricted = isRestrictedSubcategory(subCategories);
 
   const sanitizedHtml = resumen
-    ? DOMPurify.sanitize(resumen, { ALLOWED_TAGS: DOMPURIFY_ALLOWED_TAGS })
+    ? sanitize(resumen, { ALLOWED_TAGS: DOMPURIFY_ALLOWED_TAGS })
     : "";
 
   return (
