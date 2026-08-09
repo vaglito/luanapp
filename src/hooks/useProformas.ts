@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Proforma } from "@/types/proformas.type";
 import {
   searchProformaByCode,
@@ -12,6 +12,12 @@ export function useProformas(proformas: Proforma[]) {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
 
   // ✅ LOAD INITIAL LIST
 
@@ -25,8 +31,10 @@ export function useProformas(proformas: Proforma[]) {
       setIsSearching(true);
 
       const result = await searchProformaByCode(searchValue.trim());
+      if (!mountedRef.current) return;
       setHproformas([result]); // búsqueda exacta
     } catch {
+      if (!mountedRef.current) return;
       setHproformas([]);
       setNotFound(true);
     } finally {
