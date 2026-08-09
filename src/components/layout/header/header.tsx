@@ -74,7 +74,7 @@ export async function Header({ logo, exchange, brands }: HeaderProps) {
             </Box>
 
             {/* SEARCH */}
-            <Box sx={{ flexGrow: 1, maxWidth: 600 }}>
+            <Box sx={{ flexGrow: 1, maxWidth: 400, mx: "auto" }}>
               <Suspense fallback={<Skeleton height={40} />}>
                 <Search />
               </Suspense>
