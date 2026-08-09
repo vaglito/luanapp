@@ -6,7 +6,7 @@ import { ShopFunction } from "./shop-functions";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import { isRestrictedSubcategory } from "@/utils/restricted";
 import { ProductDetail } from "@/types/products.type";
-import { sanitize } from "dompurify";
+import { useState, useEffect } from "react";
 
 interface ProductDetailDescriptionProps {
   title: string;
@@ -37,10 +37,16 @@ export function ProductDetailDescription({
   product,
 }: ProductDetailDescriptionProps) {
   const isRestricted = isRestrictedSubcategory(subCategories);
+  const [sanitizedHtml, setSanitizedHtml] = useState("");
 
-  const sanitizedHtml = resumen
-    ? sanitize(resumen, { ALLOWED_TAGS: DOMPURIFY_ALLOWED_TAGS })
-    : "";
+  useEffect(() => {
+    if (!resumen) return;
+    import("dompurify").then((DOMPurify) => {
+      setSanitizedHtml(
+        DOMPurify.default.sanitize(resumen, { ALLOWED_TAGS: DOMPURIFY_ALLOWED_TAGS })
+      );
+    });
+  }, [resumen]);
 
   return (
     <Box

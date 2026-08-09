@@ -43,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const site = await fetchSiteMetadata(1);
 
     return {
-      metadataBase: new URL(process.env.API_URL || "http://localhost:3000"),
+      metadataBase: new URL(env.API_URL),
       title: `${site.siteName} | ${site.slogan}`,
       description: site.metaDescription,
       keywords: ["computadoras", "accesorios", "envío rápido"],
