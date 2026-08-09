@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Box, IconButton, Tooltip, Skeleton } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useState } from "react";
@@ -36,25 +35,20 @@ export function CardImage({ product }: CardImageProps) {
   };
 
   return (
-    <Link
-      href={`/productos/detalle/${product.slug}`}
-      style={{ display: "flex", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", textDecoration: "none", color: "inherit" }}
+    <Box
+      sx={{
+        position: "relative",
+        width: "100%",
+        aspectRatio: "1 / 1",
+        overflow: "hidden",
+        borderRadius: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
-      <Box
-        sx={{
-          position: "relative",
-          width: "100%",
-          aspectRatio: "1 / 1",
-          overflow: "hidden",
-          cursor: "pointer",
-          borderRadius: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      >
         {/* Imagen principal */}
         <Box
           sx={{
@@ -128,7 +122,7 @@ export function CardImage({ product }: CardImageProps) {
           </IconButton>
         </Tooltip>
       </Box>
-    </Link>
+    </Box>
   );
 }
 
