@@ -29,7 +29,12 @@ export default function PromoDialog() {
 
     // Check if we should show the dialog
     const now = Date.now();
-    const lastShown = localStorage.getItem(PROMO_KEY);
+    let lastShown: string | null = null;
+    try {
+      lastShown = localStorage.getItem(PROMO_KEY);
+    } catch {
+      // localStorage not available (incognito mode, etc.)
+    }
 
     let shouldShow = false;
     if (!lastShown) {
@@ -43,7 +48,11 @@ export default function PromoDialog() {
 
     if (shouldShow) {
       setOpen(true);
-      localStorage.setItem(PROMO_KEY, now.toString());
+      try {
+        localStorage.setItem(PROMO_KEY, now.toString());
+      } catch {
+        // localStorage not available
+      }
     }
 
     // Countdown Logic (Ends at Feb 14, 8:00 PM)
