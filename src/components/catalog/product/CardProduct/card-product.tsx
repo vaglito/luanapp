@@ -9,6 +9,7 @@ import { MyButton } from "@/components/ui/Buttons/Buttons";
 import { CardImage } from "./card-imagen";
 import { CardStock } from "./card-stock";
 import { PriceCard } from "./price-card";
+import { ProductBadge } from "./ProductBadge";
 import { isRestrictedSubcategory } from "@/utils/restricted";
 /* Icon */
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
@@ -57,26 +58,7 @@ export const CardProduct = memo(function CardProduct({
       }}
     >
       {/* Badge de Descuento */}
-      {hasDiscount && (
-        <Chip
-          label={`-${discountPercentage}%`}
-          size="small"
-          sx={{
-            position: "absolute",
-            top: 12,
-            left: 12,
-            zIndex: 10,
-            bgcolor: "error.main",
-            color: "white",
-            fontWeight: 800,
-            fontSize: "0.75rem",
-            borderRadius: "6px",
-            height: 24,
-            boxShadow: "0 2px 8px rgba(211, 47, 47, 0.4)",
-            pointerEvents: "none"
-          }}
-        />
-      )}
+      {hasDiscount && <ProductBadge type="discount" label={`-${discountPercentage}%`} />}
 
       {/* 1. Image Section */}
       <Box
