@@ -122,7 +122,6 @@ export function CardImage({ product }: CardImageProps) {
           </IconButton>
         </Tooltip>
       </Box>
-    </Box>
   );
 }
 
