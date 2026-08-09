@@ -19,7 +19,6 @@ import { fetchBrands } from "@/services/catalog/brands";
 import { Suspense } from "react";
 import { env } from "@/lib/env";
 import { WhatsAppBubble } from "@/components/ui/whatsapp-bubble";
-import { CompareBar } from "@/components/catalog/product/CompareBar";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -111,7 +110,6 @@ export default async function RootLayout({
                 </Box>
 
                 <WhatsAppBubble />
-                <CompareBar exchange={exchange.exchange} />
                 <Footer address={site.address || ""} />
               </Box>
             </Providers>

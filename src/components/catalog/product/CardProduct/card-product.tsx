@@ -2,7 +2,7 @@
 import { memo } from "react";
 import Link from "next/link";
 import { Products } from "@/types/products.type";
-import { Box, Typography, Chip, alpha, useTheme, Tooltip } from "@mui/material";
+import { Box, Typography, Chip, alpha, useTheme } from "@mui/material";
 import { CardImage } from "./card-imagen";
 import { CardStock } from "./card-stock";
 import { PriceCard } from "./price-card";
@@ -11,10 +11,6 @@ import { isRestrictedSubcategory } from "@/utils/restricted";
 import { useCart } from "@/hooks/use-cart";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useCompare } from "@/hooks/use-compare";
-import { showToast } from "nextjs-toast-notify";
 
 export const CardProduct = memo(function CardProduct({
   product,
@@ -25,7 +21,6 @@ export const CardProduct = memo(function CardProduct({
 }) {
   const theme = useTheme();
   const { addItem } = useCart();
-  const { items, isCompared, toggleItem } = useCompare();
   const isRestricted = isRestrictedSubcategory(
     product.relay.subcategoryCode.subcategoryweb,
   );
@@ -76,57 +71,6 @@ export const CardProduct = memo(function CardProduct({
       >
         {/* Badge */}
         {hasDiscount && <ProductBadge type="discount" label={`-${discountPercentage}%`} />}
-
-        {/* Compare toggle */}
-        <Tooltip
-          title={isCompared(product.id) ? "Quitar de comparar" : "Comparar"}
-          arrow
-          placement="left"
-        >
-          <Box
-            component="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (items.length >= 4 && !isCompared(product.id)) {
-                showToast.error("Máximo 4 productos para comparar");
-                return;
-              }
-              toggleItem(product);
-            }}
-            sx={{
-              position: "absolute",
-              top: 10,
-              right: 10,
-              zIndex: 10,
-              width: 32,
-              height: 32,
-              borderRadius: "8px",
-              border: "1.5px solid",
-              borderColor: isCompared(product.id) ? "primary.main" : "divider",
-              bgcolor: isCompared(product.id) ? "primary.main" : "rgba(255,255,255,0.9)",
-              color: isCompared(product.id) ? "white" : "text.secondary",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backdropFilter: "blur(8px)",
-              transition: "all 0.2s",
-              "&:hover": {
-                borderColor: "primary.main",
-                bgcolor: isCompared(product.id) ? "primary.dark" : "primary.main",
-                color: "white",
-              },
-            }}
-            aria-label={isCompared(product.id) ? "Quitar de comparar" : "Comparar producto"}
-          >
-            {isCompared(product.id) ? (
-              <CheckCircleIcon sx={{ fontSize: 16 }} />
-            ) : (
-              <CompareArrowsIcon sx={{ fontSize: 16 }} />
-            )}
-          </Box>
-        </Tooltip>
 
         {/* Image */}
         <Box sx={{ position: "relative", aspectRatio: "1 / 1", overflow: "hidden" }}>
