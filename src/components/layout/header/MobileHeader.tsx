@@ -246,9 +246,10 @@ export function MobileHeader({
         sx={{
           "& .MuiDrawer-paper": {
             width: { xs: "100vw", sm: 450 },
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            backgroundColor: alpha(theme.palette.primary.main, 0.9),
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            backgroundColor: alpha(theme.palette.primary.main, 0.85),
+            borderRight: "1px solid rgba(255, 255, 255, 0.15)",
           },
         }}
       >

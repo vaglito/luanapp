@@ -113,7 +113,7 @@ export async function Header({ logo, exchange, brands }: HeaderProps) {
           }}
         >
           <Container maxWidth="xl">
-            <Toolbar sx={{ minHeight: 48, px: { xs: 0, sm: 0 } }}>
+            <Toolbar sx={{ minHeight: 56, px: { xs: 0, sm: 0 } }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CategoryDropdown brands={brands} />
                 <DesktopNavLinks />
