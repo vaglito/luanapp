@@ -38,35 +38,35 @@ export const themeOptions = createTheme({
         },
     },
     typography: {
-        fontFamily: inter.style.fontFamily,
+        fontFamily: `${inter.style.fontFamily}, sans-serif`,
         h1: {
-            fontFamily: inter.style.fontFamily,
+            fontFamily: `var(--font-poppins), ${inter.style.fontFamily}, sans-serif`,
             fontWeight: 800,
             fontSize: "2.5rem",
             textTransform: "uppercase",
             letterSpacing: "0.05em",
         },
         h2: {
-            fontFamily: inter.style.fontFamily,
+            fontFamily: `var(--font-poppins), ${inter.style.fontFamily}, sans-serif`,
             fontWeight: 700,
             fontSize: "2rem",
             letterSpacing: "0.02em",
         },
         h3: {
-            fontFamily: inter.style.fontFamily,
+            fontFamily: `var(--font-poppins), ${inter.style.fontFamily}, sans-serif`,
             fontWeight: 700,
             fontSize: "1.75rem",
         },
         h4: {
-            fontFamily: inter.style.fontFamily,
+            fontFamily: `var(--font-poppins), ${inter.style.fontFamily}, sans-serif`,
             fontWeight: 600,
         },
         h5: {
-            fontFamily: inter.style.fontFamily,
+            fontFamily: `var(--font-poppins), ${inter.style.fontFamily}, sans-serif`,
             fontWeight: 600,
         },
         h6: {
-            fontFamily: inter.style.fontFamily,
+            fontFamily: `var(--font-poppins), ${inter.style.fontFamily}, sans-serif`,
             fontWeight: 600,
             letterSpacing: "0.02em",
         },

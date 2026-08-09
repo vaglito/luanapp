@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
-import { Roboto, Orbitron, Inter } from "next/font/google";
+import { Roboto, Orbitron, Inter, Poppins } from "next/font/google";
 import { Header } from "@/components/layout/header/header";
 import { Footer } from "@/components/layout/footer/footer";
 import { ThemeProvider } from "@mui/material/styles";
@@ -29,6 +29,13 @@ const orbitron = Orbitron({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-poppins",
   display: "swap",
 });
 
@@ -79,7 +86,7 @@ export default async function RootLayout({
         <GoogleAnalytics gaId="G-XELJ23CNWC" />
         <GTMHead />
       </head>
-      <body className={`${inter.className} ${orbitron.variable} antialiased`}>
+      <body className={`${inter.className} ${poppins.variable} ${orbitron.variable} antialiased`}>
         <GTMBody />
         <ThemeProvider theme={themeOptions}>
           <AppRouterCacheProvider options={{ key: "css" }}>
