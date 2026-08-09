@@ -4,12 +4,11 @@ import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
-import PersonIcon from "@mui/icons-material/Person";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Session } from "next-auth";
 import { useCart } from "@/hooks/use-cart";
-import { MyButton } from "@/components/ui/Buttons/Buttons";
 
 import { HeaderUserMenu } from "./HeaderUserMenu";
 
@@ -36,16 +35,38 @@ export function HeaderAuthActions({ session }: { session: Session | null }) {
 
   return (
     <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-      <Link href="/login">
-        <MyButton customVariant="text" startIcon={<LoginIcon />}>
-          Ingresar
-        </MyButton>
-      </Link>
-      <Link href="/registro">
-        <MyButton customVariant="submit" startIcon={<PersonIcon />}>
-          Registro
-        </MyButton>
-      </Link>
+      <Button
+        component={Link}
+        href="/login"
+        variant="text"
+        startIcon={<LoginIcon />}
+        sx={{
+          color: "text.secondary",
+          textTransform: "none",
+          fontWeight: 500,
+          borderRadius: 1.5,
+          px: 2,
+          "&:hover": { bgcolor: "action.hover", color: "primary.main" },
+        }}
+      >
+        Ingresar
+      </Button>
+      <Button
+        component={Link}
+        href="/registro"
+        variant="contained"
+        startIcon={<PersonAddIcon />}
+        sx={{
+          textTransform: "none",
+          fontWeight: 600,
+          borderRadius: 1.5,
+          px: 2.5,
+          boxShadow: "none",
+          "&:hover": { boxShadow: "0 4px 12px rgba(89,20,163,0.3)" },
+        }}
+      >
+        Registro
+      </Button>
     </Box>
   );
 }
