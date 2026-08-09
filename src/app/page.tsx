@@ -16,6 +16,7 @@ import { PopularProducts } from "@/components/layout/popular-products";
 import { TrustBar } from "@/components/ui/trust-bar";
 import { SecondaryBanner } from "@/components/ui/banner/secondary-banner";
 import { TikTokExperience } from "@/components/ui/tiktok-experience";
+import { FadeInOnScroll } from "@/components/shared/FadeInOnScroll";
 
 export const revalidate = 360;
 
@@ -77,35 +78,49 @@ export default async function Home() {
         <BannerHome banners={banners} />
       </Container>
       <Container maxWidth="xl" sx={{ px: { xs: 0, sm: 2 } }}>
-        <HomeCategory categories={categories} />
-        <Box sx={{ mb: 6 }}>
-          <SecondaryBanner
+        <FadeInOnScroll>
+          <HomeCategory categories={categories} />
+        </FadeInOnScroll>
+        <FadeInOnScroll delay={100}>
+          <Box sx={{ mb: 6 }}>
+            <SecondaryBanner
             title="Zona Gamer"
             subtitle="Potencia máxima para tus partidas. Encuentra las mejores laptops y periféricos con RGB"
             ctaText="Ver Equipos Gamer"
             ctaLink="/buscar"
             gradient="linear-gradient(135deg, #5914A3 0%, #A3147F 100%)" // Luana Brand Colors
           />
-        </Box>
-        <Suspense fallback={<ProductListSkeleton />}>
-          <SuspenseNewProducts exchange={exchange.exchange} />
-        </Suspense>
+          </Box>
+        </FadeInOnScroll>
+        <FadeInOnScroll delay={200}>
+          <Suspense fallback={<ProductListSkeleton />}>
+            <SuspenseNewProducts exchange={exchange.exchange} />
+          </Suspense>
+        </FadeInOnScroll>
 
-        <Suspense fallback={<ProductListSkeleton />}>
-          <PopularProducts exchange={exchange.exchange} />
-        </Suspense>
+        <FadeInOnScroll delay={300}>
+          <Suspense fallback={<ProductListSkeleton />}>
+            <PopularProducts exchange={exchange.exchange} />
+          </Suspense>
+        </FadeInOnScroll>
       </Container>
 
       {/*       <Suspense fallback={<ProductListSkeleton />}>
         <ComputerHome />
       </Suspense> */}
 
-      <Suspense fallback={<ProductListSkeleton />}>
-        <SuspenseLaptops exchange={exchange.exchange} />
-      </Suspense>
+      <FadeInOnScroll delay={400}>
+        <Suspense fallback={<ProductListSkeleton />}>
+          <SuspenseLaptops exchange={exchange.exchange} />
+        </Suspense>
+      </FadeInOnScroll>
 
-      <TikTokExperience />
-      <TrustBar />
+      <FadeInOnScroll>
+        <TikTokExperience />
+      </FadeInOnScroll>
+      <FadeInOnScroll>
+        <TrustBar />
+      </FadeInOnScroll>
     </>
   );
 }
