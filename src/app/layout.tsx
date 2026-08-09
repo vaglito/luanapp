@@ -111,7 +111,7 @@ export default async function RootLayout({
                 </Box>
 
                 <WhatsAppBubble />
-                <CompareBar />
+                <CompareBar exchange={exchange.exchange} />
                 <Footer address={site.address || ""} />
               </Box>
             </Providers>
