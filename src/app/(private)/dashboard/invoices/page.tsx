@@ -9,7 +9,7 @@ import {
   Divider,
   Button
 } from "@mui/material";
-import { auth } from "@/auth";
+import { getCachedSession } from "@/lib/getSession";
 import { redirect } from "next/navigation";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import CodeIcon from "@mui/icons-material/Code";
@@ -24,7 +24,7 @@ export default async function InvoicesPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const session = await auth();
+  const session = await getCachedSession();
   if (!session?.user) {
     redirect("/login");
   }

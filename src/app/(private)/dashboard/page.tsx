@@ -1,12 +1,12 @@
 import { Box, Typography, Grid2 } from "@mui/material";
 import { StatCard } from "@/components/dashboard/StatCard";
-import { auth } from "@/auth";
+import { getCachedSession } from "@/lib/getSession";
 import { redirect } from "next/navigation";
 
 
 
 export default async function DashboardPage() {
-  const session = await auth();
+  const session = await getCachedSession();
   if (!session?.user) {
     redirect("/login");
   }

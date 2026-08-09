@@ -1,5 +1,5 @@
 import { DashboardLayoutWrapper } from "@/components/dashboard/DashboardLayoutWrapper";
-import { auth } from "@/auth";
+import { getCachedSession } from "@/lib/getSession";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -10,7 +10,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  const session = await getCachedSession();
   if (!session) redirect("/login");
   const user = session?.user;
 

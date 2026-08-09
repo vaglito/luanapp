@@ -1,11 +1,11 @@
-import { auth } from "@/auth";
+import { getCachedSession } from "@/lib/getSession";
 import { redirect } from "next/navigation";
 import { Box, Typography } from "@mui/material";
 import ProfileForm from "./components/ProfileForm";
 import { getUserProfile } from "@/services/profile/user-service";
 
 export default async function ProfilePage() {
-    const session = await auth();
+    const session = await getCachedSession();
 
     if (!session?.user) {
         redirect("/login");

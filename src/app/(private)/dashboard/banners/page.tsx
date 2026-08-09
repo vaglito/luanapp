@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { auth } from "@/auth";
+import { getCachedSession } from "@/lib/getSession";
 import { redirect } from "next/navigation";
 import { BannersClient } from "./BannersClient";
 import { getBanners } from "@/services/dashboard/admin/banner";
@@ -8,7 +8,7 @@ import { getBanners } from "@/services/dashboard/admin/banner";
 // Deberás reemplazarla por tu llamada a la base de datos o API.
 
 export default async function BannersPage() {
-  const session = await auth();
+  const session = await getCachedSession();
 
   // Validamos si el usuario existe
   if (!session?.user) {
