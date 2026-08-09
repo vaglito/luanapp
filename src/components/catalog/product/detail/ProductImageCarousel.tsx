@@ -86,13 +86,12 @@ export default function ProductImageCarousel({
               prevEl: ".custom-prev",
               nextEl: ".custom-next",
             }}
-            pagination={{ type: "fraction", el: ".custom-fraction" }}
             thumbs={{
               swiper:
                 thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
             }}
             zoom={isDesktop ? { maxRatio: 3 } : false}
-            modules={[FreeMode, Navigation, Thumbs, Pagination, Zoom]}
+            modules={[FreeMode, Navigation, Thumbs, Zoom]}
             className="mySwiper2"
             style={{ width: "100%", height: "100%" }}
           >
@@ -328,8 +327,7 @@ export default function ProductImageCarousel({
             initialSlide={lightboxIndex}
             spaceBetween={0}
             navigation={true}
-            pagination={{ type: "fraction" }}
-            modules={[Navigation, Pagination, Zoom]}
+            modules={[Navigation, Zoom]}
             zoom={{ maxRatio: 3 }}
             style={{ width: "100%", height: "100%" }}
             onSlideChange={(s) => setLightboxIndex(s.activeIndex)}
