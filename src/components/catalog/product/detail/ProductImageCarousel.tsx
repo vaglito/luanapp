@@ -21,8 +21,6 @@ import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { ProductDetail } from "@/types/products.type";
 
 export default function ProductImageCarousel({
@@ -82,10 +80,8 @@ export default function ProductImageCarousel({
           <Swiper
             onSwiper={setMainSwiper}
             spaceBetween={10}
-            navigation={{
-              prevEl: ".custom-prev",
-              nextEl: ".custom-next",
-            }}
+            slidesPerView={1}
+            navigation={true}
             thumbs={{
               swiper:
                 thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
@@ -93,15 +89,16 @@ export default function ProductImageCarousel({
             zoom={isDesktop ? { maxRatio: 3 } : false}
             modules={[FreeMode, Navigation, Thumbs, Zoom]}
             className="mySwiper2"
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", height: "100%", overflow: "hidden" }}
           >
             {images.map((image, index) => (
-              <SwiperSlide key={index}>
+              <SwiperSlide key={index} style={{ overflow: "hidden" }}>
                 <Box
                   onClick={() => openLightbox(index)}
                   sx={{
                     position: "relative",
                     width: "100%",
+                    height: "100%",
                     aspectRatio: { xs: "4/3", md: "1/1" },
                     minHeight: { xs: 280, md: 400 },
                     maxHeight: { xs: "60vh", md: 600 },
@@ -160,42 +157,6 @@ export default function ProductImageCarousel({
               </SwiperSlide>
             ))}
           </Swiper>
-
-          {/* Custom navigation arrows */}
-          <IconButton
-            className="custom-prev"
-            sx={{
-              position: "absolute",
-              left: 4,
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 10,
-              bgcolor: "rgba(255,255,255,0.9)",
-              boxShadow: 2,
-              width: 32,
-              height: 32,
-              "&:hover": { bgcolor: "white" },
-            }}
-          >
-            <NavigateBeforeIcon fontSize="small" />
-          </IconButton>
-          <IconButton
-            className="custom-next"
-            sx={{
-              position: "absolute",
-              right: 4,
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 10,
-              bgcolor: "rgba(255,255,255,0.9)",
-              boxShadow: 2,
-              width: 32,
-              height: 32,
-              "&:hover": { bgcolor: "white" },
-            }}
-          >
-            <NavigateNextIcon fontSize="small" />
-          </IconButton>
         </Box>
 
         {/* Thumbs + Share row */}
