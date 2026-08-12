@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,26 +27,23 @@ export const LoginForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
-  const [infoMessage, setInfoMessage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-
-  // Detectar si viene de un registro exitoso o si el token expiró
-  useEffect(() => {
+  // Detectar si viene de un registro exitoso o si el token expiró.
+  // Derived once via lazy initial state instead of setState-in-effect:
+  // these query params only matter on first mount (post-redirect banners).
+  const [infoMessage, setInfoMessage] = useState<string | null>(() => {
     if (searchParams.get("registered") === "true") {
-      setInfoMessage(
-        "¡Cuenta creada! Por favor, verifica tu correo para poder ingresar.",
-      );
+      return "¡Cuenta creada! Por favor, verifica tu correo para poder ingresar.";
     }
     if (searchParams.get("verified") === "true") {
-      setInfoMessage("Correo verificado con éxito. Ya puedes iniciar sesión.");
+      return "Correo verificado con éxito. Ya puedes iniciar sesión.";
     }
     if (searchParams.get("passwordReset") === "true") {
-      setInfoMessage(
-        "Tu contraseña ha sido restablecida con éxito. Inicia sesión con tu nueva contraseña.",
-      );
+      return "Tu contraseña ha sido restablecida con éxito. Inicia sesión con tu nueva contraseña.";
     }
-  }, [searchParams]);
+    return null;
+  });
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,

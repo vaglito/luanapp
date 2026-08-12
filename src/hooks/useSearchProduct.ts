@@ -9,7 +9,6 @@ export function useProductSearch(query: string) {
 
   useEffect(() => {
     if (!query || query.length < 2) {
-      setResults([]);
       return;
     }
 
@@ -37,5 +36,9 @@ export function useProductSearch(query: string) {
     };
   }, [query]);
 
-  return { results, loading };
+  // Derived instead of eagerly cleared via setState-in-effect: a too-short
+  // query always means "no results", regardless of stale fetched state.
+  const effectiveResults = !query || query.length < 2 ? [] : results;
+
+  return { results: effectiveResults, loading };
 }

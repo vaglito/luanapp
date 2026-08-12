@@ -10,20 +10,21 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import { WhatsAppMenu } from "@/components/ui/whatsapp-menu";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 
 export default function PromoDialog() {
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-  // State for CSS transitions/animations
-  const [mounted, setMounted] = useState(false);
+  // State for CSS transitions/animations — derived via useSyncExternalStore
+  // instead of a setState-in-effect mounted flag.
+  const mounted = useIsMounted();
 
   // State for WhatsApp Menu
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const menuOpen = Boolean(anchorEl);
 
   useEffect(() => {
-    setMounted(true);
     const PROMO_KEY = "promo_shown_at";
     const SHOW_EVERY_MINUTES = 1; // Show every 1 minute
 
@@ -47,6 +48,11 @@ export default function PromoDialog() {
     }
 
     if (shouldShow) {
+      // One-time sync with an external system (localStorage timestamp +
+      // Date.now()), not derivable during render: it is non-deterministic
+      // and paired with a write side-effect (localStorage.setItem below)
+      // that must not run more than once per qualifying mount.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setOpen(true);
       try {
         localStorage.setItem(PROMO_KEY, now.toString());
