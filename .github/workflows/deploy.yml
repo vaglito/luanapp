@@ -3,36 +3,48 @@ name: Deploy Luanapp to Ubuntu Server
 on:
   push:
     tags:
-      - '*' # Ejecuta el workflow cuando se crea y pushea un nuevo tag (ej: v1.0.0)
+      - 'v*' # Runs only for semver release tags (e.g. v1.0.0) — archive/* tags must never trigger a deploy
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Validate tag format
+        env:
+          DEPLOY_TAG: ${{ github.ref_name }}
+        run: |
+          if [[ ! "$DEPLOY_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Rejected tag '$DEPLOY_TAG' — expected format vMAJOR.MINOR.PATCH"
+            exit 1
+          fi
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          DEPLOY_TAG: ${{ github.ref_name }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: DEPLOY_TAG
           script: |
             # Aseguramos que el entorno interactivo se cargue (necesario para nvm, pnpm y pm2)
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            
+
             # Cargar configuraciones del usuario para tener los binarios en el PATH
             if [ -f ~/.bashrc ]; then
               source ~/.bashrc
             fi
-            
+
             # Navegar al directorio de la app
             cd /home/luana/luanapp
-            
-            # Obtener los últimos cambios de la rama main
-            git fetch origin main
-            git reset --hard origin/main
-            
+
+            # Fetch and check out the exact tagged commit — never origin/main's tip
+            git fetch --force origin "refs/tags/${DEPLOY_TAG}:refs/tags/${DEPLOY_TAG}"
+            git checkout --force --detach "refs/tags/${DEPLOY_TAG}"
+
             # Instalar todas las dependencias (incluye devDeps para el build)
             pnpm install
             

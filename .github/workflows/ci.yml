@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, dev]
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        if: ${{ !cancelled() }}
+        uses: actions/checkout@v4
+
+      - name: Validate branch name and PR title
+        if: ${{ !cancelled() }}
+        env:
+          PR_BRANCH: ${{ github.head_ref }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: node scripts/validate-ref-names.mjs
+
+      - name: Setup pnpm
+        if: ${{ !cancelled() }}
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        if: ${{ !cancelled() }}
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        if: ${{ !cancelled() }}
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        if: ${{ !cancelled() }}
+        run: pnpm lint
+
+      - name: Typecheck
+        if: ${{ !cancelled() }}
+        run: pnpm typecheck
+
+      - name: Test
+        if: ${{ !cancelled() }}
+        run: pnpm test

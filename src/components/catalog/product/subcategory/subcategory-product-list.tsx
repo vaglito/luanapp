@@ -20,8 +20,11 @@ export const SubCategoryProductList = async ({
     marca,
     page,
 }: SubCategoryProductListProps) => {
+    let exchange: Awaited<ReturnType<typeof fetchExchangeRate>> | null = null;
+    let productsData: Awaited<ReturnType<typeof fetchProductList>> | null = null;
+
     try {
-        const [exchange, productsData] = await Promise.all([
+        const results = await Promise.all([
             fetchExchangeRate(),
             fetchProductList({
                 category: categorySlug,
@@ -30,49 +33,14 @@ export const SubCategoryProductList = async ({
                 page: page,
             }),
         ]);
-
-        // Handle Empty State
-        if (!productsData || productsData.results.length === 0) {
-            const isEmpty = !productsData || productsData.count === 0;
-            if (isEmpty) {
-                return (
-                    <Container maxWidth="xl" sx={{ mt: 8, mb: 8, px: { xs: 2, sm: 2 } }}>
-                        <EmptyState
-                            title="No hay productos en esta categoría"
-                            description={`Actualmente no tenemos stock disponible para ${startCase(subcategorySlug)}. Por favor revisa otras categorías.`}
-                            primaryAction={{ label: "Volver al catálogo", href: "/productos" }}
-                            secondaryAction={{ label: "Limpiar filtros", href: `/catalogo/${categorySlug}/${subcategorySlug}` }}
-                        />
-                    </Container>
-                );
-            }
-        }
-
-        const totalPages = Math.ceil(productsData.count / 20);
-
-        return (
-            <Box sx={{ flexGrow: 1 }}>
-                <Box sx={{ mb: 2, px: { xs: 2, sm: 0 } }}>
-                    {/* Optional count display, mirroring search page styling */}
-                    <Typography variant="body2" color="text.secondary">
-                        Mostrando {productsData.results.length} de {productsData.count} productos
-                    </Typography>
-                </Box>
-                <GridProduct
-                    products={productsData.results}
-                    exchange={exchange.exchange}
-                />
-
-                <Box sx={{ mt: 8, display: "flex", justifyContent: "center" }}>
-                    <PaginationButtons
-                        totalPages={totalPages}
-                        currentPage={page}
-                        marca={Array.isArray(marca) ? marca : marca ? [marca] : []}
-                    />
-                </Box>
-            </Box>
-        );
+        exchange = results[0];
+        productsData = results[1];
     } catch (error) {
+        exchange = null;
+        productsData = null;
+    }
+
+    if (!exchange || !productsData) {
         return (
             <Container maxWidth="xl" sx={{ mt: 8, mb: 8, px: { xs: 2, sm: 2 } }}>
                 <Paper
@@ -108,5 +76,44 @@ export const SubCategoryProductList = async ({
             </Container>
         );
     }
+
+    // Handle Empty State
+    if (productsData.results.length === 0 && productsData.count === 0) {
+        return (
+            <Container maxWidth="xl" sx={{ mt: 8, mb: 8, px: { xs: 2, sm: 2 } }}>
+                <EmptyState
+                    title="No hay productos en esta categoría"
+                    description={`Actualmente no tenemos stock disponible para ${startCase(subcategorySlug)}. Por favor revisa otras categorías.`}
+                    primaryAction={{ label: "Volver al catálogo", href: "/productos" }}
+                    secondaryAction={{ label: "Limpiar filtros", href: `/catalogo/${categorySlug}/${subcategorySlug}` }}
+                />
+            </Container>
+        );
+    }
+
+    const totalPages = Math.ceil(productsData.count / 20);
+
+    return (
+        <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ mb: 2, px: { xs: 2, sm: 0 } }}>
+                {/* Optional count display, mirroring search page styling */}
+                <Typography variant="body2" color="text.secondary">
+                    Mostrando {productsData.results.length} de {productsData.count} productos
+                </Typography>
+            </Box>
+            <GridProduct
+                products={productsData.results}
+                exchange={exchange.exchange}
+            />
+
+            <Box sx={{ mt: 8, display: "flex", justifyContent: "center" }}>
+                <PaginationButtons
+                    totalPages={totalPages}
+                    currentPage={page}
+                    marca={Array.isArray(marca) ? marca : marca ? [marca] : []}
+                />
+            </Box>
+        </Box>
+    );
 };
 

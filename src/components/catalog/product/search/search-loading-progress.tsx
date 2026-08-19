@@ -7,7 +7,7 @@ import { LinearProgress, Box } from "@mui/material";
 export function SearchLoadingProgress() {
   const searchParams = useSearchParams();
   const [show, setShow] = useState(false);
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const mountedRef = useRef(false);
 
   const paramsKey = searchParams.toString();

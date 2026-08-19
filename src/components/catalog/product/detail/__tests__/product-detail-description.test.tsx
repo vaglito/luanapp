@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { ProductDetailDescription } from "@/components/catalog/product/detail/product-detail-description";
 
@@ -42,35 +42,45 @@ const defaultProps = {
 };
 
 describe("XSS sanitization — product-detail-description", () => {
-  it("renders clean HTML with formatting tags preserved", () => {
+  it("renders clean HTML with formatting tags preserved", async () => {
     const cleanHtml = "<p>AMD Ryzen 7 <b>8-core</b> processor</p>";
     render(
       <ProductDetailDescription {...defaultProps} resumen={cleanHtml} />
     );
-    const container = document.querySelector("[class]")!;
-    expect(container.innerHTML).toContain("<b>8-core</b>");
+    // DOMPurify is loaded via a dynamic import and committed asynchronously
+    // (see product-detail-description.tsx), so the sanitized markup is not
+    // in the DOM synchronously after render — it must be awaited.
+    const container = await screen.findByTestId("product-description");
+    await waitFor(() => {
+      expect(container.innerHTML).toContain("<b>8-core</b>");
+    });
     expect(container.innerHTML).toContain("<p>");
   });
 
-  it("strips script tags from description", () => {
+  it("strips script tags from description", async () => {
     const maliciousHtml =
       '<script>alert("xss")</script><p>Safe text</p>';
     render(
       <ProductDetailDescription {...defaultProps} resumen={maliciousHtml} />
     );
-    const container = document.querySelector("[class]")!;
+    const container = await screen.findByTestId("product-description");
+    await waitFor(() => {
+      expect(container.innerHTML).toContain("Safe text");
+    });
     expect(container.innerHTML).not.toContain("<script");
     expect(container.innerHTML).not.toContain("alert");
-    expect(container.innerHTML).toContain("Safe text");
   });
 
-  it("strips event handler attributes", () => {
+  it("strips event handler attributes", async () => {
     const maliciousHtml =
       '<img src="x.jpg" onerror="fetch(\'/steal?c=\'+document.cookie)" />';
     render(
       <ProductDetailDescription {...defaultProps} resumen={maliciousHtml} />
     );
-    const container = document.querySelector("[class]")!;
+    const container = await screen.findByTestId("product-description");
+    await waitFor(() => {
+      expect(container.innerHTML).toContain("<img");
+    });
     expect(container.innerHTML).not.toContain("onerror");
     expect(container.innerHTML).not.toContain("fetch");
   });
@@ -98,7 +108,7 @@ describe("XSS sanitization — product-detail-description", () => {
     expect(document.body).toBeTruthy(); // no crash
   });
 
-  it("preserves allowed tags like table, img, a", () => {
+  it("preserves allowed tags like table, img, a", async () => {
     const html =
       '<p>See <a href="https://example.com">this link</a></p>' +
       '<table><tr><td>Cell</td></tr></table>' +
@@ -106,9 +116,11 @@ describe("XSS sanitization — product-detail-description", () => {
     render(
       <ProductDetailDescription {...defaultProps} resumen={html} />
     );
-    const container = document.querySelector("[class]")!;
+    const container = await screen.findByTestId("product-description");
+    await waitFor(() => {
+      expect(container.innerHTML).toContain("<table>");
+    });
     expect(container.innerHTML).toContain('<a href="https://example.com">');
-    expect(container.innerHTML).toContain("<table>");
     expect(container.innerHTML).toContain('<img src="image.jpg">');
   });
 });

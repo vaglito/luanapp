@@ -28,8 +28,11 @@ export const BrandProductList = async ({
             ? [subcategoria]
             : [];
 
+    let exchange: Awaited<ReturnType<typeof fetchExchangeRate>> | null = null;
+    let productsData: Awaited<ReturnType<typeof fetchProductList>> | null = null;
+
     try {
-        const [exchange, productsData] = await Promise.all([
+        const results = await Promise.all([
             fetchExchangeRate(),
             fetchProductList({
                 brand: marca,
@@ -37,82 +40,14 @@ export const BrandProductList = async ({
                 page: page,
             }),
         ]);
-
-        // Handle Empty Data
-        if (!productsData || productsData.results.length === 0) {
-            if (!productsData || productsData.count === 0) {
-                return (
-                    <Container maxWidth="xl" sx={{ mt: 8, mb: 8, px: { xs: 2, sm: 2 } }}>
-                        <Paper
-                            elevation={0}
-                            sx={{
-                                p: 6,
-                                textAlign: "center",
-                                borderRadius: 4,
-                                bgcolor: "#fff",
-                                border: "1px dashed #e5e7eb",
-                            }}
-                        >
-                            <SearchOffIcon sx={{ fontSize: 80, color: "#d1d5db", mb: 2 }} />
-                            <Typography
-                                variant="h4"
-                                color="#545454"
-                                fontWeight={700}
-                                gutterBottom
-                            >
-                                No hay productos disponibles de {brandName}
-                            </Typography>
-                            <Typography
-                                variant="body1"
-                                color="text.secondary"
-                                sx={{ maxWidth: 600, mx: "auto", mb: 4 }}
-                            >
-                                Actualmente no tenemos stock disponible para esta marca. Por favor
-                                revisa otras opciones en nuestro catálogo.
-                            </Typography>
-                            <Link href="/marcas" passHref style={{ textDecoration: "none" }}>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    sx={{
-                                        bgcolor: "#A3147F",
-                                        borderRadius: 50,
-                                        px: 4,
-                                        "&:hover": { bgcolor: "#800e63" },
-                                    }}
-                                >
-                                    Volver a las marcas
-                                </Button>
-                            </Link>
-                        </Paper>
-                    </Container>
-                );
-            }
-        }
-
-        const totalPages = Math.ceil(productsData.count / 20);
-
-        return (
-            <Box sx={{ flexGrow: 1 }}>
-                <Box sx={{ mb: 2, px: { xs: 2, sm: 0 } }}>
-                    <Typography variant="body2" color="text.secondary">
-                        Mostrando {productsData.results.length} de {productsData.count} productos
-                    </Typography>
-                </Box>
-                <GridProduct
-                    products={productsData.results}
-                    exchange={exchange.exchange}
-                />
-                <Box sx={{ mt: 8, display: "flex", justifyContent: "center" }}>
-                    <PaginationButtons
-                        totalPages={totalPages}
-                        currentPage={page}
-                        subcategoria={subcategoryArray}
-                    />
-                </Box>
-            </Box>
-        );
+        exchange = results[0];
+        productsData = results[1];
     } catch (error) {
+        exchange = null;
+        productsData = null;
+    }
+
+    if (!exchange || !productsData) {
         return (
             <Container maxWidth="xl" sx={{ mt: 8, mb: 8, px: { xs: 2, sm: 2 } }}>
                 <Paper
@@ -148,5 +83,78 @@ export const BrandProductList = async ({
             </Container>
         );
     }
+
+    // Handle Empty Data
+    if (productsData.results.length === 0 && productsData.count === 0) {
+        return (
+            <Container maxWidth="xl" sx={{ mt: 8, mb: 8, px: { xs: 2, sm: 2 } }}>
+                <Paper
+                    elevation={0}
+                    sx={{
+                        p: 6,
+                        textAlign: "center",
+                        borderRadius: 4,
+                        bgcolor: "#fff",
+                        border: "1px dashed #e5e7eb",
+                    }}
+                >
+                    <SearchOffIcon sx={{ fontSize: 80, color: "#d1d5db", mb: 2 }} />
+                    <Typography
+                        variant="h4"
+                        color="#545454"
+                        fontWeight={700}
+                        gutterBottom
+                    >
+                        No hay productos disponibles de {brandName}
+                    </Typography>
+                    <Typography
+                        variant="body1"
+                        color="text.secondary"
+                        sx={{ maxWidth: 600, mx: "auto", mb: 4 }}
+                    >
+                        Actualmente no tenemos stock disponible para esta marca. Por favor
+                        revisa otras opciones en nuestro catálogo.
+                    </Typography>
+                    <Link href="/marcas" passHref style={{ textDecoration: "none" }}>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            sx={{
+                                bgcolor: "#A3147F",
+                                borderRadius: 50,
+                                px: 4,
+                                "&:hover": { bgcolor: "#800e63" },
+                            }}
+                        >
+                            Volver a las marcas
+                        </Button>
+                    </Link>
+                </Paper>
+            </Container>
+        );
+    }
+
+    const totalPages = Math.ceil(productsData.count / 20);
+
+    return (
+        <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ mb: 2, px: { xs: 2, sm: 0 } }}>
+                <Typography variant="body2" color="text.secondary">
+                    Mostrando {productsData.results.length} de {productsData.count} productos
+                </Typography>
+            </Box>
+            <GridProduct
+                products={productsData.results}
+                exchange={exchange.exchange}
+            />
+            <Box sx={{ mt: 8, display: "flex", justifyContent: "center" }}>
+                <PaginationButtons
+                    totalPages={totalPages}
+                    currentPage={page}
+                    subcategoria={subcategoryArray}
+                />
+            </Box>
+        </Box>
+    );
 };
 

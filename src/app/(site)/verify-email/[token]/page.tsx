@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { VerifyEmailAction } from "@/actions/auth-actions";
 import { CircularProgress, Typography, Stack, Alert, Button, Container } from "@mui/material";
@@ -11,25 +11,28 @@ export default function VerifyEmailPage() {
   const [message, setMessage] = useState("");
   const hasCalled = useRef(false); // Para evitar doble llamada en StrictMode
 
+  const handleVerification = useCallback(
+    async (tokenStr: string) => {
+      const res = await VerifyEmailAction(tokenStr);
+
+      if (res.success) {
+        setStatus("success");
+        setMessage(res.detail ?? "");
+        setTimeout(() => router.push("/login"), 5000);
+      } else {
+        setStatus("error");
+        setMessage(res.error || "Error desconocido al verificar el email.");
+      }
+    },
+    [router],
+  );
+
   useEffect(() => {
     if (token && !hasCalled.current) {
       hasCalled.current = true;
       handleVerification(token as string);
     }
-  }, [token]);
-
-  const handleVerification = async (tokenStr: string) => {
-    const res = await VerifyEmailAction(tokenStr);
-
-    if (res.success) {
-      setStatus("success");
-      setMessage(res.detail ?? "");
-      setTimeout(() => router.push("/login"), 5000);
-    } else {
-      setStatus("error");
-      setMessage(res.error || "Error desconocido al verificar el email.");
-    }
-  };
+  }, [token, handleVerification]);
 
   return (
     <Container maxWidth="sm">

@@ -21,6 +21,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import { signOut } from "next-auth/react";
 import { DrawerMobile } from "./drawer";
 import { useCart } from "@/hooks/use-cart";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 import { CartDrawer } from "../../cart/CartDrawer";
 import { Session } from "next-auth";
 import { Brands } from "@/types/brands.type";
@@ -57,15 +58,12 @@ export function MobileHeader({
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [query, setQuery] = useState("");
-  // Prevent hydration mismatch: cart state lives in localStorage (client-only)
-  const [mounted, setMounted] = useState(false);
+  // Prevent hydration mismatch: cart state lives in localStorage (client-only).
+  // Derived via useSyncExternalStore instead of a setState-in-effect mounted flag.
+  const mounted = useIsMounted();
   const router = useRouter();
   const pathname = usePathname();
   const cart = useCart();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Only show real count after client hydration to avoid SSR mismatch
   const itemCount = mounted ? cart.items.length : 0;

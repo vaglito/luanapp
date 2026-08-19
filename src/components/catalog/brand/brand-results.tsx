@@ -4,11 +4,15 @@ import { Box, Typography, Button, Paper, Container } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
 export const BrandResults = async () => {
-    try {
-        const brands = await fetchBrands();
+    let brands: Awaited<ReturnType<typeof fetchBrands>> | null = null;
 
-        return <GridBrand brands={brands} />;
+    try {
+        brands = await fetchBrands();
     } catch (error) {
+        brands = null;
+    }
+
+    if (!brands) {
         return (
             <Container maxWidth="xl" sx={{ mt: 8, mb: 8 }}>
                 <Paper
@@ -44,5 +48,7 @@ export const BrandResults = async () => {
             </Container>
         );
     }
+
+    return <GridBrand brands={brands} />;
 };
 
