@@ -1,25 +1,23 @@
 "use client";
-import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Box, Button } from "@mui/material";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 export function ShopWhatsApp({ title, slug }: { title: string, slug: string }) {
   const pathname = usePathname();
-  const [fullUrl, setFullUrl] = useState("");
 
-  // useEffect se ejecuta solo en el cliente, evitando el error "window is not defined"
-  useEffect(() => {
+  const addProduct = () => {
+    // window is only accessed inside this click handler (client-only event),
+    // so there is no need to mirror it into state via an effect.
+    let fullUrl = "";
     if (typeof window !== "undefined") {
       const protocol = window.location.protocol;
       const hostname = window.location.hostname;
       // Si el pathname ya termina en el slug (en el detalle), no lo repetimos
       const currentPath = pathname.endsWith(slug) ? pathname : `${pathname}/${slug}`;
-      setFullUrl(`${protocol}//${hostname}${currentPath}`);
+      fullUrl = `${protocol}//${hostname}${currentPath}`;
     }
-  }, [pathname, slug]);
 
-  const addProduct = () => {
     // Aseguramos que los números tengan el código de país 51
     const numbers = ["51919443359", "51922481325", "51981355117"];
     const randomNumber = numbers[Math.floor(Math.random() * numbers.length)];

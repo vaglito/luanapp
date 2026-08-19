@@ -1,19 +1,16 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { IconButton, Badge, alpha, useTheme } from "@mui/material";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useCart } from "@/hooks/use-cart";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 
 export function CartIconButton({ exchange }: { exchange: number }) {
   const [openCart, setOpenCart] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
   const cart = useCart();
   const theme = useTheme();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!mounted) {
     return (

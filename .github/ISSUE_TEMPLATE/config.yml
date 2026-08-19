@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Branching and contribution rules
+    url: https://github.com/vaglito/luanapp/blob/main/docs/BRANCHING.md
+    about: Read the branch taxonomy, merge methods, and hotfix threshold before opening a PR.
+  - name: Contributing guide
+    url: https://github.com/vaglito/luanapp/blob/main/CONTRIBUTING.md
+    about: Quick path for setting up, running checks, and opening a PR.

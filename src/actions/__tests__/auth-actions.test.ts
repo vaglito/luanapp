@@ -131,7 +131,10 @@ describe("loginAction", () => {
 
   it("returns generic error for unknown AuthError type", async () => {
     const authErr = new AuthError("unknown");
-    authErr.type = "UnknownType";
+    // Cast: deliberately simulating a runtime `type` value outside next-auth's
+    // known `ErrorType` union, to exercise the fallback branch for forward
+    // compatibility with error types the app does not recognize yet.
+    authErr.type = "UnknownType" as AuthError["type"];
     vi.mocked(signIn).mockRejectedValueOnce(authErr);
 
     const result = await loginAction(makeLoginInput());

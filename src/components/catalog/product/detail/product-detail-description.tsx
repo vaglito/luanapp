@@ -118,7 +118,7 @@ export function ProductDetailDescription({
           "& p": { mb: 1.5 },
         }}
       >
-        <Box dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
+        <Box data-testid="product-description" dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
       </Box>
     </Box>
   );

@@ -21,8 +21,11 @@ export const ProductResultList = async ({
     subcategoria,
     ordering,
 }: ProductResultListProps) => {
+    let searchProduct: Awaited<ReturnType<typeof fetchProductSearchList>> | null = null;
+    let exchange: Awaited<ReturnType<typeof fetchExchangeRate>> | null = null;
+
     try {
-        const [searchProduct, exchange] = await Promise.all([
+        const results = await Promise.all([
             fetchProductSearchList({
                 search: query,
                 brand: marca,
@@ -32,49 +35,56 @@ export const ProductResultList = async ({
             }),
             fetchExchangeRate(),
         ]);
-
-        if (!searchProduct || searchProduct.results.length === 0) {
-            return (
-                <EmptyState
-                    title={`Sin resultados para "${query}"`}
-                    description="No encontramos productos que coincidan con tu búsqueda. Intenta revisar la ortografía o usar términos más generales."
-                    primaryAction={{ label: "Volver al catálogo", href: "/productos" }}
-                    secondaryAction={{ label: "Limpiar filtros", href: "/buscar" }}
-                />
-            );
-        }
-
-        const totalPages = Math.ceil(searchProduct.count / 20);
-
-        return (
-            <Box sx={{ flexGrow: 1 }}>
-                {/* Results Info Header could go here or parent, but let's keep simple */}
-                <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" color="text.secondary">
-                        Mostrando {searchProduct.results.length} de {searchProduct.count} resultados
-                    </Typography>
-                </Box>
-
-                <Box sx={{ minHeight: 400 }}>
-                    <GridProduct
-                        products={searchProduct.results}
-                        exchange={exchange.exchange}
-                    />
-                </Box>
-
-                <Box sx={{ mt: 8, display: "flex", justifyContent: "center" }}>
-                    <PaginationButtons
-                        totalPages={totalPages}
-                        currentPage={page}
-                        marca={marca}
-                        subcategoria={subcategoria}
-                    />
-                </Box>
-            </Box>
-        );
+        searchProduct = results[0];
+        exchange = results[1];
     } catch (error) {
+        searchProduct = null;
+        exchange = null;
+    }
+
+    if (!searchProduct || !exchange) {
         return (
             <SearchErrorFallback message="Ocurrió un error al buscar productos." />
         );
     }
+
+    if (searchProduct.results.length === 0) {
+        return (
+            <EmptyState
+                title={`Sin resultados para "${query}"`}
+                description="No encontramos productos que coincidan con tu búsqueda. Intenta revisar la ortografía o usar términos más generales."
+                primaryAction={{ label: "Volver al catálogo", href: "/productos" }}
+                secondaryAction={{ label: "Limpiar filtros", href: "/buscar" }}
+            />
+        );
+    }
+
+    const totalPages = Math.ceil(searchProduct.count / 20);
+
+    return (
+        <Box sx={{ flexGrow: 1 }}>
+            {/* Results Info Header could go here or parent, but let's keep simple */}
+            <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                    Mostrando {searchProduct.results.length} de {searchProduct.count} resultados
+                </Typography>
+            </Box>
+
+            <Box sx={{ minHeight: 400 }}>
+                <GridProduct
+                    products={searchProduct.results}
+                    exchange={exchange.exchange}
+                />
+            </Box>
+
+            <Box sx={{ mt: 8, display: "flex", justifyContent: "center" }}>
+                <PaginationButtons
+                    totalPages={totalPages}
+                    currentPage={page}
+                    marca={marca}
+                    subcategoria={subcategoria}
+                />
+            </Box>
+        </Box>
+    );
 };
