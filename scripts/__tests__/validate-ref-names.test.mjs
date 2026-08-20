@@ -55,6 +55,27 @@ describe("isValidBranchName — valid branches", () => {
   });
 });
 
+describe("isValidBranchName — permanent trunks", () => {
+  // The trunks are not working branches, so the "<prefix>/<description>"
+  // taxonomy does not apply to them. They still appear as a PR head_ref:
+  // `dev` -> `main` is the release PR, `main` -> `dev` is the back-merge.
+  // Rejecting them made the `ci` check unpassable for both flows, which the
+  // required_status_checks rule on `main` then turned into a hard block.
+  it.each(["main", "dev"])("accepts the trunk branch %s as a PR head", (trunk) => {
+    expect(isValidBranchName(trunk)).toEqual({ valid: true });
+  });
+
+  it("still rejects a bare word that is not a trunk", () => {
+    expect(isValidBranchName("ticket").valid).toBe(false);
+  });
+
+  it("does not exempt trunk names used as a description", () => {
+    expect(isValidBranchName("feat/main")).toEqual({ valid: true });
+    expect(isValidBranchName("mainly").valid).toBe(false);
+    expect(isValidBranchName("develop").valid).toBe(false);
+  });
+});
+
 describe("isValidBranchName — invalid branches", () => {
   it("rejects ui/ — REMOVED as an allowed prefix per amendment #164", () => {
     const result = isValidBranchName("ui/anything");

@@ -28,13 +28,13 @@ import { Brands } from "@/types/brands.type";
 import { useTheme } from "@mui/material";
 
 const navlinks = [
-  { id: 1, title: "Inicio", path: "/" },
+  { id: 1, title: "Productos", path: "/productos" },
   { id: 2, title: "Marcas", path: "/marcas" },
-  { id: 3, title: "Nuestra Empresa", path: "/sobre-nosotros" },
-  { id: 4, title: "Servicio Técnico", path: "/servicio-tecnico" },
+  { id: 3, title: "Servicio Técnico", path: "/servicio-tecnico" },
+  { id: 4, title: "Sobre Nosotros", path: "/sobre-nosotros" },
   {
     id: 5,
-    title: "Busca tu comprobante",
+    title: "Comprobante",
     path: "https://see.corporacionluana.pe/",
     external: true,
   },
@@ -244,9 +244,10 @@ export function MobileHeader({
         sx={{
           "& .MuiDrawer-paper": {
             width: { xs: "100vw", sm: 450 },
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            backgroundColor: alpha(theme.palette.primary.main, 0.9),
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            backgroundColor: alpha(theme.palette.primary.main, 0.85),
+            borderRight: "1px solid rgba(255, 255, 255, 0.15)",
           },
         }}
       >

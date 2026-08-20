@@ -5,6 +5,13 @@ on:
     branches: [main, dev]
     types: [opened, synchronize, reopened, edited]
 
+# The `edited` type fires on every title AND body edit, so without this a
+# typo fix in the description queues another full install + lint + typecheck +
+# test run. Only the newest run for a given PR is worth finishing.
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   ci:
     name: ci
@@ -12,11 +19,12 @@ jobs:
 
     steps:
       - name: Checkout
-        if: ${{ !cancelled() }}
         uses: actions/checkout@v4
 
+      # Naming is independent of whether the code is correct, so a rejected
+      # branch name must not hide a failing test — the rest of the job still
+      # runs and reports.
       - name: Validate branch name and PR title
-        if: ${{ !cancelled() }}
         env:
           PR_BRANCH: ${{ github.head_ref }}
           PR_TITLE: ${{ github.event.pull_request.title }}
@@ -34,17 +42,21 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
+        id: install
         if: ${{ !cancelled() }}
         run: pnpm install --frozen-lockfile
 
+      # The quality steps are independent of each other, so a lint failure must
+      # not hide a type error or a failing test — one run should report every
+      # problem at once. They are still gated on a usable install.
       - name: Lint
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: pnpm lint
 
       - name: Typecheck
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: pnpm typecheck
 
       - name: Test
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: pnpm test
