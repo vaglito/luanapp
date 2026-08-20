@@ -26,6 +26,14 @@ export const BRANCH_PREFIXES = Object.freeze([
   "hotfix",
 ]);
 
+/**
+ * Permanent trunks. These are not working branches, so the
+ * "<prefix>/<description>" taxonomy does not apply — but they do appear as a
+ * PR head: `dev` -> `main` is the release PR, `main` -> `dev` is the
+ * back-merge. Both must be able to pass the `ci` check.
+ */
+export const TRUNK_BRANCHES = Object.freeze(["main", "dev"]);
+
 /** Conventional Commit types allowed as PR title prefixes. */
 export const COMMIT_TYPES = Object.freeze([
   "build",
@@ -63,6 +71,12 @@ export function isValidBranchName(name) {
       valid: false,
       reason: `Branch name exceeds ${MAX_LENGTH} characters.`,
     };
+  }
+
+  // Exact match only — never a pattern, so no name merely containing a trunk
+  // name is exempted.
+  if (TRUNK_BRANCHES.includes(name)) {
+    return { valid: true };
   }
 
   if (!BRANCH_NAME_PATTERN.test(name)) {
