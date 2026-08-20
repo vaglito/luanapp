@@ -79,3 +79,79 @@ WIP                         # no type, no description
 - [ ] Commits and PR title follow Conventional Commits
 - [ ] `pnpm lint && pnpm typecheck && pnpm test` pass locally
 - [ ] PR targets `dev` (or `main` for `hotfix/*`)
+
+## Releasing (maintainers)
+
+Nothing deploys until a `vX.Y.Z` tag is pushed. Merging to `main` is not a
+release; tagging is.
+
+**1. Open the release PR.** `dev` → `main`, titled `feat: release vX.Y.Z`:
+
+```bash
+gh pr create --base main --head dev --title "feat: release v3.6.0"
+```
+
+**2. Wait for `ci` to pass.** It is a required status check on `main`.
+
+**3. Merge with a merge commit — not squash.**
+
+```bash
+gh pr merge <N> --merge
+```
+
+> `main` allows both `merge` and `squash`, and it has to: `hotfix/*` → `main`
+> is squashed while `dev` → `main` is a merge commit. GitHub cannot pick the
+> method based on where the PR came from, so **this step is not enforced by
+> any rule.** Squashing a release rewrites every commit on `dev` into one new
+> commit that `dev` does not contain, which breaks the shared ancestry and
+> forces a resync on every release. See `docs/BRANCHING.md`.
+
+**4. Tag the merge commit and push the tag.**
+
+```bash
+git checkout main && git pull origin main
+git tag v3.6.0          # tags main's tip: the merge commit created in step 3
+git push origin v3.6.0
+```
+
+Version numbers come from the tag history, not from `package.json` (whose
+`version` field is not maintained). `git tag -l 'v*' --sort=-v:refname | head -1`
+shows the current release.
+
+**5. Watch the deploy.**
+
+```bash
+gh run watch
+```
+
+The workflow rejects any tag that is malformed or whose commit is not
+reachable from `main`, then checks out that exact commit on the server.
+
+**6. Verify what actually landed.** The deploy checks out the tagged commit
+rather than `main`'s tip, so prove it:
+
+```bash
+git rev-parse v3.6.0^{commit}
+ssh <user>@<host> 'cd /home/luana/luanapp && git rev-parse HEAD'
+```
+
+The two SHAs must match. If they do not, stop and investigate before tagging
+anything else — a deploy that does not ship the tagged commit cannot be rolled
+back by re-pushing an older tag.
+
+### Rolling back
+
+Deploy an earlier release by re-pushing its tag:
+
+```bash
+git push origin --force refs/tags/v3.5.6
+```
+
+This works only because the workflow deploys the tagged commit. Confirm with
+step 6 afterwards.
+
+### Hotfixes
+
+A `hotfix/*` branch cuts from `main`, PRs into `main`, and is squashed. Tag the
+squash commit, then back-merge `main` into `dev` immediately — see the
+back-merge rule in `docs/BRANCHING.md`.
