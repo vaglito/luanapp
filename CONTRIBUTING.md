@@ -139,6 +139,40 @@ The two SHAs must match. If they do not, stop and investigate before tagging
 anything else — a deploy that does not ship the tagged commit cannot be rolled
 back by re-pushing an older tag.
 
+### Server prerequisites
+
+The deploy pins Node to `.nvmrc` and refuses to continue if the toolchain is
+missing, rather than deploying a broken tree. Under `nvm`, **globally installed
+npm packages belong to the Node version that installed them** — switching the
+active version makes `pnpm` and `pm2` disappear. If a deploy fails on one of
+the toolchain checks, run this once on the server as the deploy user:
+
+```bash
+nvm install "$(cat .nvmrc)"
+nvm alias default "$(cat .nvmrc)"
+corepack enable pnpm            # pnpm is a corepack shim inside the Node install
+npm i -g pm2                    # pm2 is global, and also per-Node-version
+pm2 startup                     # re-run after changing Node, then run what it prints
+```
+
+`pm2` runs the app with the Node version **its daemon started with**, not the
+one in your shell. After changing Node versions the daemon must be replaced:
+
+```bash
+pm2 delete all && pm2 kill
+pm2 start ecosystem.config.js --env production --node-args="--max-old-space-size=1024"
+pm2 save
+```
+
+### When the deploy fails at the health check
+
+The job polls `HEALTHCHECK_URL` (default `http://127.0.0.1:3000/`) for up to
+about three minutes after the pm2 reload and fails if nothing answers, printing `pm2 status` and
+the last 40 log lines. A failure here means the app did not come up — the
+server is left on the new commit, so fix forward or roll back to the previous
+tag. Set the repository variable `HEALTHCHECK_URL` if the app does not listen
+on port 3000.
+
 ### Rolling back
 
 Deploy an earlier release by re-pushing its tag:

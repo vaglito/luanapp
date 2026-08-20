@@ -39,19 +39,31 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         env:
           DEPLOY_TAG: ${{ github.ref_name }}
+          HEALTHCHECK_URL: ${{ vars.HEALTHCHECK_URL || 'http://127.0.0.1:3000/' }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: DEPLOY_TAG
+          envs: DEPLOY_TAG,HEALTHCHECK_URL
           script: |
-            # Aseguramos que el entorno interactivo se cargue (necesario para nvm, pnpm y pm2)
+            # Abort on the first failing command. Without this, v3.6.0 ran three
+            # crashing pnpm commands, reloaded pm2 onto a build that was never
+            # produced, and still reported success while production served 502.
+            set -eo pipefail
+
+            # nvm must be sourced with an explicit test: under `set -e` the
+            # previous `[ -s ... ] && . ...` form aborts the script when the file
+            # is absent, instead of reporting why.
             export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            if [ ! -s "$NVM_DIR/nvm.sh" ]; then
+              echo "nvm not found at $NVM_DIR/nvm.sh"
+              exit 1
+            fi
+            . "$NVM_DIR/nvm.sh"
 
             # Cargar configuraciones del usuario para tener los binarios en el PATH
             if [ -f ~/.bashrc ]; then
-              source ~/.bashrc
+              . ~/.bashrc || true
             fi
 
             # Navegar al directorio de la app
@@ -61,20 +73,68 @@ jobs:
             git fetch --force origin "refs/tags/${DEPLOY_TAG}:refs/tags/${DEPLOY_TAG}"
             git checkout --force --detach "refs/tags/${DEPLOY_TAG}"
 
+            # Pin Node to .nvmrc instead of inheriting nvm's default. The default
+            # was Node 20 while package.json pins pnpm@11.21.0, which requires
+            # >= 22.13 — every pnpm call died with ERR_UNKNOWN_BUILTIN_MODULE.
+            # `nvm use` (not `install`) is deliberate: it fails loudly rather
+            # than silently switching to a freshly downloaded Node that has no
+            # globally installed pm2.
+            if ! nvm use; then
+              echo "The Node version in .nvmrc is not installed on this server."
+              echo "Install it once with: nvm install \$(cat .nvmrc) && nvm alias default \$(cat .nvmrc)"
+              exit 1
+            fi
+            node -v
+
+            # pnpm is a corepack shim and lives inside the active Node install,
+            # so switching Node versions can leave it missing.
+            if ! pnpm --version >/dev/null 2>&1; then
+              corepack enable pnpm
+            fi
+            pnpm --version
+
+            # pm2 is a global npm package and is likewise bound to the Node
+            # version that installed it.
+            if ! command -v pm2 >/dev/null 2>&1; then
+              echo "pm2 is not installed for the active Node version ($(node -v))."
+              echo "Install it once with: npm i -g pm2 && pm2 startup"
+              exit 1
+            fi
+
             # Instalar todas las dependencias (incluye devDeps para el build).
             # --frozen-lockfile: resolve exactly what CI validated, never a
             # newer transitive version picked at deploy time.
             pnpm install --frozen-lockfile
-            
+
             # Compilar el proyecto Next.js con heap extendido
             export NODE_OPTIONS="--max-old-space-size=1024"
             pnpm run build
-            
+
             # Eliminar devDependencies para liberar memoria en runtime
             pnpm install --prod --frozen-lockfile
-            
+
             # Iniciar o reiniciar la aplicación usando el ecosystem de pm2
             pm2 startOrReload ecosystem.config.js --env production --node-args="--max-old-space-size=1024"
-            
-            # Guardar la lista actual de PM2 para que levante automático en caso de reinicio del server
-            pm2 save
+
+            # A reload that returns 0 proves nothing: on v3.6.0 pm2 reported the
+            # app "online" while it crashlooped 415 times and never bound its
+            # port. Only an HTTP response proves a deploy worked.
+            # 30 attempts, each up to 5s of connect/read plus a 2s pause, so a
+            # cold Next.js start has roughly three minutes to come up.
+            echo "Waiting for the app to answer on ${HEALTHCHECK_URL} ..."
+            for attempt in $(seq 1 30); do
+              if curl -fsS -o /dev/null --max-time 5 "$HEALTHCHECK_URL"; then
+                echo "Health check passed on attempt ${attempt}."
+                # Guardar la lista actual de PM2 para que levante automático en caso de reinicio del server
+                pm2 save
+                exit 0
+              fi
+              sleep 2
+            done
+
+            echo "The app did not answer on ${HEALTHCHECK_URL} after ${attempt} attempts. Deploy failed."
+            echo "--- pm2 status ---"
+            pm2 status || true
+            echo "--- last 40 log lines ---"
+            pm2 logs --lines 40 --nostream || true
+            exit 1
